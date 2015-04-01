@@ -1,0 +1,36 @@
+<?php
+
+function insert_pdf() {
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    #connessione al database...
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $type = "document/pdf"; // impostato il tipo per un'pdf
+    $basedir = './arXiv/pdf_downloads/'; // � la directory da dove prelevare in automatico tutti i file in esso contenuti
+    echo "<center>";
+    if ($handle = opendir($basedir)) {
+        $i = 0;
+        while ((false !== ($file = readdir($handle)))) {
+            if ($file != '.' && $file != '..') {
+                $var = fopen($basedir . $file, 'r');
+                $var2 = fread($var, filesize($basedir . $file));
+                $id=explode(".", $file);
+                $var2=addslashes($var2);
+                echo $id[0].".".$id[1];
+                $sql = "UPDATE PDF SET Bin_data= '".$var2."', Filename= '".$file."', Filesize='".filesize($basedir . $file)."', Filetype='".$type ."' WHERE id_pubblicazione='".$id[0].".".$id[1]."'";
+                #$sql = "UPDATE PDF SET( Bin_data, Filename, Filesize, Filetype) WHERE ('" . addslashes($var2) . "','" . $file . "','" . filesize($basedir . $file) . "','" . $type . "')";
+                $query = mysql_query($sql) or die(mysql_error());
+                fclose($var);
+                $i++;
+                unlink($basedir . $file);
+            }
+        }
+        #chiusura della directory...
+        closedir($handle);
+    }
+}
+
+?>

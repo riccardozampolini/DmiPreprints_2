@@ -1,0 +1,9 @@
+.contenitore{
+    max-width: 100%;
+    padding: 20px 20px 20px 20px;
+    text-align: center;
+}
+
+#div_menu_ricerca{
+    margin: 0 auto;
+}

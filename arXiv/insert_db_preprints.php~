@@ -1,0 +1,37 @@
+<?php
+
+function insert_preprints() {
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    #connessione al database...
+    $db_connection = mysqli_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysqli_select_db($db_monte, $db_connection);
+    $type = "document/text"; // impostato il tipo per un'pdf
+    $basedir = './arXiv/preprints/'; // � la directory da dove prelevare in automatico tutti i file in esso contenuti
+    echo "<center>";
+    if ($handle = opendir($basedir)) {
+        $i = 0;
+        while ((false !== ($file = readdir($handle)))) {
+            if ($file != '.' && $file != '..') {
+                $var = fopen($basedir . $file, 'r');
+                $var2 = fread($var, filesize($basedir . $file));
+                $sql = "INSERT INTO PREPRINTS ( Bin_data, Filename, Filesize, Filetype) VALUES ('" . addslashes($var2) . "','" . $file . "','" . filesize($basedir . $file) . "','" . $type . "')";
+                $query = mysqli_query($sql) or die(mysqli_error());
+                fclose($var);
+                $i++;
+                unlink($basedir . $file);
+            }
+        }
+        if ($i == 0) {
+            echo "YOU NOT HAVE PREPRINTS TO INCLUDE IN THE DATABASE!</center>";
+        } else {
+            echo "HAVE BEEN INCLUDED IN THE DATABASE " . $i . " PREPRINTS!</center>";
+        }
+        #chiusura della directory...
+        closedir($handle);
+    }
+}
+
+?>
