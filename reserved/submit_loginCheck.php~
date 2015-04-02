@@ -10,7 +10,9 @@ if (isset($_POST['uid']) && isset($_POST['pw'])) {
 
     $inputUID = $_POST['uid'];
     $inputPass = $_POST['pw']; //la password di ateneo può contenere car speciali
+
     $output_ldap = LDAPAuth($inputUID); //chiamata LDAP
+
     if ($output_ldap['count'] == 1) {
         echo "autorizzazione OK";
         if (RADIUSAuth($inputUID, $inputPass)) {
