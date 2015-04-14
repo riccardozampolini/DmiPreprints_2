@@ -1,172 +1,311 @@
 <?php
 
-#funzione per la verifica se il nome è stato cercato nell'ultima esecuzione
+#funzione per la verifica se ci sono sessioni attive
+
+function sessioneavviata() {
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $var = True;
+    $a = date("Ymd", time());
+    $datas = datasessione();
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "SELECT attivo FROM sessione";
+    $result = mysql_query($sql) or die(mysql_error());
+    $row = mysql_fetch_array($result);
+    if (($row['attivo'] == 0) or ($datas < $a-1)) {
+         $var = False;
+    }
+    mysql_close($db_connection);
+    return $var;
+}
+
+#funzione di avvio della sessione
+
+function avviasessione() {
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $a = date("Ymd", time());
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "UPDATE sessione SET attivo='1'";
+    $result = mysql_query($sql) or die(mysql_error());
+    $sql = "UPDATE sessione_data SET data='".$a."'";
+    $result = mysql_query($sql) or die(mysql_error());
+    mysql_close($db_connection);
+}
+
+#funzione per terminare la sessione
+
+function chiudisessione() {
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "UPDATE sessione SET attivo='0'";
+    $result = mysql_query($sql) or die(mysql_error());
+    mysql_close($db_connection);
+}
+
+#funzione verifica nuovo nome
 
 function nomiprec($nome) {
     #cerca se il nome se era stato gia cercato...
-    $s = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . "arXiv/nomi_ultimo_lancio.txt";
-    #apertura con fopen del file nomi_ultimo_lancio.txt
-    $fs = fopen($s, "r");
-    #conto il numero di nomi
-    $nl = count(file($s));
-    $array = file($s);
-    #chiusura di fopen
-    fclose($fs);
-    #ricerca del nome
-    for ($i = 0; $i < $nl; $i++) {
-        $nomi = $array[$i];
-        $nomi = trim($nomi);
-        if ($nome == $nomi) {
-            return True;
-            break;
-        }
+    $nome = trim($nome);
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "SELECT * FROM AUTORI_BACKUP WHERE nome='" . $nome . "'";
+    $query = mysql_query($sql) or die(mysql_error());
+    $array = mysql_fetch_row($query);
+    if ($array[0] == $nome) {
+        mysql_close($db_connection);
+        return True;
+    } else {
+        mysql_close($db_connection);
+        return False;
     }
-    return False;
 }
 
-#funzione che cerca se il preprint è stato già scaricato...
+#funzione che cerca se il preprint è stato già scaricato nell'esecuzione in corso
 
 function preprintscaricati($id) {
-    $s = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . "arXiv/temp.txt";
-    $fs = fopen($s, "r");
-    $nl = count(file($s));
-    $array = file($s);
-    fclose($fs);
-    #cerca il preprint se è stato già scaricato
-    for ($i = 0; $i < $nl; $i++) {
-        $idprec = $array[$i];
-        $idprec = trim($idprec);
-        if ($id == $idprec) {
-            return True;
-            break;
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $var = False;
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "SELECT id FROM temp";
+    $result = mysql_query($sql) or die(mysql_error());
+    while ($row = mysql_fetch_array($result)) {
+        if ($row['id'] == $id) {
+            $var = True;
         }
     }
-    return False;
+    mysql_close($db_connection);
+    return $var;
 }
 
-#funzione per l'inserimento dell'id dentro il file temp.txt
+#funzione per l'inserimento dell'id dentro temp
 
 function aggiornapreprintscaricati($id) {
-    #leggo i preprint e li inserisco in array...
-    $c = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . "arXiv/temp.txt";
-    $fp = fopen($c, "r");
-    $array = file($c);
-    fclose($fp);
-    array_push($array, $id . "\n");
-    $nl = count($array);
-    #aggiorno il file preprintscaricati.txt...
-    $s = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . "arXiv/temp.txt";
-    $fs = fopen($s, "w+");
-    for ($i = 0; $i < $nl; $i++) {
-        fwrite($fs, $array[$i]);
-    }
-    fclose($fs);
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "INSERT INTO temp (id) VALUES ('" . $id . "') ON DUPLICATE KEY UPDATE id = VALUES(id)";
+    $result = mysql_query($sql) or die(mysql_error());
+    mysql_close($db_connection);
 }
 
-#funzione per la cancellazione del contenuto di file temp.txt
+#funzione per la cancellazione del contenuto temp
 
 function azzerapreprint() {
-    #azzero la variabile temp.txt...
-    $s = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . "arXiv/temp.txt";
-    $fs = fopen($s, "w+");
-    fwrite($fs, "");
-    fclose($fs);
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "SELECT id FROM temp";
+    $result = mysql_query($sql) or die(mysql_error());
+    while ($row = mysql_fetch_array($result)) {
+        $sql = "DELETE FROM temp WHERE id='" . $row['id'] . "'";
+        $query = mysql_query($sql) or die(mysql_error());
+    }
+    mysql_close($db_connection);
 }
 
-#funzione che cerca se il nome è presente...
+#funzione che cerca se il nome è presente
 
 function cercanome($nome) {
-    $array = legginomi();
-    $nl = count($array);
-    #ricerca del nome se esistente
-    for ($i = 0; $i < $nl; $i++) {
-        $nomi = $array[$i];
-        $nomi = trim($nomi);
-        if ($nome == $nomi) {
-            return True;
-            break;
-        }
+    #cerca se il nome se era stato gia cercato...
+    $nome = trim($nome);
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $var = False;
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "SELECT * FROM AUTORI WHERE nome='" . $nome . "'";
+    $result = mysql_query($sql) or die(mysql_error());
+    $row = mysql_fetch_array($result);
+    if ($row['nome'] == $nome) {
+	$var = True;
     }
-    return False;
+    mysql_close($db_connection);
+    return $var;
 }
 
-#funzione aggiornamento file nomi_ultimo_lancio.txt
+#funzione aggiornamento nomi_ultimo_lancio
 
 function aggiornanomi() {
     #leggo i nuovi nomi e li inserisco in array...
     $array = legginomi();
-    $nl = count($array);
-    #aggiorno il file nomi.txt...
-    $s = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . "arXiv/nomi_ultimo_lancio.txt";
-    $fs = fopen($s, "w+");
-    for ($i = 0; $i < $nl; $i++) {
-        $data = fwrite($fs, $array[$i]);
+    #cerca se il nome se era stato gia cercato...
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "SELECT nome FROM AUTORI_BACKUP";
+    $result = mysql_query($sql) or die(mysql_error());
+    $nl2 = count($array);
+    while ($row = mysql_fetch_array($result)) {
+        $sql = "DELETE FROM AUTORI_BACKUP WHERE nome='" . $row['nome'] . "'";
+        $query = mysql_query($sql) or die(mysql_error());
     }
-    fclose($fs);
+    #aggiorno i nomi...
+    for ($i = 0; $i < $nl2; $i++) {
+        $sql = "INSERT INTO AUTORI_BACKUP (nome) VALUES ('" . $array[$i] . "')";
+        $query = mysql_query($sql) or die(mysql_error());
+    }
+    mysql_close($db_connection);
 }
 
-# funzione lettura nomi dal file nomi.txt
+# funzione lettura nomi
 
 function legginomi() {
     #leggo i nuovi nomi e li inserisco in array...
-    $c = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . "arXiv/nomi.txt";
-    $fp = fopen($c, "r");
-    $array = file($c);
-    fclose($fp);
-    #ritorno l'array contenente i nomi...
+    #cerca se il nome se era stato gia cercato...
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "SELECT nome FROM AUTORI";
+    $result = mysql_query($sql) or die(mysql_error());
+    $i = 0;
+    while ($row = mysql_fetch_array($result)) {
+        $array[$i] = $row['nome'];
+        $i++;
+    }
+    mysql_close($db_connection);
     return $array;
 }
 
-#funzione scrittura nomi in file nomi.txt
+#funzione scrittura nomi
 
 function scrivinomi($nomi) {
-    #leggo i nuovi nomi e li inserisco nel file di testo...
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "SELECT nome FROM AUTORI";
+    $result = mysql_query($sql) or die(mysql_error());
     $nl2 = count($nomi);
-    $s = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . "arXiv/nomi.txt";
-    $fs = fopen($s, "w+");
-    for ($i = 0; $i < $nl2; $i++) {
-        $data = fwrite($fs, $nomi[$i]);
+    while ($row = mysql_fetch_array($result)) {
+        $sql = "DELETE FROM AUTORI WHERE nome='" . $row['nome'] . "'";
+        $query = mysql_query($sql) or die(mysql_error());
     }
-    fclose($fs);
+    #aggiorno i nomi...
+    for ($i = 0; $i < $nl2; $i++) {
+        $sql = "INSERT INTO AUTORI (nome) VALUES ('" . $nomi[$i] . "') ON DUPLICATE KEY UPDATE nome = VALUES(nome)";
+        $query = mysql_query($sql) or die(mysql_error());
+    }
+    mysql_close($db_connection);
 }
 
 #funzione inserimento nuovo utente
 
-function aggiungiutente($nome) {
+function aggiungiutente($nome, $a) {
     #leggo i nuovi nomi e li inserisco in array...
     $array = legginomi();
+    while (strpos($nome, "  ") !== FALSE) {
+        echo "<center>NAME NOT VALID! DETECTED CONSECUTIVE SPACE INSIDE FIELD NAME!</center><br/>";
+        return;
+    }
     $array2 = explode(",", $nome);
     $nl = count($array2);
-    $modificato = False;
+    $l = count($array);
     for ($i = 0; $i < $nl; $i++) {
         $temp = $array2[$i];
         $temp = trim($temp);
         $temp = strtoupper($temp);
         #verifico se il nome è già presente...
-        $ris = cercanome($temp);
-        if ($ris == FALSE) {
-            $temp = $temp . "\n";
-            array_push($array, $temp);
-            $modificato = True;
-            echo "<center>" . $temp . " INSERTED IN LIST!</center><br/>";
+        $array[$l] = $temp;
+        $l++;
+        $ris=cercanome($temp);
+        if ($ris == False) {
+            if ($a == 1) {
+                echo "<center>&#171; " . $temp . " &#187; INSERTED!</center><br/>";
+                #aggiorno i nomi se ci sono nomi da aggiungere...
+        	scrivinomi($array);
+            } else {
+                echo "<center>&#171; " . $temp . " &#187; NOT FOUND!</center><br/>";
+            }
         } else {
-            echo "<center>" . $temp . " ALREADY EXISTS!</center><br/>";
+            if ($a == 1) {
+                echo "<center>&#171; " . $temp . " &#187; EXISTS!</center><br/>";
+            } else {
+                echo "<center>&#171; " . $temp . " &#187; FOUND!</center><br/>";
+            }
         }
     }
-    #aggiorno il file nomi.txt se ci sono nomi da aggiungere...
-    if ($modificato == True) {
-        scrivinomi($array);
-    }
+}
+
+#data ultima sessione
+
+function datasessione() {
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "SELECT data FROM sessione_data";
+    $result = mysql_query($sql) or die(mysql_error());
+    $row = mysql_fetch_array($result);
+    $data = $row['data'];
+    mysql_close($db_connection);
+    return $data;
 }
 
 #ritorno la data come intero
 
 function dataprec() {
-    #lettura del file data_ultimo_lancio.txt
-    $c = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . "arXiv/data_ultimo_lancio.txt";
-    $fp = fopen($c, "r");
-    $data = fgets($fp, 5096);
-    fclose($fp);
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "SELECT data FROM DATA_ULTIMO_LANCIO";
+    $result = mysql_query($sql) or die(mysql_error());
+    $row = mysql_fetch_array($result);
+    $data = $row['data'];
+    mysql_close($db_connection);
     $data = trim($data);
     $data = substr($data, 0, 10);
     $data = str_replace("-", "", $data);
@@ -178,21 +317,41 @@ function dataprec() {
 #ritorno la data come una stringa
 
 function datastring() {
-    $c = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . "arXiv/data_ultimo_lancio.txt";
-    $fp = fopen($c, "r");
-    $data = fgets($fp, 5096);
-    fclose($fp);
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "SELECT data FROM DATA_ULTIMO_LANCIO";
+    $result = mysql_query($sql) or die(mysql_error());
+    $row = mysql_fetch_array($result);
+    $data = $row['data'];
+    mysql_close($db_connection);
     return $data;
 }
 
-#aggiorno il file data_ultimo_lancio.txt con la data di ultimo lancio
+#aggiorno data_ultimo_lancio con la data di ultimo lancio
 
 function aggiornadata() {
-    $a = date("Y-m-d", time());
-    $c = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . "arXiv/data_ultimo_lancio.txt";
-    $fp = fopen($c, "w+");
-    $data = fwrite($fp, $a);
-    fclose($fp);
+    $a = date("Y-m-d H:i", time());
+    #definizione parametri di connessione al database
+    $hostname_db = "localhost";
+    $db_monte = "dmipreprints"; //nome del database
+    $username_db = "root"; //l'username
+    $password_db = "1234"; // password
+    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
+    mysql_select_db($db_monte, $db_connection);
+    $sql = "SELECT data FROM DATA_ULTIMO_LANCIO";
+    $result = mysql_query($sql) or die(mysql_error());
+    $row = mysql_fetch_array($result);
+    $sql = "DELETE FROM DATA_ULTIMO_LANCIO WHERE data='" . $row['data'] . "'";
+    $query = mysql_query($sql) or die(mysql_error());
+    #aggiorno la data...
+    $sql = "INSERT INTO DATA_ULTIMO_LANCIO (data) VALUES ('" . $a . "') ON DUPLICATE KEY UPDATE data = VALUES(data)";
+    $query = mysql_query($sql) or die(mysql_error());
+    mysql_close($db_connection);
 }
 
 ?>

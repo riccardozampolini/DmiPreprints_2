@@ -4,7 +4,7 @@
     </head>
     <body>
         <?php
-        include_once($_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'arXiv/SimplePie.inc');
+        include_once($_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'arXiv/SimplePie.inc.php');
         include_once($_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'arXiv/check_nomi_data.php');
         include_once($_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'arXiv/cURL.php');
         include_once($_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'arXiv/insert_remove_db.php');
@@ -54,7 +54,7 @@
             $data = $last_updated[0]['data'] . EOL . EOL;
             $totalResults = $feed->get_feed_tags($opensearch_ns, 'totalResults');
             #risultati recuperati per la query
-            print("SEARCH RESULTS FOR " . $nome . ": " . $totalResults[0]['data'] . EOL);
+            print("<br/>SEARCH RESULTS FOR " . $nome . " &#8658; " . $totalResults[0]['data'] . EOL);
             $startIndex = $feed->get_feed_tags($opensearch_ns, 'startIndex');
             $itemsPerPage = $feed->get_feed_tags($opensearch_ns, 'itemsPerPage');
             $i = 1;
@@ -146,7 +146,6 @@
                     }
                 }
             }
-            echo "UPDATE COMPLETE!<br/><br/>";
             return $k;
         }
         ?>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>AUTHORS LIST</title>
+        <title>DMIPreprints</title>
         <!--<script src="js/jquery.min.js"></script>-->
         <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
         <script src="js/config.js"></script>
@@ -17,7 +17,7 @@
         <link rel="stylesheet" type="text/css" href="css/controlli.css">
         <script src="js/targetweb-modal-overlay.js"></script>
         <link href='css/targetweb-modal-overlay.css' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
         <!--[if lte IE 9]><link rel="stylesheet" href="css/ie9.css" /><![endif]-->
         <!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
         <script type="text/javascript">
@@ -37,6 +37,14 @@
                 }
             }
         </script>
+        <script type="text/javascript">
+		function FinePagina()
+			{
+			    var w = window.screen.width;
+			    var h = window.screen.height;
+			    window.scrollTo(w * h, w * h)
+			}
+	</script>
     </head>
     <body>
         <?php
@@ -62,54 +70,51 @@
                         </div>
                     </div>
                 </div>
-                <div id="div_menu_ricerca" class="contenitore"><center>EDIT LIST</center><br/><br/>
+                <div id="div_menu_ricerca" class="contenitore"><center><br/><h2>AUTHOR LIST</h2></center>
                     <center><table>
-                            <tr align="right"><td>Go to arXiv panel:&nbsp&nbsp&nbsp</td>
-                            <form name="f1" action="arXiv_panel.php" method="POST">
-                                <td><input type="submit" name="bottoni7" value="Back" id="bottone_keyword" class="bottoni"></td>
-                            </form></tr>
+                            <tr><form name="f1" action="arXiv_panel.php" method="POST"><td align="right">Go to arXiv panel&nbsp&nbsp&nbsp</td>
+                                <td><input type="submit" name="bottoni7" value="Back" id="bottone_keyword" class="bottoni"></td><td><label for="insert">&nbsp&nbsp&nbsp&nbspInsert?</label></td></form></tr>
 
-                            <form name="f2" action="authors_list.php" method="POST">
-                                <tr align="right"><td>Add author to table(Use " , " to insert more authors):&nbsp&nbsp&nbsp</td>
-                                    <td><input type="submit" name="bottoni8" value="Insert" id="bottone_keyword" class="bottoni"></td></tr>
-                                <tr align="center"><td colspan="2"><br/><textarea style="width:450px; height:20px" name="txt1" id="textbox"></textarea></td></tr>
-                                            </form>
-                                        </table></center>
-                                </div>
-                                <div>
+
+                            <form name="f2" action="authors_list.php" method="POST"><tr><td align="right">Add author to list or search by name&nbsp&nbsp&nbsp</td><td><input type="submit" name="bottoni8" value="Insert / Search" id="bottone_keyword" class="bottoni"></td><td align="center">&nbsp&nbsp&nbsp&nbsp<input type="checkbox" name="insert" value="1" checked/></td></tr>
+                                <tr align="center"><td colspan="3"><br/><textarea style="width:100%; height:16px" name="txt1" id="textbox" class="textbox" placeholder="Author name(Use ' , ' to insert/search more authors)" autofocus></textarea></td></tr></form>
+                                                    
+                                                </table></center>
+                                        </div>
+                                        <div>
                     <?php
                     #importo file per utilizzare funzioni...
                     include_once($_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'arXiv/check_nomi_data.php');
+                    if(sessioneavviata() == True){
+                	echo "<center>SORRY ONE DOWNLOAD/UPDATE SESSION IS RUNNING AT THIS TIME! THE LIST CAN'T BE CHANGED IN THIS MOMENT!</center<br/>";
+                    }else{
+                    echo "<center><a href='javascript:FinePagina()'>&#8595; end of page</a></center><br/>";
                     if (isset($_POST['bottoni8'])) {
                         #controllo del campo testo vuoto
                         if (empty($_POST['txt1'])) {
                             echo "<center>FIELD NAME EMPTY!<br/><br/></center>";
                         } else {
                             $name = $_POST['txt1'];
-                            #verifico se il nome è già presente
-                            $ris = cercanome($name);
-                            #inserimento del nome nel file
-                            aggiungiutente($name);
+                            $insert = $_POST['insert'];
+                            aggiungiutente($name, $insert);
                         }
                     }
                     #visualizzo lista utenti...	
                     $nomi = legginomi();
                     #conto lunghezza array
                     $lunghezza = count($nomi);
-                    echo "<center></center><br/>";
-                    echo "<form name='f4' action='authors_list.php' id='f1' method='POST'><center><table style='text-align:center;'>";
-                    echo "<tr style='height: 30px; width:200px'><td colspan='2' style='width:250px'>AUTHORS LIST:</td></tr><tr style='height: 30px'><td>Name:</td><td>Select all/<br/>Select<br/></td></tr><tr style='margin-top:5px; height: 30px; width:200px'><td></td><td><input type='checkbox' name='checkall' onclick='checkedAll(f1);'></td></tr>";
+                    echo "<form name='f4' action='authors_list.php' id='f1' method='POST'><center><br/><h2>EDIT LIST</h2><table><br/>";
+                    echo "<tr><td>Select all <br/>/ Select</td><td>Name</td></tr>
+                    <tr colspan='2'><td><input type='checkbox' name='checkall' onclick='checkedAll(f1);'/></td></tr>";
                     #creazione della tabella html dei file all'interno di pdf_downloads
                     $y = 1;
                     for ($i = 0; $i < $lunghezza; $i++) {
-                        echo "<tr style='height: 30px'><td>$y.&nbsp&nbsp&nbsp" . $nomi[$i] . "</td><td><input type='checkbox' name='" . $i . "' value='checked'/></td></tr>";
+                        echo "<tr colspan='2'><td><input type='checkbox' name='" . $i . "' value='checked' /><label for='".$i."'>$y.&nbsp&nbsp&nbsp" . $nomi[$i] . "</label></td></tr>";
                         $y++;
                     }
-                    echo "</table><br/><input type='submit' name='bottoni9' value='Delete' id='bottone_keyword' class='bottoni'>
-</center></form><br/>";
-
+                    echo "</table></center><br/><center><input type='submit' name='bottoni9' value='Delete' id='bottone_keyword' class='bottoni'></center></form><br/>";
                     if ($lunghezza == 0) {
-                        echo "<center>NO AUTHORS INSIDE LIST!</center>";
+                        echo "<center>NO AUTHORS INSIDE LIST!</center><br/>";
                     }
                     if (isset($_POST['bottoni9'])) {
                         $k = 0;
@@ -132,12 +137,14 @@
                         #inserisco i nomi eliminati all'interno di una stringa per poi visualizzarla
                         $nomieliminati = implode(", ", $array2);
                         if ($nomieliminati == "") {
-                            echo "<center>NO AUTHOR SELECTED!</center><br/><br/><br/>";
+                            echo "<center>NO AUTHOR SELECTED!</center><br/>";
                         } else {
-                            echo "<br/><center>" . $nomieliminati . " DELETED FROM LIST! PAGE WILL BEEN UPDATED BETWEEN 2 SECONDS!</center><br/><br/><br/>";
+                            echo "<br/><center>&#171; " . $nomieliminati . " &#187; DELETED FROM LIST! PAGE WILL BEEN UPDATED BETWEEN 2 SECONDS!</center><br/><br/><br/>";
                             echo '<META HTTP-EQUIV="Refresh" Content="2; URL=./authors_list.php">';
                         }
                     }
+                    echo "<center><a href='javascript:window.scrollTo(0,0)'>&#8593; top of page</a></center><br/>";
+                   }
                 } else {
                     echo "<center><br/>ACCESS DENIED!</center>";
                     echo '<META HTTP-EQUIV="Refresh" Content="2; URL=./reserved.php">';

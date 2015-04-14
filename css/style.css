@@ -13,11 +13,10 @@
 	*,*:before,*:after{-moz-box-sizing:content-box;-webkit-box-sizing:content-box;-o-box-sizing:content-box;-ms-box-sizing:content-box;box-sizing:content-box}
 
 	body {
-		font-size: 12pt;
+		font-size: 10.5pt;
 		background-color: #e3e9dc;
-		font-family: 'Roboto Condensed', sans-serif;
-		color: #878e83;
-		letter-spacing: -1px;
+		font-family: 'Roboto', sans-serif;
+		color: #6F6F6F;
 	}
 
 	h1,h2,h3,h4 {
@@ -80,8 +79,8 @@
 	
 	a:visited{
 		color:green;
-	}	
-
+	}
+	
 	* > p:last-child {
 		margin-bottom: 0 !important;
 	}
