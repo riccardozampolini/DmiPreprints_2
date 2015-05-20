@@ -17,7 +17,6 @@
         <link rel="stylesheet" type="text/css" href="css/controlli.css">
         <script src="js/targetweb-modal-overlay.js"></script>
         <link href='css/targetweb-modal-overlay.css' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
         <!--[if lte IE 9]><link rel="stylesheet" href="css/ie9.css" /><![endif]-->
         <!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
         <script type="text/javascript">
@@ -38,13 +37,17 @@
             }
         </script>
         <script type="text/javascript">
-		function FinePagina()
-			{
-			    var w = window.screen.width;
-			    var h = window.screen.height;
-			    window.scrollTo(w * h, w * h)
-			}
-	</script>
+            function FinePagina()
+            {
+                var w = window.screen.width;
+                var h = window.screen.height;
+                window.scrollTo(w * h, w * h)
+            }
+            function confirmDelete()
+            {
+                return confirm("Remove author/s?");
+            }
+        </script>
     </head>
     <body>
         <?php
@@ -61,96 +64,130 @@
                                 <header id="header">
                                     <h1><a href="#" id="logo">DMI Preprints</a></h1>
                                     <nav id="nav">
-                                        <a href="main.php">preprint search</a>
+                                        <a href="main.php">DMI Publications</a>
+                                        <a href='view_preprints.php?p=1&w=0'>arXiv Publications</a>
                                         <a href="reserved.php" class="current-page-item">Reserved Area</a>
                                     </nav>
                                 </header>
-
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id="div_menu_ricerca" class="contenitore"><center><br/><h2>AUTHOR LIST</h2></center>
+                <br/><div><center><br/><h2>AUTHORS LIST</h2></center>
                     <center><table>
-                            <tr><form name="f1" action="arXiv_panel.php" method="POST"><td align="right">Go to arXiv panel&nbsp&nbsp&nbsp</td>
-                                <td><input type="submit" name="bottoni7" value="Back" id="bottone_keyword" class="bottoni"></td><td><label for="insert">&nbsp&nbsp&nbsp&nbspInsert?</label></td></form></tr>
+                            <tr><form name="f1" action="arXiv_panel.php" method="GET"><td align="right">Go to arXiv panel&nbsp&nbsp&nbsp</td>
+                                <td colspan="2"><input type="submit" name="b1" value="Back" id="bottone_keyword" class="bottoni"/></td></form></tr><tr><td align="center" colspan="3"><br/></td></tr>
 
-
-                            <form name="f2" action="authors_list.php" method="POST"><tr><td align="right">Add author to list or search by name&nbsp&nbsp&nbsp</td><td><input type="submit" name="bottoni8" value="Insert / Search" id="bottone_keyword" class="bottoni"></td><td align="center">&nbsp&nbsp&nbsp&nbsp<input type="checkbox" name="insert" value="1" checked/></td></tr>
-                                <tr align="center"><td colspan="3"><br/><textarea style="width:100%; height:16px" name="txt1" id="textbox" class="textbox" placeholder="Author name(Use ' , ' to insert/search more authors)" autofocus></textarea></td></tr></form>
-                                                    
-                                                </table></center>
-                                        </div>
-                                        <div>
+                            <tr><form name="f2" action="authors_list.php" method="POST">
+                                <td align="right">
+                                    <label><input type="checkbox" name="insert" value="1" checked/>
+                                        Add author to list or search by name&nbsp&nbsp&nbsp</label>
+                                </td>
+                                <td>
+                                    <input type="search" style="width:173px;" id='textbox' class='textbox' autocomplete = "on" required name="txt1" placeholder="name1, name2, name..." autofocus />
+                                </td>
+                                <td>
+                                    <input type="submit" name="b2" value="Insert/Search" style="width:80px;" id="bottone_keyword" class="bottoni"/>
+                                </td>
+                            </form></tr>
+                        </table></center>
+                </div>
+                <div>
                     <?php
                     #importo file per utilizzare funzioni...
                     include_once($_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'arXiv/check_nomi_data.php');
-                    if(sessioneavviata() == True){
-                	echo "<center>SORRY ONE DOWNLOAD/UPDATE SESSION IS RUNNING AT THIS TIME! THE LIST CAN'T BE CHANGED IN THIS MOMENT!</center<br/>";
-                    }else{
-                    echo "<center><a href='javascript:FinePagina()'>&#8595; end of page</a></center><br/>";
-                    if (isset($_POST['bottoni8'])) {
-                        #controllo del campo testo vuoto
-                        if (empty($_POST['txt1'])) {
-                            echo "<center>FIELD NAME EMPTY!<br/><br/></center>";
-                        } else {
+                    if (sessioneavviata() == True) {
+                        echo "<center><br/><br/>SORRY ONE DOWNLOAD/UPDATE SESSION IS RUNNING AT THIS TIME! THE LIST CAN'T BE CHANGED IN THIS MOMENT!</center><br/>";
+                    } else {
+                        echo "<center><br/><a style='text-decoration: none;' href='javascript:FinePagina()'> &nbsp&nbsp&nbsp&nbsp&nbsp&#8595; &nbsp&nbsp&nbsp&nbsp&nbsp</a></center>";
+                        echo "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
+                        if (isset($_POST['b2'])) {
                             $name = $_POST['txt1'];
                             $insert = $_POST['insert'];
+                            #funzione inserimento nuovi autori
                             aggiungiutente($name, $insert);
                         }
+                        #visualizzo lista utenti...	
+                        $nomi = legginomi();
+                        #conto lunghezza array
+                        $lunghezza = count($nomi);
+                        echo "<form name='f4' action='authors_list.php' id='f1' method='POST'><center><table>";
+                        echo "<tr><td><input type='checkbox' name='checkall' onclick='checkedAll(f1);'/>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<font color='#007897'>NAME:</color></td></tr>";
+                        #creazione della tabella html dei file all'interno di pdf_downloads
+                        $y = 1;
+                        for ($i = 0; $i < $lunghezza; $i++) {
+                            echo "<tr><td><label><input type='checkbox' name='" . $i . "' value='checked'/>$y.&nbsp&nbsp&nbsp" . $nomi[$i] . "</label></td></tr>";
+                            $y++;
+                        }
+                        echo "</table></center><br/><center><input type='submit' style='width:50px;' id='bottone_keyword' class='bottoni' name='b3' value='Remove' onclick='return confirmDelete()'></center></form>";
+                        if ($lunghezza == 0) {
+                            #richiamo funzione per corretto update successivo
+                            aggiornanomi();
+                            echo '<script type="text/javascript">alert("No author inside list!");</script>';
+                        }
+                        if (isset($_POST['b3'])) {
+                            $k = 0;
+                            $z = 0;
+                            #lunghezza array nomi
+                            $lunghezza = count($nomi);
+                            for ($j = 0; $j < $lunghezza; $j++) {
+                                $delete = $_POST[$j];
+                                #controllo di quali checkbox sono state selezionate
+                                if ($delete != "checked") {
+                                    $array[$k] = $nomi[$j];
+                                    $k++;
+                                } else {
+                                    $array2[$z] = $nomi[$j];
+                                    $z++;
+                                }
+                            }
+                            #scrittura dei nomi sul database
+                            scrivinomi($array);
+                            #inserisco i nomi eliminati all'interno di una stringa per poi visualizzarla all'utente
+                            $nomieliminati = implode(", ", $array2);
+                            if ($nomieliminati == "") {
+                                echo '<script type="text/javascript">alert("No author selected!");</script>';
+                            } else {
+                                echo '<script type="text/javascript">alert("' . $nomieliminati . ' deleted from list!");</script>';
+                                echo '<META HTTP-EQUIV="Refresh" Content="0; URL=./authors_list.php">';
+                            }
+                        }
+                        echo "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
+                        echo "<center><a style='text-decoration: none;' href='javascript:window.scrollTo(0,0)'> &nbsp&nbsp&nbsp&nbsp&nbsp&#8593;&nbsp&nbsp&nbsp&nbsp&nbsp </a></center>";
                     }
+                } else {
+                    #importo file per utilizzare funzioni...
+                    include_once($_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'arXiv/check_nomi_data.php');
                     #visualizzo lista utenti...	
                     $nomi = legginomi();
                     #conto lunghezza array
                     $lunghezza = count($nomi);
-                    echo "<form name='f4' action='authors_list.php' id='f1' method='POST'><center><br/><h2>EDIT LIST</h2><table><br/>";
-                    echo "<tr><td>Select all <br/>/ Select</td><td>Name</td></tr>
-                    <tr colspan='2'><td><input type='checkbox' name='checkall' onclick='checkedAll(f1);'/></td></tr>";
+                    echo "<form name='f4' action='authors_list.php' id='f1' method='POST'><center><br/><h2>List of authors searched on arXiv.org</h2><table>";
+                    echo "<tr><td align='center'><font color='#007897'>NAME:</color></td></tr>";
                     #creazione della tabella html dei file all'interno di pdf_downloads
                     $y = 1;
                     for ($i = 0; $i < $lunghezza; $i++) {
-                        echo "<tr colspan='2'><td><input type='checkbox' name='" . $i . "' value='checked' /><label for='".$i."'>$y.&nbsp&nbsp&nbsp" . $nomi[$i] . "</label></td></tr>";
+                        echo "<tr><td><label>$y.&nbsp&nbsp&nbsp" . $nomi[$i] . "</label></td></tr>";
                         $y++;
                     }
-                    echo "</table></center><br/><center><input type='submit' name='bottoni9' value='Delete' id='bottone_keyword' class='bottoni'></center></form><br/>";
-                    if ($lunghezza == 0) {
-                        echo "<center>NO AUTHORS INSIDE LIST!</center><br/>";
-                    }
-                    if (isset($_POST['bottoni9'])) {
-                        $k = 0;
-                        $z = 0;
-                        #conto lunghezza array nomi
-                        $lunghezza = count($nomi);
-                        for ($j = 0; $j < $lunghezza; $j++) {
-                            $delete = $_POST[$j];
-                            #controllo di quali checkbox sono state selezionate
-                            if ($delete != "checked") {
-                                $array[$k] = $nomi[$j];
-                                $k++;
-                            } else {
-                                $array2[$z] = $nomi[$j];
-                                $z++;
-                            }
-                        }
-                        #scrivo i nomi sul file nomi.txt
-                        scrivinomi($array);
-                        #inserisco i nomi eliminati all'interno di una stringa per poi visualizzarla
-                        $nomieliminati = implode(", ", $array2);
-                        if ($nomieliminati == "") {
-                            echo "<center>NO AUTHOR SELECTED!</center><br/>";
-                        } else {
-                            echo "<br/><center>&#171; " . $nomieliminati . " &#187; DELETED FROM LIST! PAGE WILL BEEN UPDATED BETWEEN 2 SECONDS!</center><br/><br/><br/>";
-                            echo '<META HTTP-EQUIV="Refresh" Content="2; URL=./authors_list.php">';
-                        }
-                    }
-                    echo "<center><a href='javascript:window.scrollTo(0,0)'>&#8593; top of page</a></center><br/>";
-                   }
-                } else {
-                    echo "<center><br/>ACCESS DENIED!</center>";
-                    echo '<META HTTP-EQUIV="Refresh" Content="2; URL=./reserved.php">';
+                    echo "</table></center></form>";
                 }
             } else {
-                echo '<META HTTP-EQUIV="Refresh" Content="0; URL=./reserved.php">';
+                #importo file per utilizzare funzioni...
+                include_once($_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'arXiv/check_nomi_data.php');
+                #visualizzo lista utenti...	
+                $nomi = legginomi();
+                #conto lunghezza array
+                $lunghezza = count($nomi);
+                echo "<form name='f4' action='authors_list.php' id='f1' method='POST'><center><br/><h2>List of authors searched on arXiv.org</h2><table>";
+                echo "<tr><td align='center'><font color='#007897'>NAME:</color></td></tr>";
+                #creazione della tabella html dei file all'interno di pdf_downloads
+                $y = 1;
+                for ($i = 0; $i < $lunghezza; $i++) {
+                    echo "<tr><td><label>$y.&nbsp&nbsp&nbsp" . $nomi[$i] . "</label></td></tr>";
+                    $y++;
+                }
+                echo "</table></center></form>";
             }
             ?>
         </div>

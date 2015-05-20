@@ -13,10 +13,11 @@
 	*,*:before,*:after{-moz-box-sizing:content-box;-webkit-box-sizing:content-box;-o-box-sizing:content-box;-ms-box-sizing:content-box;box-sizing:content-box}
 
 	body {
-		font-size: 10.5pt;
+		font-size: 11pt;
 		background-color: #e3e9dc;
-		font-family: 'Roboto', sans-serif;
-		color: #6F6F6F;
+		font-family: Helvetica, Arial, sans-serif;
+		color: #5B5B5B;
+		line-height: 1.2em;
 	}
 
 	h1,h2,h3,h4 {
@@ -49,11 +50,11 @@
 	}
 
 	p, ul {
-		margin-bottom: 1.25em;
+		margin-bottom: 0.5em;
 	}
 
 	p {
-		line-height: 1.8em;
+		line-height: 1em;
 	}
 
 	strong {
@@ -74,7 +75,7 @@
 	}
 
 	a:link{
-		color:#5d93a2;
+		color:#007897;
 	}
 	
 	a:visited{

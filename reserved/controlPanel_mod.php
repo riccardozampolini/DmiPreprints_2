@@ -1,10 +1,23 @@
+<html>
+<head>
+<script type="text/javascript">
+		function confirmLogout()
+		{
+		   if(confirm("Exit?")){
+		   	logout();
+		   }else{
+		   	return true;
+		   }
+		}
+</script>
+</head>
+</body>
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'mysql/db_select.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'mysql/db_update.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'search/main_tabella.php';
 ?>
-
-<div style="float: left">
+<div style="float: right">
     <?php
     print_r(" Login: ");
     print_r($_SESSION['nome']);
@@ -12,12 +25,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'search/main_tabella
     print_r(" Tipo di accesso: ");
     print_r($_SESSION['logged_type']);
     ?>
-</div>
-<div style="float: right">
-    <button onclick="logout()" id="button_logout" class="bottoni" style="color: red;">logout</button>
-    <form name="f1" action="arXiv_panel.php" method="POST">
-        <input type="submit" name="botton" value="arXiv panel" id="bottone_keyword" class="bottoni">
-    </form></tr>
+        <br/>
+    <button onclick="return confirmLogout()" id="button_logout" class="bottoni" style="color: red;">logout</button><br/>
+    <form name="f1" action="arXiv_panel.php" method="GET">
+        <input type="submit" name="b1" value="arXiv panel" id="bottone_keyword" class="bottoni">
+    </form>
 </div>
 <script>
     $(document).ready(function () {
@@ -65,3 +77,5 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'search/main_tabella
 <div id="cont_feedback">
 
 </div>
+</body>
+</html>

@@ -16,7 +16,6 @@
         <link rel="stylesheet" type="text/css" href="css/main.css">
         <link rel="stylesheet" type="text/css" href="css/controlli.css">
         <link rel="stylesheet" type="text/css" href="css/uploadForm.css">
-        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
         <!--[if lte IE 9]><link rel="stylesheet" href="css/ie9.css" /><![endif]-->
         <!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
     </head>
@@ -46,7 +45,8 @@
                         <header id="header">
                             <h1><a href="#" id="logo">DMI Preprints</a></h1>
                             <nav id="nav">
-                                <a href="main.php">preprint search</a>
+                                <a href="main.php">DMI Publications</a>
+                                <a href="view_preprints.php?p=1&w=0">arXiv Publications</a>
                                 <a href="reserved.php" class="current-page-item">Reserved Area</a>
                             </nav>
                         </header>

@@ -17,7 +17,6 @@
         <link rel="stylesheet" type="text/css" href="css/controlli.css">
         <script src="js/targetweb-modal-overlay.js"></script>
         <link href='css/targetweb-modal-overlay.css' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
         <!--[if lte IE 9]><link rel="stylesheet" href="css/ie9.css" /><![endif]-->
         <!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
 
@@ -30,24 +29,23 @@
 
     </head>
     <body>
-
         <script>
             function vistaAnno() {
-                $("#contenitore_dinamico").load("search/main_year.php", function() {
+                $("#contenitore_dinamico").load("search/main_year.php", function () {
                     MathJax.Hub.Typeset();
                 });
 
             }
 
             function vistaKeyword() {
-                $("#contenitore_dinamico").load("search/main_keyword.php", function() {
+                $("#contenitore_dinamico").load("search/main_keyword.php", function () {
                     MathJax.Hub.Typeset();
                 });
             }
 
             function visAbstract(id_paper) {
                 $("#contenuto_titolo_print").load("search/printTitlePrinter.php", {id: id_paper});
-                $("#contenuto_abstract").load("search/abstractPrinter.php", {id: id_paper}, function() {
+                $("#contenuto_abstract").load("search/abstractPrinter.php", {id: id_paper}, function () {
                     MathJax.Hub.Typeset();
                     TrgModalOverlayLoader("modal1");
                 });
@@ -60,11 +58,11 @@
                         <header id="header">
                             <h1><a href="#" id="logo">DMI Preprints</a></h1>
                             <nav id="nav">
-                                <a href="main.php" class="current-page-item">preprint search</a>
+                                <a href="main.php" class="current-page-item">DMI Publications</a>
+                                <a href="view_preprints.php?p=1&w=0">arXiv Publications</a>
                                 <a href="reserved.php">Reserved Area</a>
                             </nav>
                         </header>
-
                     </div>
                 </div>
             </div>
@@ -82,9 +80,7 @@
                     </tr>
                 </table>
             </div>
-
         </div>
-
         <div id="contenitore_dinamico" class="contenitore">
         </div>
         <div id="modal1" class="trg-overlay hide small">
@@ -95,10 +91,7 @@
             </div>
             <a class="close-overlay">&#215;</a>
         </div>
-
         <footer>
-
         </footer>
-
     </body>
 </html>
