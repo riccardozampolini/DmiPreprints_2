@@ -3,11 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
-<<<<<<< HEAD
 -- Generation Time: Mag 22, 2015 alle 11:18
-=======
--- Generation Time: Mag 16, 2015 alle 23:19
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
 -- Versione del server: 5.6.24-0ubuntu2
 -- PHP Version: 5.6.4-4ubuntu6
 
@@ -34,7 +30,6 @@ CREATE TABLE IF NOT EXISTS `AUTORI` (
   `nome` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-<<<<<<< HEAD
 --
 -- Dump dei dati per la tabella `AUTORI`
 --
@@ -45,8 +40,6 @@ INSERT INTO `AUTORI` (`nome`) VALUES
 ('LAURA ANGELONI'),
 ('MASSIMO GIULIETTI');
 
-=======
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
 -- --------------------------------------------------------
 
 --
@@ -57,7 +50,6 @@ CREATE TABLE IF NOT EXISTS `AUTORI_BACKUP` (
   `nome` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-<<<<<<< HEAD
 --
 -- Dump dei dati per la tabella `AUTORI_BACKUP`
 --
@@ -68,8 +60,6 @@ INSERT INTO `AUTORI_BACKUP` (`nome`) VALUES
 ('LAURA ANGELONI'),
 ('MASSIMO GIULIETTI');
 
-=======
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
 -- --------------------------------------------------------
 
 --
@@ -85,11 +75,7 @@ CREATE TABLE IF NOT EXISTS `DATA_ULTIMO_LANCIO` (
 --
 
 INSERT INTO `DATA_ULTIMO_LANCIO` (`data`) VALUES
-<<<<<<< HEAD
 ('2015-05-22 11:16');
-=======
-('2015-05-16 23:14');
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
 
 -- --------------------------------------------------------
 
@@ -98,10 +84,7 @@ INSERT INTO `DATA_ULTIMO_LANCIO` (`data`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `PREPRINTS` (
-<<<<<<< HEAD
   `uid` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-=======
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
   `id_pubblicazione` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `titolo` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `data_pubblicazione` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
@@ -110,14 +93,7 @@ CREATE TABLE IF NOT EXISTS `PREPRINTS` (
   `commenti` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `categoria` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `abstract` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-<<<<<<< HEAD
   `Filename` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-=======
-  `Bin_data` longblob,
-  `Filename` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-  `Filesize` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-  `Filetype` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
   `checked` varchar(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -128,10 +104,7 @@ CREATE TABLE IF NOT EXISTS `PREPRINTS` (
 --
 
 CREATE TABLE IF NOT EXISTS `PREPRINTS_ARCHIVIATI` (
-<<<<<<< HEAD
   `uid` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-=======
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
   `id_pubblicazione` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `titolo` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `data_pubblicazione` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
@@ -140,7 +113,6 @@ CREATE TABLE IF NOT EXISTS `PREPRINTS_ARCHIVIATI` (
   `commenti` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `categoria` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `abstract` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-<<<<<<< HEAD
   `Filename` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `checked` varchar(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -162,12 +134,6 @@ CREATE TABLE IF NOT EXISTS `PRINTS` (
   `categoria` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `abstract` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `Filename` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-=======
-  `Bin_data` longblob,
-  `Filename` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-  `Filesize` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-  `Filetype` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
   `checked` varchar(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -203,11 +169,7 @@ CREATE TABLE IF NOT EXISTS `sessione_data` (
 --
 
 INSERT INTO `sessione_data` (`data`) VALUES
-<<<<<<< HEAD
 ('20150522');
-=======
-('20150516');
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
 
 -- --------------------------------------------------------
 
@@ -254,15 +216,12 @@ ALTER TABLE `PREPRINTS_ARCHIVIATI`
  ADD PRIMARY KEY (`id_pubblicazione`), ADD FULLTEXT KEY `id_pubblicazione` (`id_pubblicazione`,`titolo`,`data_pubblicazione`,`autori`,`referenze`,`commenti`,`categoria`,`abstract`);
 
 --
-<<<<<<< HEAD
 -- Indexes for table `PRINTS`
 --
 ALTER TABLE `PRINTS`
  ADD PRIMARY KEY (`id_pubblicazione`), ADD FULLTEXT KEY `id_pubblicazione` (`id_pubblicazione`,`titolo`,`data_pubblicazione`,`autori`,`referenze`,`commenti`,`categoria`,`abstract`);
 
 --
-=======
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
 -- Indexes for table `sessione`
 --
 ALTER TABLE `sessione`
@@ -280,7 +239,6 @@ ALTER TABLE `sessione_data`
 ALTER TABLE `temp`
  ADD PRIMARY KEY (`id`);
 
-<<<<<<< HEAD
 --
 -- AUTO_INCREMENT for dumped tables
 --
@@ -290,8 +248,6 @@ ALTER TABLE `temp`
 --
 ALTER TABLE `PRINTS`
 AUTO_INCREMENT=3;
-=======
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

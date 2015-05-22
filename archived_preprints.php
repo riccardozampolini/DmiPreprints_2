@@ -61,32 +61,18 @@
             $nav2 = "<header id='header'>
                                     <h1><a href='#' id='logo'>DMI Preprints</a></h1>
                                     <nav id='nav'>
-<<<<<<< HEAD
                                         <a href='view_preprints.php?p=1&w=0'>Publications</a>
                                         <a href='reserved.php' class='current-page-item'>Reserved Area</a>
                                     </nav>
                                 </header>";
             $rit = "modp.php";
-=======
-                                        <a href='main.php'>DMI Publications</a>
-                                        <a href='view_preprints.php?p=1&w=0'>arXiv Publications</a>
-                                        <a href='reserved.php' class='current-page-item'>Reserved Area</a>
-                                    </nav>
-                                </header>";
-            $rit = "arXiv_panel.php";
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
             $cred = 1;
         } else {
             $nav = "";
             $nav2 = "<header id='header'>
                                     <h1><a href='#' id='logo'>DMI Preprints</a></h1>
                                     <nav id='nav'>
-<<<<<<< HEAD
                                         <a href='view_preprints.php?p=1&w=0' class='current-page-item'>Publications</a>
-=======
-                                        <a href='main.php'>DMI Publications</a>
-                                        <a href='view_preprints.php?p=1&w=0' class='current-page-item'>arXiv Publications</a>
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
                                         <a href='reserved.php'>Reserved Area</a>
                                     </nav>
                                 </header>";
@@ -106,11 +92,7 @@
         <?php
         if ($cred == 1) {
             echo "<table><tr><form name='f1' action='" . $rit . "' method='GET'>
-<<<<<<< HEAD
                 <td align='right'>Go to admin panel&nbsp&nbsp&nbsp</td>
-=======
-                <td align='right'>Go to arXiv panel&nbsp&nbsp&nbsp</td>
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
                 <td><input type='submit' name='b2' value='Back' id='bottone_keyword' class='bottoni'/></td>
                 <input type='text' name='p' value='1' checked hidden/><input type='text' name='w' value='0' checked hidden/>
             </form></tr>";

@@ -1,9 +1,5 @@
 mysql_user = root
-<<<<<<< HEAD
 mysql_pass = 1234
-=======
-mysql_pass = root
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
 mysql_addr = localhost
 ldap_host = localhost
 ldap_port = 389

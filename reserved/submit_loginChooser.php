@@ -12,7 +12,6 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 
 if (isset($_SESSION['logged_type'])) {
     if ($_SESSION['logged_type'] === "user") {
         //sessione utente
-<<<<<<< HEAD
         header('Location:./userp.php');
 	exit;
     } else {
@@ -20,13 +19,6 @@ if (isset($_SESSION['logged_type'])) {
             //sessione moderatore
             header('Location:./modp.php');
 	    exit;
-=======
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'reserved/controlPanel_user.php';
-    } else {
-        if ($_SESSION['logged_type'] === "mod") {
-            //sessione moderatore
-            require_once $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'reserved/controlPanel_mod.php';
->>>>>>> 9cac3c0f916efa1df43ac8735e569ea4ba074c9a
         } else {
             echo 'errore login chooser';
         }
