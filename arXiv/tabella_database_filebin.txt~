@@ -1,0 +1,24 @@
+CREATE TABLE IF NOT EXISTS `PDF` (
+  `Bin_data` longblob NOT NULL,
+  `Filename` varchar(50) NOT NULL DEFAULT '',
+  `Filesize` varchar(50) NOT NULL DEFAULT '',
+  `Filetype` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`Filename`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+
+-- Struttura della tabella `PREPRINTS`
+--
+
+CREATE TABLE IF NOT EXISTS `PREPRINTS` (
+  `Bin_data` longblob NOT NULL,
+  `Filename` varchar(50) NOT NULL DEFAULT '',
+  `Filesize` varchar(50) NOT NULL DEFAULT '',
+  `Filetype` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`Filename`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+il database si chiama dmipreprints
