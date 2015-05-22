@@ -1,0 +1,8 @@
+mysql_user = root
+mysql_pass = 1234
+mysql_addr = localhost
+ldap_host = localhost
+ldap_port = 389
+radius_ip = 192.168.158.130
+radius_secret = radius_secret
+uidMod = rz690001
