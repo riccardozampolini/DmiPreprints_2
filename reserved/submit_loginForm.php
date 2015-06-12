@@ -12,8 +12,6 @@
     <div style="margin: 0 auto">
         <button id="button_login" class="bottoni" onclick="chkLogin()">Login</button>
     </div>
-
-
 </div>
 <div id="right_content">
 </div>

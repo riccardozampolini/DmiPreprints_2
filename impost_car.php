@@ -1,21 +1,40 @@
 <?php
 
-$ini_array = parse_ini_file("/etc/dmipreprints/set.ini");
+#mysql
+global $hostname_db;
+global $db_monte; //nome del database
+global $username_db; //l'username
+global $password_db; // password
+$hostname_db = "localhost";
+$db_monte = "dmipreprints"; //nome del database
+$username_db = "root"; //l'username
+$password_db = "1234";
 
-//mysql
-$mysql_user = $ini_array['mysql_user']; 
-$mysql_pass = $ini_array['mysql_pass'];
-$mysql_addr = $ini_array['mysql_addr'];
+#percorsi cartelle
+global $copia;
+global $basedir;
+global $basedir2;
+global $basedir3;
+global $basedir4;
+$copia = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints' . "/pdf/";
+$basedir = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints' . "/upload_dmi/";
+$basedir2 = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints' . "/upload/";
+$basedir3 = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints' . "/pdf_downloads/";
+$basedir4 = $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints' . "/pdf_archived/";
 
-//ldap
-$ldaphost = $ini_array['ldap_host'];
-$ldapport = $ini_array['ldap_port'];
+#ldap
+global $ldaphost;
+global $ldapport;
+$ldaphost = "localhost";
+$ldapport = "389";
 
-//RADIUS
-$ip_radius_server = $ini_array['radius_ip'];
-$shared_secret = $ini_array['radius_secret'];
+#RADIUS
+global $ip_radius_server;
+global $shared_secret;
+$ip_radius_server = "192.168.158.130";
+$shared_secret = "radius_secret";
 
-//mod uid
-$mod_uid = $ini_array['uidMod'];
-
+#mod uid
+global $mod_uid;
+$mod_uid = "rz690001";
 ?>

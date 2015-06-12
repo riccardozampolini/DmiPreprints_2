@@ -13,12 +13,12 @@ if (isset($_SESSION['logged_type'])) {
     if ($_SESSION['logged_type'] === "user") {
         //sessione utente
         header('Location:./userp.php');
-	exit;
+        exit;
     } else {
         if ($_SESSION['logged_type'] === "mod") {
             //sessione moderatore
             header('Location:./modp.php');
-	    exit;
+            exit;
         } else {
             echo 'errore login chooser';
         }

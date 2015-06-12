@@ -1,6 +1,6 @@
 <?php
 
-/*********************************************************************
+/* * *******************************************************************
  *
  * Pure PHP radius class
  *
@@ -165,10 +165,10 @@
  *   2008-02-04 1.1   SysCo/al Typo error for the udp_timeout parameter (line 256 in the version 1.0)
  *   2008-01-07 1.0   SysCo/al Initial release
  *
- *********************************************************************/
+ * ******************************************************************* */
 
 
-/*********************************************************************
+/* * *******************************************************************
  *
  * Radius
  * Pure PHP radius class
@@ -179,9 +179,10 @@
  * @version v.1.2.2
  * @author SysCo/al
  *
- *********************************************************************/
-class Radius
-{
+ * ******************************************************************* */
+
+class Radius {
+
     var $_ip_radius_server;       // Radius server IP address
     var $_shared_secret;          // Shared secret with the radius server
     var $_radius_suffix;          // Radius suffix (default is '');
@@ -208,9 +209,8 @@ class Radius
     var $_radius_packet_info;     // Radius packet codes info array
     var $_last_error_code;        // Last error code
     var $_last_error_message;     // Last error message
-    
 
-    /*********************************************************************
+    /*     * *******************************************************************
      *
      * Name: Radius
      * short description: Radius class constructor
@@ -226,9 +226,9 @@ class Radius
      * @param integer authentication port
      * @param integer accounting port
      * @return NULL
-     *********************************************************************/
-    public function Radius($ip_radius_server = '127.0.0.1', $shared_secret = '', $radius_suffix = '', $udp_timeout = 5, $authentication_port = 1812, $accounting_port = 1813)
-    {
+     * ******************************************************************* */
+
+    public function Radius($ip_radius_server = '127.0.0.1', $shared_secret = '', $radius_suffix = '', $udp_timeout = 5, $authentication_port = 1812, $accounting_port = 1813) {
         $this->_radius_packet_info[1] = 'Access-Request';
         $this->_radius_packet_info[2] = 'Access-Accept';
         $this->_radius_packet_info[3] = 'Access-Reject';
@@ -238,7 +238,7 @@ class Radius
         $this->_radius_packet_info[12] = 'Status-Server (experimental)';
         $this->_radius_packet_info[13] = 'Status-Client (experimental)';
         $this->_radius_packet_info[255] = 'Reserved';
-        
+
         $this->_attributes_info[1] = array('User-Name', 'S');
         $this->_attributes_info[2] = array('User-Password', 'S');
         $this->_attributes_info[3] = array('CHAP-Password', 'S'); // Type (1) / Length (1) / CHAP Ident (1) / String
@@ -252,7 +252,7 @@ class Radius
         $this->_attributes_info[11] = array('Filter-Id', 'T');
         $this->_attributes_info[12] = array('Framed-MTU', 'I');
         $this->_attributes_info[13] = array('Framed-Compression', 'I');
-        $this->_attributes_info[14] = array( 'Login-IP-Host', 'A');
+        $this->_attributes_info[14] = array('Login-IP-Host', 'A');
         $this->_attributes_info[15] = array('Login-service', 'I');
         $this->_attributes_info[16] = array('Login-TCP-Port', 'I');
         $this->_attributes_info[17] = array('(unassigned)', '');
@@ -285,8 +285,8 @@ class Radius
         $this->_attributes_info[76] = array('Prompt', 'I');
 
         $this->_identifier_to_send = 0;
-        $this->_user_ip_address = (isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:'0.0.0.0');
-        
+        $this->_user_ip_address = (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0');
+
         $this->GenerateRequestAuthenticator();
         $this->SetIpRadiusServer($ip_radius_server);
         $this->SetSharedSecret($shared_secret);
@@ -298,225 +298,161 @@ class Radius
         $this->SetPassword();
         $this->SetNasIpAddress();
         $this->SetNasPort();
-        
+
         $this->ClearLastError();
         $this->ClearDataToSend();
         $this->ClearDataReceived();
     }
 
-
-    function GetNextIdentifier()
-    {
+    function GetNextIdentifier() {
         $this->_identifier_to_send = (($this->_identifier_to_send + 1) % 256);
         return $this->_identifier_to_send;
     }
-    
 
-    function GenerateRequestAuthenticator()
-    {
+    function GenerateRequestAuthenticator() {
         $this->_request_authenticator = '';
-        for ($ra_loop = 0; $ra_loop <= 15; $ra_loop++)
-        {
+        for ($ra_loop = 0; $ra_loop <= 15; $ra_loop++) {
             $this->_request_authenticator .= chr(rand(1, 255));
         }
     }
 
-
-    function GetRequestAuthenticator()
-    {
+    function GetRequestAuthenticator() {
         return $this->_request_authenticator;
     }
 
-
-    function GetLastError()
-    {
-        if (0 < $this->_last_error_code)
-        {
-            return $this->_last_error_message.' ('.$this->_last_error_code.')';
-        }
-        else
-        {
+    function GetLastError() {
+        if (0 < $this->_last_error_code) {
+            return $this->_last_error_message . ' (' . $this->_last_error_code . ')';
+        } else {
             return '';
         }
     }
-    
-    
-    function ClearDataToSend()
-    {
+
+    function ClearDataToSend() {
         $this->_radius_packet_to_send = 0;
         $this->_attributes_to_send = NULL;
     }
-    
-    
-    function ClearDataReceived()
-    {
+
+    function ClearDataReceived() {
         $this->_radius_packet_received = 0;
         $this->_attributes_received = NULL;
     }
-    
 
-    function SetPacketCodeToSend($packet_code)
-    {
+    function SetPacketCodeToSend($packet_code) {
         $this->_radius_packet_to_send = $packet_code;
     }
-    
-    
-    function SetDebugMode($debug_mode)
-    {
+
+    function SetDebugMode($debug_mode) {
         $this->_debug_mode = (TRUE === $debug_mode);
     }
-    
-    
-    function SetIpRadiusServer($ip_radius_server)
-    {
+
+    function SetIpRadiusServer($ip_radius_server) {
         $this->_ip_radius_server = gethostbyname($ip_radius_server);
     }
-    
-    
-    function SetSharedSecret($shared_secret)
-    {
+
+    function SetSharedSecret($shared_secret) {
         $this->_shared_secret = $shared_secret;
     }
-    
-    
-    function SetRadiusSuffix($radius_suffix)
-    {
+
+    function SetRadiusSuffix($radius_suffix) {
         $this->_radius_suffix = $radius_suffix;
     }
-    
-    
-    function SetUsername($username = '')
-    {
+
+    function SetUsername($username = '') {
         $temp_username = $username;
-        if (false === strpos($temp_username, '@'))
-        {
+        if (false === strpos($temp_username, '@')) {
             $temp_username .= $this->_radius_suffix;
         }
-        
+
         $this->_username = $temp_username;
         $this->SetAttribute(1, $this->_username);
     }
-    
-    
-    function SetPassword($password = '')
-    {
+
+    function SetPassword($password = '') {
         $this->_password = $password;
         $encrypted_password = '';
         $padded_password = $password;
-        
-        if (0 != (strlen($password)%16))
-        {
-            $padded_password .= str_repeat(chr(0),(16-strlen($password)%16));
+
+        if (0 != (strlen($password) % 16)) {
+            $padded_password .= str_repeat(chr(0), (16 - strlen($password) % 16));
         }
-        
+
         $previous_result = $this->_request_authenticator;
-        
-        for ($full_loop = 0; $full_loop < (strlen($padded_password)/16); $full_loop++)
-        {
-            $xor_value = md5($this->_shared_secret.$previous_result);
-            
+
+        for ($full_loop = 0; $full_loop < (strlen($padded_password) / 16); $full_loop++) {
+            $xor_value = md5($this->_shared_secret . $previous_result);
+
             $previous_result = '';
-            for ($xor_loop = 0; $xor_loop <= 15; $xor_loop++)
-            {
+            for ($xor_loop = 0; $xor_loop <= 15; $xor_loop++) {
                 $value1 = ord(substr($padded_password, ($full_loop * 16) + $xor_loop, 1));
-                $value2 = hexdec(substr($xor_value, 2*$xor_loop, 2));
+                $value2 = hexdec(substr($xor_value, 2 * $xor_loop, 2));
                 $xor_result = $value1 ^ $value2;
                 $previous_result .= chr($xor_result);
             }
             $encrypted_password .= $previous_result;
         }
-        
+
         $this->_encrypted_password = $encrypted_password;
         $this->SetAttribute(2, $this->_encrypted_password);
     }
 
-
-    function SetNasIPAddress($nas_ip_address = '')
-    {
-        if (0 < strlen($nas_ip_address))
-        {
+    function SetNasIPAddress($nas_ip_address = '') {
+        if (0 < strlen($nas_ip_address)) {
             $this->_nas_ip_address = gethostbyname($nas_ip_address);
-        }
-        else
-        {
-            $this->_nas_ip_address = gethostbyname(isset($_SERVER['SERVER_ADDR'])?$_SERVER['SERVER_ADDR']:'0.0.0.0');
+        } else {
+            $this->_nas_ip_address = gethostbyname(isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '0.0.0.0');
         }
         $this->SetAttribute(4, $this->_nas_ip_address);
     }
-    
-    
-    function SetNasPort($nas_port = 0)
-    {
+
+    function SetNasPort($nas_port = 0) {
         $this->_nas_port = intval($nas_port);
         $this->SetAttribute(5, $this->_nas_port);
     }
-    
-    
-    function SetUdpTimeout($udp_timeout = 5)
-    {
-        if (intval($udp_timeout) > 0)
-        {
+
+    function SetUdpTimeout($udp_timeout = 5) {
+        if (intval($udp_timeout) > 0) {
             $this->_udp_timeout = intval($udp_timeout);
         }
     }
-    
-    
-    function ClearLastError()
-    {
-        $this->_last_error_code    = 0;
+
+    function ClearLastError() {
+        $this->_last_error_code = 0;
         $this->_last_error_message = '';
     }
-    
-    
-    function SetAuthenticationPort($authentication_port)
-    {
-        if ((intval($authentication_port) > 0) && (intval($authentication_port) < 65536))
-        {
+
+    function SetAuthenticationPort($authentication_port) {
+        if ((intval($authentication_port) > 0) && (intval($authentication_port) < 65536)) {
             $this->_authentication_port = intval($authentication_port);
         }
     }
-    
-    
-    function SetAccountingPort($accounting_port)
-    {
-        if ((intval($accounting_port) > 0) && (intval($accounting_port) < 65536))
-        {
+
+    function SetAccountingPort($accounting_port) {
+        if ((intval($accounting_port) > 0) && (intval($accounting_port) < 65536)) {
             $this->_accounting_port = intval($accounting_port);
         }
     }
-    
-    
-    function GetReceivedPacket()
-    {
+
+    function GetReceivedPacket() {
         return $this->_radius_packet_received;
     }
 
-
-    function GetReceivedAttributes()
-    {
+    function GetReceivedAttributes() {
         return $this->_attributes_received;
     }
-    
 
-    function GetReadableReceivedAttributes()
-    {
+    function GetReadableReceivedAttributes() {
         $readable_attributes = '';
-        if (isset($this->_attributes_received))
-        {
-            foreach($this->_attributes_received as $one_received_attribute)
-            {
+        if (isset($this->_attributes_received)) {
+            foreach ($this->_attributes_received as $one_received_attribute) {
                 $attributes_info = $this->GetAttributesInfo($one_received_attribute[0]);
-                $readable_attributes .= $attributes_info[0].": ";
-                if (26 == $one_received_attribute[0])
-                {
+                $readable_attributes .= $attributes_info[0] . ": ";
+                if (26 == $one_received_attribute[0]) {
                     $vendor_array = $this->DecodeVendorSpecificContent($one_received_attribute[1]);
-                    foreach($vendor_array as $vendor_one)
-                    {
-                        $readable_attributes .= 'Vendor-Id: '.$vendor_one[0].", Vendor-type: ".$vendor_one[1].",  Attribute-specific: ".$vendor_one[2];
+                    foreach ($vendor_array as $vendor_one) {
+                        $readable_attributes .= 'Vendor-Id: ' . $vendor_one[0] . ", Vendor-type: " . $vendor_one[1] . ",  Attribute-specific: " . $vendor_one[2];
                     }
-                }
-                else
-                {
+                } else {
                     $readable_attributes .= $one_received_attribute[1];
                 }
                 $readable_attributes .= "<br />\n";
@@ -524,15 +460,11 @@ class Radius
         }
         return $readable_attributes;
     }
-    
 
-    function GetAttribute($attribute_type)
-    {
+    function GetAttribute($attribute_type) {
         $attribute_value = NULL;
-        foreach($this->_attributes_received as $one_received_attribute)
-        {
-            if (intval($attribute_type) == $one_received_attribute[0])
-            {
+        foreach ($this->_attributes_received as $one_received_attribute) {
+            if (intval($attribute_type) == $one_received_attribute[0]) {
                 $attribute_value = $one_received_attribute[1];
                 break;
             }
@@ -540,75 +472,56 @@ class Radius
         return $attribute_value;
     }
 
-
-    function GetRadiusPacketInfo($info_index)
-    {
-        if (isset($this->_radius_packet_info[intval($info_index)]))
-        {
+    function GetRadiusPacketInfo($info_index) {
+        if (isset($this->_radius_packet_info[intval($info_index)])) {
             return $this->_radius_packet_info[intval($info_index)];
-        }
-        else
-        {
+        } else {
             return '';
         }
     }
 
-
-    function GetAttributesInfo($info_index)
-    {
-        if (isset($this->_attributes_info[intval($info_index)]))
-        {
+    function GetAttributesInfo($info_index) {
+        if (isset($this->_attributes_info[intval($info_index)])) {
             return $this->_attributes_info[intval($info_index)];
-        }
-        else
-        {
-            return array('','');
+        } else {
+            return array('', '');
         }
     }
 
-
-    function DebugInfo($debug_info)
-    {
-        if ($this->_debug_mode)
-        {
-            echo date('Y-m-d H:i:s').' DEBUG: ';
+    function DebugInfo($debug_info) {
+        if ($this->_debug_mode) {
+            echo date('Y-m-d H:i:s') . ' DEBUG: ';
             echo $debug_info;
             echo '<br />';
             flush();
         }
     }
-    
-    
-    function SetAttribute($type, $value)
-    {
+
+    function SetAttribute($type, $value) {
         $attribute_index = -1;
-        for ($attributes_loop = 0; $attributes_loop < count($this->_attributes_to_send); $attributes_loop++)
-        {
-            if ($type == ord(substr($this->_attributes_to_send[$attributes_loop], 0, 1)))
-            {
+        for ($attributes_loop = 0; $attributes_loop < count($this->_attributes_to_send); $attributes_loop++) {
+            if ($type == ord(substr($this->_attributes_to_send[$attributes_loop], 0, 1))) {
                 $attribute_index = $attributes_loop;
                 break;
             }
         }
 
         $temp_attribute = NULL;
-        
-        if (isset($this->_attributes_info[$type]))
-        {
-            switch ($this->_attributes_info[$type][1])
-            {
+
+        if (isset($this->_attributes_info[$type])) {
+            switch ($this->_attributes_info[$type][1]) {
                 case 'T': // Text, 1-253 octets containing UTF-8 encoded ISO 10646 characters (RFC 2279).
-                    $temp_attribute = chr($type).chr(2+strlen($value)).$value;
+                    $temp_attribute = chr($type) . chr(2 + strlen($value)) . $value;
                     break;
                 case 'S': // String, 1-253 octets containing binary data (values 0 through 255 decimal, inclusive).
-                    $temp_attribute = chr($type).chr(2+strlen($value)).$value;
+                    $temp_attribute = chr($type) . chr(2 + strlen($value)) . $value;
                     break;
                 case 'A': // Address, 32 bit value, most significant octet first.
                     $ip_array = explode(".", $value);
-                    $temp_attribute = chr($type).chr(6).chr($ip_array[0]).chr($ip_array[1]).chr($ip_array[2]).chr($ip_array[3]);
+                    $temp_attribute = chr($type) . chr(6) . chr($ip_array[0]) . chr($ip_array[1]) . chr($ip_array[2]) . chr($ip_array[3]);
                     break;
                 case 'I': // Integer, 32 bit unsigned value, most significant octet first.
-                    $temp_attribute = chr($type).chr(6).chr(($value/(256*256*256))%256).chr(($value/(256*256))%256).chr(($value/(256))%256).chr($value%256);
+                    $temp_attribute = chr($type) . chr(6) . chr(($value / (256 * 256 * 256)) % 256) . chr(($value / (256 * 256)) % 256) . chr(($value / (256)) % 256) . chr($value % 256);
                     break;
                 case 'D': // Time, 32 bit unsigned value, most significant octet first -- seconds since 00:00:00 UTC, January 1, 1970. (not used in this RFC)
                     $temp_attribute = NULL;
@@ -617,30 +530,23 @@ class Radius
                     $temp_attribute = NULL;
             }
         }
-                    
-        if ($attribute_index > -1)
-        {
+
+        if ($attribute_index > -1) {
             $this->_attributes_to_send[$attribute_index] = $temp_attribute;
             $additional_debug = 'Modified';
-        }
-        else
-        {
+        } else {
             $this->_attributes_to_send[] = $temp_attribute;
             $additional_debug = 'Added';
         }
         $attribute_info = $this->GetAttributesInfo($type);
-        $this->DebugInfo($additional_debug.' Attribute '.$type.' ('.$attribute_info[0].'), format '.$attribute_info[1].', value <em>'.$value.'</em>');
+        $this->DebugInfo($additional_debug . ' Attribute ' . $type . ' (' . $attribute_info[0] . '), format ' . $attribute_info[1] . ', value <em>' . $value . '</em>');
     }
 
-
-    function DecodeAttribute($attribute_raw_value, $attribute_format)
-    {
+    function DecodeAttribute($attribute_raw_value, $attribute_format) {
         $attribute_value = NULL;
-        
-        if (isset($this->_attributes_info[$attribute_format]))
-        {
-            switch ($this->_attributes_info[$attribute_format][1])
-            {
+
+        if (isset($this->_attributes_info[$attribute_format])) {
+            switch ($this->_attributes_info[$attribute_format][1]) {
                 case 'T': // Text, 1-253 octets containing UTF-8 encoded ISO 10646 characters (RFC 2279).
                     $attribute_value = $attribute_raw_value;
                     break;
@@ -648,10 +554,10 @@ class Radius
                     $attribute_value = $attribute_raw_value;
                     break;
                 case 'A': // Address, 32 bit value, most significant octet first.
-                    $attribute_value = ord(substr($attribute_raw_value, 0, 1)).'.'.ord(substr($attribute_raw_value, 1, 1)).'.'.ord(substr($attribute_raw_value, 2, 1)).'.'.ord(substr($attribute_raw_value, 3, 1));
+                    $attribute_value = ord(substr($attribute_raw_value, 0, 1)) . '.' . ord(substr($attribute_raw_value, 1, 1)) . '.' . ord(substr($attribute_raw_value, 2, 1)) . '.' . ord(substr($attribute_raw_value, 3, 1));
                     break;
                 case 'I': // Integer, 32 bit unsigned value, most significant octet first.
-                    $attribute_value = (ord(substr($attribute_raw_value, 0, 1))*256*256*256)+(ord(substr($attribute_raw_value, 1, 1))*256*256)+(ord(substr($attribute_raw_value, 2, 1))*256)+ord(substr($attribute_raw_value, 3, 1));
+                    $attribute_value = (ord(substr($attribute_raw_value, 0, 1)) * 256 * 256 * 256) + (ord(substr($attribute_raw_value, 1, 1)) * 256 * 256) + (ord(substr($attribute_raw_value, 2, 1)) * 256) + ord(substr($attribute_raw_value, 3, 1));
                     break;
                 case 'D': // Time, 32 bit unsigned value, most significant octet first -- seconds since 00:00:00 UTC, January 1, 1970. (not used in this RFC)
                     $attribute_value = NULL;
@@ -663,178 +569,147 @@ class Radius
         return $attribute_value;
     }
 
-
-    /*********************************************************************
+    /*     * *******************************************************************
      * Array returned: array(array(Vendor-Id1, Vendor type1, Attribute-Specific1), ..., array(Vendor-IdN, Vendor typeN, Attribute-SpecificN)
-     *********************************************************************/
-    function DecodeVendorSpecificContent($vendor_specific_raw_value)
-    {
+     * ******************************************************************* */
+
+    function DecodeVendorSpecificContent($vendor_specific_raw_value) {
         $result = array();
         $offset_in_raw = 0;
-        $vendor_id = (ord(substr($vendor_specific_raw_value, 0, 1))*256*256*256)+(ord(substr($vendor_specific_raw_value, 1, 1))*256*256)+(ord(substr($vendor_specific_raw_value, 2, 1))*256)+ord(substr($vendor_specific_raw_value, 3, 1));
+        $vendor_id = (ord(substr($vendor_specific_raw_value, 0, 1)) * 256 * 256 * 256) + (ord(substr($vendor_specific_raw_value, 1, 1)) * 256 * 256) + (ord(substr($vendor_specific_raw_value, 2, 1)) * 256) + ord(substr($vendor_specific_raw_value, 3, 1));
         $offset_in_raw += 4;
-        while ($offset_in_raw < strlen($vendor_specific_raw_value))
-        {
-            $vendor_type = (ord(substr($vendor_specific_raw_value, 0+$offset_in_raw, 1)));
-            $vendor_length = (ord(substr($vendor_specific_raw_value, 1+$offset_in_raw, 1)));
-            $attribute_specific = substr($vendor_specific_raw_value, 2+$offset_in_raw, $vendor_length);
+        while ($offset_in_raw < strlen($vendor_specific_raw_value)) {
+            $vendor_type = (ord(substr($vendor_specific_raw_value, 0 + $offset_in_raw, 1)));
+            $vendor_length = (ord(substr($vendor_specific_raw_value, 1 + $offset_in_raw, 1)));
+            $attribute_specific = substr($vendor_specific_raw_value, 2 + $offset_in_raw, $vendor_length);
             $result[] = array($vendor_id, $vendor_type, $attribute_specific);
             $offset_in_raw += ($vendor_length);
         }
-        
+
         return $result;
     }
-
 
     /*
      * Function : AccessRequest
      *
      * Return TRUE if Access-Request is accepted, FALSE otherwise
      */
-    function AccessRequest($username = '', $password = '', $udp_timeout = 0, $state = NULL)
-    {
+
+    function AccessRequest($username = '', $password = '', $udp_timeout = 0, $state = NULL) {
         $this->ClearDataReceived();
         $this->ClearLastError();
-        
+
         $this->SetPacketCodeToSend(1); // Access-Request
-        
-        if (0 < strlen($username))
-        {
+
+        if (0 < strlen($username)) {
             $this->SetUsername($username);
         }
-        
-        if (0 < strlen($password))
-        {
+
+        if (0 < strlen($password)) {
             $this->SetPassword($password);
         }
 
-        if ($state!==NULL)
-        {
+        if ($state !== NULL) {
             $this->SetAttribute(24, $state);
-        }
-        else
-        {
+        } else {
             $this->SetAttribute(6, 1); // 1=Login
         }
 
-        if (intval($udp_timeout) > 0)
-        {
+        if (intval($udp_timeout) > 0) {
             $this->SetUdpTimeout($udp_timeout);
         }
 
         $attributes_content = '';
-        for ($attributes_loop = 0; $attributes_loop < count($this->_attributes_to_send); $attributes_loop++)
-        {
+        for ($attributes_loop = 0; $attributes_loop < count($this->_attributes_to_send); $attributes_loop++) {
             $attributes_content .= $this->_attributes_to_send[$attributes_loop];
         }
 
-        $packet_length  = 4; // Radius packet code + Identifier + Length high + Length low
+        $packet_length = 4; // Radius packet code + Identifier + Length high + Length low
         $packet_length += strlen($this->_request_authenticator); // Request-Authenticator
         $packet_length += strlen($attributes_content); // Attributes
-        
-        $packet_data  = chr($this->_radius_packet_to_send);
+
+        $packet_data = chr($this->_radius_packet_to_send);
         $packet_data .= chr($this->GetNextIdentifier());
-        $packet_data .= chr(intval($packet_length/256));
-        $packet_data .= chr(intval($packet_length%256));
+        $packet_data .= chr(intval($packet_length / 256));
+        $packet_data .= chr(intval($packet_length % 256));
         $packet_data .= $this->_request_authenticator;
         $packet_data .= $attributes_content;
 
         $_socket_to_server = socket_create(AF_INET, SOCK_DGRAM, 17); // UDP packet = 17
-        
-        if ($_socket_to_server === FALSE)
-        {
-            $this->_last_error_code    = socket_last_error();
+
+        if ($_socket_to_server === FALSE) {
+            $this->_last_error_code = socket_last_error();
             $this->_last_error_message = socket_strerror($this->_last_error_code);
-        }
-        elseif (FALSE === socket_connect($_socket_to_server, $this->_ip_radius_server, $this->_authentication_port))
-        {
-            $this->_last_error_code    = socket_last_error();
+        } elseif (FALSE === socket_connect($_socket_to_server, $this->_ip_radius_server, $this->_authentication_port)) {
+            $this->_last_error_code = socket_last_error();
             $this->_last_error_message = socket_strerror($this->_last_error_code);
-        }
-        elseif (FALSE === socket_write($_socket_to_server, $packet_data, $packet_length))
-        {
-            $this->_last_error_code    = socket_last_error();
+        } elseif (FALSE === socket_write($_socket_to_server, $packet_data, $packet_length)) {
+            $this->_last_error_code = socket_last_error();
             $this->_last_error_message = socket_strerror($this->_last_error_code);
-        }
-        else
-        {
-            $this->DebugInfo('<b>Packet type '.$this->_radius_packet_to_send.' ('.$this->GetRadiusPacketInfo($this->_radius_packet_to_send).')'.' sent</b>');
-            if ($this->_debug_mode)
-            {
+        } else {
+            $this->DebugInfo('<b>Packet type ' . $this->_radius_packet_to_send . ' (' . $this->GetRadiusPacketInfo($this->_radius_packet_to_send) . ')' . ' sent</b>');
+            if ($this->_debug_mode) {
                 $readable_attributes = '';
-                foreach($this->_attributes_to_send as $one_attribute_to_send)
-                {
-                    $attribute_info = $this->GetAttributesInfo(ord(substr($one_attribute_to_send,0,1)));
-                    $this->DebugInfo('Attribute '.ord(substr($one_attribute_to_send,0,1)).' ('.$attribute_info[0].'), length '.(ord(substr($one_attribute_to_send,1,1))-2).', format '.$attribute_info[1].', value <em>'.$this->DecodeAttribute(substr($one_attribute_to_send,2), ord(substr($one_attribute_to_send,0,1))).'</em>');
+                foreach ($this->_attributes_to_send as $one_attribute_to_send) {
+                    $attribute_info = $this->GetAttributesInfo(ord(substr($one_attribute_to_send, 0, 1)));
+                    $this->DebugInfo('Attribute ' . ord(substr($one_attribute_to_send, 0, 1)) . ' (' . $attribute_info[0] . '), length ' . (ord(substr($one_attribute_to_send, 1, 1)) - 2) . ', format ' . $attribute_info[1] . ', value <em>' . $this->DecodeAttribute(substr($one_attribute_to_send, 2), ord(substr($one_attribute_to_send, 0, 1))) . '</em>');
                 }
             }
-            $read_socket_array   = array($_socket_to_server);
-            $write_socket_array  = NULL;
+            $read_socket_array = array($_socket_to_server);
+            $write_socket_array = NULL;
             $except_socket_array = NULL;
 
             $received_packet = chr(0);
 
-            if (!(FALSE === socket_select($read_socket_array, $write_socket_array, $except_socket_array, $this->_udp_timeout)))
-            {
-                if (in_array($_socket_to_server, $read_socket_array))
-                {
-                    if (FALSE === ($received_packet = @socket_read($_socket_to_server, 1024))) // @ used, than no error is displayed if the connection is closed by the remote host
-                    {
+            if (!(FALSE === socket_select($read_socket_array, $write_socket_array, $except_socket_array, $this->_udp_timeout))) {
+                if (in_array($_socket_to_server, $read_socket_array)) {
+                    if (FALSE === ($received_packet = @socket_read($_socket_to_server, 1024))) { // @ used, than no error is displayed if the connection is closed by the remote host
                         $received_packet = chr(0);
-                        $this->_last_error_code    = socket_last_error();
+                        $this->_last_error_code = socket_last_error();
                         $this->_last_error_message = socket_strerror($this->_last_error_code);
-                    }
-                    else
-                    {
+                    } else {
                         socket_close($_socket_to_server);
                     }
                 }
-            }
-            else
-            {
+            } else {
                 socket_close($_socket_to_server);
             }
         }
 
         $this->_radius_packet_received = intval(ord(substr($received_packet, 0, 1)));
-        
-        $this->DebugInfo('<b>Packet type '.$this->_radius_packet_received.' ('.$this->GetRadiusPacketInfo($this->_radius_packet_received).')'.' received</b>');
-        
-        if ($this->_radius_packet_received > 0)
-        {
+
+        $this->DebugInfo('<b>Packet type ' . $this->_radius_packet_received . ' (' . $this->GetRadiusPacketInfo($this->_radius_packet_received) . ')' . ' received</b>');
+
+        if ($this->_radius_packet_received > 0) {
             $this->_identifier_received = intval(ord(substr($received_packet, 1, 1)));
             $packet_length = (intval(ord(substr($received_packet, 2, 1))) * 256) + (intval(ord(substr($received_packet, 3, 1))));
             $this->_response_authenticator = substr($received_packet, 4, 16);
             $attributes_content = substr($received_packet, 20, ($packet_length - 4 - 16));
-            while (strlen($attributes_content) > 2)
-            {
-                $attribute_type = intval(ord(substr($attributes_content,0,1)));
-                $attribute_length = intval(ord(substr($attributes_content,1,1)));
-                $attribute_raw_value = substr($attributes_content,2,$attribute_length-2);
+            while (strlen($attributes_content) > 2) {
+                $attribute_type = intval(ord(substr($attributes_content, 0, 1)));
+                $attribute_length = intval(ord(substr($attributes_content, 1, 1)));
+                $attribute_raw_value = substr($attributes_content, 2, $attribute_length - 2);
                 $attributes_content = substr($attributes_content, $attribute_length);
 
                 $attribute_value = $this->DecodeAttribute($attribute_raw_value, $attribute_type);
 
                 $attribute_info = $this->GetAttributesInfo($attribute_type);
-                if (26 == $attribute_type)
-                {
+                if (26 == $attribute_type) {
                     $vendor_array = $this->DecodeVendorSpecificContent($attribute_value);
-                    foreach($vendor_array as $vendor_one)
-                    {
-                        $this->DebugInfo('Attribute '.$attribute_type.' ('.$attribute_info[0].'), length '.($attribute_length-2).', format '.$attribute_info[1].', Vendor-Id: '.$vendor_one[0].", Vendor-type: ".$vendor_one[1].",  Attribute-specific: ".$vendor_one[2]);
+                    foreach ($vendor_array as $vendor_one) {
+                        $this->DebugInfo('Attribute ' . $attribute_type . ' (' . $attribute_info[0] . '), length ' . ($attribute_length - 2) . ', format ' . $attribute_info[1] . ', Vendor-Id: ' . $vendor_one[0] . ", Vendor-type: " . $vendor_one[1] . ",  Attribute-specific: " . $vendor_one[2]);
                     }
-                }
-                else
-                {
-                    $this->DebugInfo('Attribute '.$attribute_type.' ('.$attribute_info[0].'), length '.($attribute_length-2).', format '.$attribute_info[1].', value <em>'.$attribute_value.'</em>');
+                } else {
+                    $this->DebugInfo('Attribute ' . $attribute_type . ' (' . $attribute_info[0] . '), length ' . ($attribute_length - 2) . ', format ' . $attribute_info[1] . ', value <em>' . $attribute_value . '</em>');
                 }
 
                 $this->_attributes_received[] = array($attribute_type, $attribute_value);
             }
         }
-        
+
         return (2 == ($this->_radius_packet_received));
     }
+
 }
 
 ?>

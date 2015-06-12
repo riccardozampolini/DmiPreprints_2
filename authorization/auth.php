@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'].'/dmipreprints/'.'impost_car.php';
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
 
 function LDAPAuth($UID) {
     global $ldaphost, $ldapport;
@@ -16,14 +16,14 @@ function LDAPAuth($UID) {
     //ricerca nell'albero LDAP
     $sr = ldap_search($ds, $dn, $filter, $justthese);
     $info = ldap_get_entries($ds, $sr);
-    
+
     return $info;
 }
 
 function RADIUSAuth($UID, $PASSWORD) {
     global $ip_radius_server, $shared_secret;
-    require_once $_SERVER['DOCUMENT_ROOT'].'/dmipreprints/'.'authorization/radius.class.php';
-    
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'authorization/radius.class.php';
+
     $radius = new Radius($ip_radius_server, $shared_secret);
     $result = $radius->AccessRequest($UID, $PASSWORD);
     if ($result) {
