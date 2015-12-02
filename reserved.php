@@ -12,10 +12,7 @@
         <link rel="stylesheet" href="css/style.css" />
         <link rel="stylesheet" href="css/style-desktop.css" />
         </noscript>
-        <link rel="stylesheet" type="text/css" href="css/tabelle.css">
         <link rel="stylesheet" type="text/css" href="css/main.css">
-        <link rel="stylesheet" type="text/css" href="css/controlli.css">
-        <link rel="stylesheet" type="text/css" href="css/uploadForm.css">
         <!--[if lte IE 9]><link rel="stylesheet" href="css/ie9.css" /><![endif]-->
         <!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
     </head>
@@ -54,13 +51,52 @@
                 </div>
             </div>
         </div>
-        <div id="container_principale" class="contenitore">
+        <br/><br/>
+    <center>
+        <div style="width: 45%;">
+            <h1>It is the first time you access here?</h1><br/>
+            For access use username and password of the University xxxxxx@unipg.it,
+            for those outside University of Perugia you can register and use the credentials 
+            provided during the registration.
+        </div><br/><br/>
+        <div>
             <?php
             //TEST DEBUG
             error_reporting(E_ALL);
             ini_set('display_errors', 1);
-            require_once $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'reserved/submit_loginChooser.php';
+            require_once './reserved/submit_loginChooser.php';
             ?>
+        </div><br/><br/><br/><br/>
+        <div>
+            <h1>Register:</h1><br/>
+            <div id="left_content">
+                <form name="f2" action="" method="post">
+                    <table>
+                        <tr>
+                            <td align="right"> Enter email:<br/></td>
+                            <td><input type="email" class="textbox" style="height: 14pt;" placeholder="example@abc.com" required maxlength="100"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">Enter username:<br/></td>
+                            <td><input type="text" class="textbox" style="height: 14pt;" placeholder="uid" required maxlength="100"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">Enter password:<br/></td>
+                            <td><input type="password" id="input_pw" class="textbox" style="height: 14pt;" placeholder="password(min 6 char)" required minlenght="6" maxlength="100"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">Re-enter password:<br/></td>
+                            <td><input type="password" id="input_pw2" class="textbox" style="height: 14pt;" placeholder="retype password" required minlenght="6" maxlength="100"></td>
+                        </tr>
+                    </table>
+                </form>
+                <div style="margin: 0 auto"><br/>
+                    <button id="button_login" style="width: 110px;" class="button">Submit</button>
+                </div>
+            </div>
+            <div id="right_content"></div>
+
         </div>
-    </body>
+    </center>
+</body>
 </html>

@@ -1,15 +1,15 @@
 <?php
 
+//import connessione database
+require_once './mysql/db_conn.php';
+
 #funzione per la verifica se ci sono sessioni attive
 
 function sessioneavviata() {
 #importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
     $var = True;
     $a = date("Ymd", time());
     $datas = datasessione();
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql = "SELECT attivo FROM sessione";
     $result = mysql_query($sql) or die(mysql_error());
     $row = mysql_fetch_array($result);
@@ -23,11 +23,7 @@ function sessioneavviata() {
 #funzione di avvio della sessione
 
 function avviasessione() {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
     $a = date("Ymd", time());
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql = "UPDATE sessione SET attivo='1'";
     $result = mysql_query($sql) or die(mysql_error());
     $sql = "UPDATE sessione_data SET data='" . $a . "'";
@@ -38,10 +34,6 @@ function avviasessione() {
 #funzione per terminare la sessione
 
 function chiudisessione() {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql = "UPDATE sessione SET attivo='0'";
     $result = mysql_query($sql) or die(mysql_error());
     mysql_close($db_connection);
@@ -50,12 +42,8 @@ function chiudisessione() {
 #funzione verifica nuovo nome
 
 function nomiprec($nome) {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
     #cerca se il nome se era stato gia cercato...
     $nome = trim($nome);
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql = "SELECT * FROM AUTORI_BACKUP WHERE nome='" . $nome . "'";
     $query = mysql_query($sql) or die(mysql_error());
     $array = mysql_fetch_row($query);
@@ -72,8 +60,8 @@ function nomiprec($nome) {
 
 function searchfulltext() {
 #importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'authorization/sec_sess.php';
+    include './header.inc.php';
+    require_once './authorization/sec_sess.php';
     sec_session_start();
     if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] < 86400)) {
         if ($_SESSION['logged_type'] === "mod") {
@@ -83,8 +71,6 @@ function searchfulltext() {
         }
     }
     echo "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     #risultati visualizzati per pagina
     if (isset($_GET['rp']) && $_GET['rp'] != "") {
         $risperpag = $_GET['rp'];
@@ -99,7 +85,7 @@ function searchfulltext() {
         $cat = "on archived";
     }
     #recupero pagina
-    if (isset($_GET['p'])) {
+    if (isset($_GET['p']) && $_GET['p'] != "") {
         $p = $_GET['p'];
     } else {
         $p = 1;
@@ -158,7 +144,7 @@ function searchfulltext() {
         if ($cred == 1) {
             echo "<h1>" . $i . ".<br/></h1><div align='left' style='width:98%;'>";
             if ($_COOKIE['pageview'] == "0") {
-                echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./pdf/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a>&nbsp&nbsp&nbsp<a title='Change this preprint' style='color:#007897;' href='./manual_edit.php?id=" . $row['id_pubblicazione'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
+                echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./mysql/counter.php?id=" . $row['id_pubblicazione'] . "&i=1 onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a>&nbsp&nbsp&nbsp<a title='Change this preprint' style='color:#007897;' href='./manual_edit.php?id=" . $row['id_pubblicazione'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
             } else {
                 echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a title='Change this preprint' style='color:#007897;' href='./manual_edit.php?id=" . $row['id_pubblicazione'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
             }
@@ -166,9 +152,9 @@ function searchfulltext() {
             echo "<h1>" . $i . ".<br/></h1><div align='left' style='width:98%;'>";
             if ($_COOKIE['pageview'] == "0") {
                 if ($_SESSION['nome'] . " (" . $_SESSION['uid'] . ")" == $row['uid'] && $row['uid'] != "") {
-                    echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./pdf/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a>&nbsp&nbsp&nbsp<a title='Change this preprint' style='color:#007897;' href='./edit.php?id=" . $row['id_pubblicazione'] . "&r=" . $row['uid'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
+                    echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./mysql/counter.php?id=" . $row['id_pubblicazione'] . "&i=1 onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a>&nbsp&nbsp&nbsp<a title='Change this preprint' style='color:#007897;' href='./edit.php?id=" . $row['id_pubblicazione'] . "&r=" . $row['uid'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
                 } else {
-                    echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./pdf/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
+                    echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./mysql/counter.php?id=" . $row['id_pubblicazione'] . "&i=1 onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
                 }
             } else {
                 if ($_SESSION['nome'] . " (" . $_SESSION['uid'] . ")" == $row['uid'] && $row['uid'] != "") {
@@ -178,26 +164,27 @@ function searchfulltext() {
                 }
             }
         }
-        echo "<p><h1>Title:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['titolo']) . "</div>";
-        echo "<p><h1>Date of publication:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['data_pubblicazione']) . "</div>";
-        echo "<p><h1>Authors:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['autori']) . "</div>";
-        echo "<p><h1>Journal reference:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['referenze']) . "</div>";
-        echo "<p><h1>Comments:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['commenti']) . "</div>";
-        echo "<p><h1>Category:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['categoria']) . "</div>";
-        echo "<p><h1>Abstract:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['abstract']) . "</div>";
+        echo "<p><h1>Title:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['titolo']) . "</div>";
+        echo "<p><h1>Date of publication:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['data_pubblicazione']) . "</div>";
+        echo "<p><h1>Authors:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['autori']) . "</div>";
+        echo "<p><h1>Journal reference:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['referenze']) . "</div>";
+        echo "<p><h1>Comments:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['commenti']) . "</div>";
+        echo "<p><h1>Category:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['categoria']) . "</div>";
+        echo "<p><h1>Abstract:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['abstract']) . "</div>";
         $na = $row['Filename'];
         $na = substr($na, -3, 3);
         #controllo se il file é un pdf
         if ($na == "pdf") {
             if ($_COOKIE['pageview'] == "1") {
                 #visualizzazione integrata del pdf
-                echo "<p><h1>pdf:</h1></p><center><embed style='display: block; border: 1px; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;' width='850px' height='600px' src='./pdf/" . $row['Filename'] . "'></center>";
+                echo "<p><h1>pdf:</h1></p><center><embed style='display: block; border: 1px; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;' width='850px' height='600px' src='" . $copia . $row['Filename'] . "'></center>";
             }
         } else {
             if ($_COOKIE['pageview'] == "1") {
-                echo "<p><h1>document:</h1></p><div style='margin-left:1%; margin-right:1%;'><a style='color:#007897;' href=./pdf/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>LINK</a> (On page view disabled for this file)</div>";
+                echo "<p><h1>document:</h1></p><div style='margin-left:1%; margin-right:1%;'><a style='color:#007897;' href=" . $copia . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>LINK</a> (On page view disabled for this file)</div>";
             }
         }
+        echo "<p><h1>Views:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['counter']) . "</div>";
         echo "</div><hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
     }
     #impostazioni della navigazione per pagine
@@ -240,8 +227,8 @@ function searchfulltext() {
 
 function searchpreprint() {
 #importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'authorization/sec_sess.php';
+    include './header.inc.php';
+    require_once './authorization/sec_sess.php';
     sec_session_start();
     if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] < 86400)) {
         if ($_SESSION['logged_type'] === "mod") {
@@ -436,16 +423,14 @@ function searchpreprint() {
     $query = substr($query, 0, -7);
     $cat3 = substr($cat3, 0, -2);
     echo "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     #risultati visualizzati per pagina
-    if (isset($_GET['rp'])) {
+    if (isset($_GET['rp']) && $_GET['rp'] != "") {
         $risperpag = $_GET['rp'];
     } else {
         $risperpag = 5;
     }
     #recupero pagina
-    if (isset($_GET['p'])) {
+    if (isset($_GET['p']) && $_GET['p'] != "") {
         $p = $_GET['p'];
     } else {
         $p = 1;
@@ -502,13 +487,13 @@ function searchpreprint() {
         if ($cred == 1) {
             echo "<h1>" . $i . ".<br/></h1><div align='left' style='width:98%;'>";
             if ($_COOKIE['pageview'] == "0") {
-                if (file_exists("./pdf/" . $row['Filename'])) {
-                    echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./pdf/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a>&nbsp&nbsp&nbsp<a title='Change this preprint' style='color:#007897;' href='./manual_edit.php?id=" . $row['id_pubblicazione'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
+                if (file_exists($copia . $row['Filename'])) {
+                    echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./mysql/counter.php?id=" . $row['id_pubblicazione'] . "&i=1 onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a>&nbsp&nbsp&nbsp<a title='Change this preprint' style='color:#007897;' href='./manual_edit.php?id=" . $row['id_pubblicazione'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
                 } else {
-                    echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./pdf_archived/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a> (Archived)</div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
+                    echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href='" . $basedir4 . $row['Filename'] . "' onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a> (Archived)</div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
                 }
             } else {
-                if (file_exists("./pdf/" . $row['Filename'])) {
+                if (file_exists($copia . $row['Filename'])) {
                     echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a title='Change this preprint' style='color:#007897;' href='./manual_edit.php?id=" . $row['id_pubblicazione'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
                 } else {
                     echo "<p><h1>Id of publication:</h1></p><div style='float:right;'>(Archived)</div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
@@ -519,27 +504,27 @@ function searchpreprint() {
             #visualizzazione
             if ($_COOKIE['pageview'] == "0") {
                 if ($_SESSION['nome'] . " (" . $_SESSION['uid'] . ")" == $row['uid'] && $row['uid'] != "") {
-                    if (file_exists("./pdf/" . $row['Filename'])) {
-                        echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./pdf/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a>&nbsp&nbsp&nbsp<a title='Change this preprint' style='color:#007897;' href='./edit.php?id=" . $row['id_pubblicazione'] . "&r=" . $row['uid'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
+                    if (file_exists($copia . $row['Filename'])) {
+                        echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./mysql/counter.php?id=" . $row['id_pubblicazione'] . "&i=1 onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a>&nbsp&nbsp&nbsp<a title='Change this preprint' style='color:#007897;' href='./edit.php?id=" . $row['id_pubblicazione'] . "&r=" . $row['uid'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
                     } else {
-                        echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./pdf_archived/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a> (Archived)</div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
+                        echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=" . $basedir4 . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a> (Archived)</div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
                     }
                 } else {
-                    if (file_exists("./pdf/" . $row['Filename'])) {
-                        echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./pdf/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
+                    if (file_exists($copia . $row['Filename'])) {
+                        echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./mysql/counter.php?id=" . $row['id_pubblicazione'] . "&i=1 onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
                     } else {
-                        echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./pdf_archived/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a> (Archived)</div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
+                        echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href='" . $basedir4 . $row['Filename'] . "' onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a> (Archived)</div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
                     }
                 }
             } else {
                 if ($_SESSION['nome'] . " (" . $_SESSION['uid'] . ")" == $row['uid'] && $row['uid'] != "") {
-                    if (file_exists("./pdf/" . $row['Filename'])) {
+                    if (file_exists($copia . $row['Filename'])) {
                         echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a title='Change this preprint' style='color:#007897;' href='./edit.php?id=" . $row['id_pubblicazione'] . "&r=" . $row['uid'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
                     } else {
-                        echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a title='Change this preprint' style='color:#007897;' href='./pdf_archived/" . $row['Filename'] . "' onclick='window.open(this.href); return false'>view</a> (Archived)</div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
+                        echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a title='Change this preprint' style='color:#007897;' href='" . $basedir4 . $row['Filename'] . "' onclick='window.open(this.href); return false'>view</a> (Archived)</div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
                     }
                 } else {
-                    if (file_exists("./pdf/" . $row['Filename'])) {
+                    if (file_exists($copia . $row['Filename'])) {
                         echo "<p><h1>Id of publication:</h1></p><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
                     } else {
                         echo "<p><h1>Id of publication:</h1></p><div style='float:right;'>(Archived)</div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
@@ -547,34 +532,35 @@ function searchpreprint() {
                 }
             }
         }
-        echo "<p><h1>Title:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['titolo']) . "</div>";
-        echo "<p><h1>Date of publication:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['data_pubblicazione']) . "</div>";
-        echo "<p><h1>Authors:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['autori']) . "</div>";
-        echo "<p><h1>Journal reference:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['referenze']) . "</div>";
-        echo "<p><h1>Comments:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['commenti']) . "</div>";
-        echo "<p><h1>Category:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['categoria']) . "</div>";
-        echo "<p><h1>Abstract:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['abstract']) . "</div>";
+        echo "<p><h1>Title:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['titolo']) . "</div>";
+        echo "<p><h1>Date of publication:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['data_pubblicazione']) . "</div>";
+        echo "<p><h1>Authors:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['autori']) . "</div>";
+        echo "<p><h1>Journal reference:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['referenze']) . "</div>";
+        echo "<p><h1>Comments:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['commenti']) . "</div>";
+        echo "<p><h1>Category:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['categoria']) . "</div>";
+        echo "<p><h1>Abstract:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['abstract']) . "</div>";
         $na = $row['Filename'];
         $na = substr($na, -3, 3);
         #controllo se il file é un pdf
         if ($na == "pdf") {
             if ($_COOKIE['pageview'] == "1") {
-                if (file_exists("./pdf/" . $row['Filename'])) {
+                if (file_exists($copia . $row['Filename'])) {
                     #visualizzazione integrata del pdf
-                    echo "<p><h1>pdf:</h1></p><center><embed style='display: block; border: 1px; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;' width='850px' height='600px' src='./pdf/" . $row['Filename'] . "'></center>";
+                    echo "<p><h1>pdf:</h1></p><center><embed style='display: block; border: 1px; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;' width='850px' height='600px' src='" . $copia . $row['Filename'] . "'></center>";
                 } else {
-                    echo "<p><h1>pdf:</h1></p><center><embed style='display: block; border: 1px; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;' width='850px' height='600px' src='./pdf_archived/" . $row['Filename'] . "'></center>";
+                    echo "<p><h1>pdf:</h1></p><center><embed style='display: block; border: 1px; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;' width='850px' height='600px' src='" . $basedir4 . $row['Filename'] . "'></center>";
                 }
             }
         } else {
             if ($_COOKIE['pageview'] == "1") {
-                if (file_exists("./pdf/" . $row['Filename'])) {
-                    echo "<p><h1>document:</h1></p><div style='margin-left:1%; margin-right:1%;'><a style='color:#007897;' href=./pdf/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>LINK</a> (On page view disabled for this file)</div>";
+                if (file_exists($copia . $row['Filename'])) {
+                    echo "<p><h1>document:</h1></p><div style='margin-left:1%; margin-right:1%;'><a style='color:#007897;' href=./mysql/counter.php?id=" . $row['id_pubblicazione'] . "&i=1 onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>LINK</a> (On page view disabled for this file)</div>";
                 } else {
-                    echo "<p><h1>document:</h1></p><div style='margin-left:1%; margin-right:1%;'><a style='color:#007897;' href=./pdf_archived/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>LINK</a></div>";
+                    echo "<p><h1>document:</h1></p><div style='margin-left:1%; margin-right:1%;'><a style='color:#007897;' href='" . $basedir4 . $row['Filename'] . "' onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>LINK</a></div>";
                 }
             }
         }
+        echo "<p><h1>Views:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . number_format(($row['counter']), 0, ',', '.') . "</div>";
         echo "</div><hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
     }
     #impostazioni della navigazione per pagine
@@ -616,9 +602,8 @@ function searchpreprint() {
 # funzione filtro e lettura dei preprint
 
 function filtropreprint() {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'authorization/sec_sess.php';
+    include './header.inc.php';
+    require_once './authorization/sec_sess.php';
     sec_session_start();
     if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] < 86400)) {
         if ($_SESSION['logged_type'] === "mod") {
@@ -628,7 +613,7 @@ function filtropreprint() {
         }
     }
     #recupero pagina
-    if (isset($_GET['p'])) {
+    if (isset($_GET['p']) && $_GET['p'] != "") {
         $p = $_GET['p'];
     } else {
         $p = 1;
@@ -664,8 +649,6 @@ function filtropreprint() {
         $argom = "id_pubblicazione";
     }
     echo "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     #risultati visualizzati per pagina
     if (isset($_GET['rp']) && $_GET['rp'] != "") {
         $risperpag = $_GET['rp'];
@@ -701,13 +684,14 @@ function filtropreprint() {
     	SELECT * FROM PREPRINTS WHERE abstract LIKE '%" . addslashes($_GET['r']) . "%' AND checked='1'";
         $querytotale = mysql_query($query);
         $ristot = mysql_num_rows($querytotale);
+        $npag = ceil($ristot / $risperpag);
         if (isset($_GET['o']) && $_GET['o'] != "") {
             $query = $query . " ORDER BY " . $order . " LIMIT " . $limit . "," . $risperpag . "";
         } else {
             $query = $query . " ORDER BY data_pubblicazione DESC LIMIT " . $limit . "," . $risperpag . "";
         }
         if (!isset($_GET['r']) or $_GET['r'] == "") {
-            echo "PAPERS: " . $ristot;
+            echo $ristot . " ELEMENTS ON " . $npag . " PAGES";
         } else {
             echo "SEARCH '" . $_GET['r'] . "' FOUND " . $ristot . " RESULTS(" . $_GET['f'] . ")(results ordered by " . $orstr . ")(results for page " . $_GET['rp'] . ")";
         }
@@ -753,7 +737,7 @@ function filtropreprint() {
         if ($cred == 1) {
             echo "<h1>" . $i . ".<br/></h1><div align='left' style='width:98%;'>";
             if ($_COOKIE['pageview'] == "0") {
-                echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./pdf/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a>&nbsp&nbsp&nbsp<a title='Change this preprint' style='color:#007897;' href='./manual_edit.php?id=" . $row['id_pubblicazione'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
+                echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./mysql/counter.php?id=" . $row['id_pubblicazione'] . "&i=1 onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a>&nbsp&nbsp&nbsp<a title='Change this preprint' style='color:#007897;' href='./manual_edit.php?id=" . $row['id_pubblicazione'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
             } else {
                 echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a title='Change this preprint' style='color:#007897;' href='./manual_edit.php?id=" . $row['id_pubblicazione'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
             }
@@ -761,9 +745,9 @@ function filtropreprint() {
             echo "<h1>" . $i . ".<br/></h1><div align='left' style='width:98%;'>";
             if ($_COOKIE['pageview'] == "0") {
                 if ($_SESSION['nome'] . " (" . $_SESSION['uid'] . ")" == $row['uid'] && $row['uid'] != "") {
-                    echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./pdf/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a>&nbsp&nbsp&nbsp<a title='Change this preprint' style='color:#007897;' href='./edit.php?id=" . $row['id_pubblicazione'] . "&r=" . $row['uid'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
+                    echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./mysql/counter.php?id=" . $row['id_pubblicazione'] . "&i=1 onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a>&nbsp&nbsp&nbsp<a title='Change this preprint' style='color:#007897;' href='./edit.php?id=" . $row['id_pubblicazione'] . "&r=" . $row['uid'] . "' onclick='window.open(this.href); return false'>edit</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
                 } else {
-                    echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./pdf/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
+                    echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href=./mysql/counter.php?id=" . $row['id_pubblicazione'] . "&i=1 onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
                 }
             } else {
                 if ($_SESSION['nome'] . " (" . $_SESSION['uid'] . ")" == $row['uid'] && $row['uid'] != "") {
@@ -773,26 +757,27 @@ function filtropreprint() {
                 }
             }
         }
-        echo "<p><h1>Title:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['titolo']) . "</div>";
-        echo "<p><h1>Date of publication:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['data_pubblicazione']) . "</div>";
-        echo "<p><h1>Authors:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['autori']) . "</div>";
-        echo "<p><h1>Journal reference:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['referenze']) . "</div>";
-        echo "<p><h1>Comments:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['commenti']) . "</div>";
-        echo "<p><h1>Category:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['categoria']) . "</div>";
-        echo "<p><h1>Abstract:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['abstract']) . "</div>";
+        echo "<p><h1>Title:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['titolo']) . "</div>";
+        echo "<p><h1>Date of publication:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['data_pubblicazione']) . "</div>";
+        echo "<p><h1>Authors:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['autori']) . "</div>";
+        echo "<p><h1>Journal reference:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['referenze']) . "</div>";
+        echo "<p><h1>Comments:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['commenti']) . "</div>";
+        echo "<p><h1>Category:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['categoria']) . "</div>";
+        echo "<p><h1>Abstract:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['abstract']) . "</div>";
         $na = $row['Filename'];
         $na = substr($na, -3, 3);
         #controllo se il file é un pdf
         if ($na == "pdf") {
             if ($_COOKIE['pageview'] == "1") {
                 #visualizzazione integrata del pdf
-                echo "<p><h1>pdf:</h1></p><center><embed style='display: block; border: 1px; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;' width='850px' height='600px' src='./pdf/" . $row['Filename'] . "'></center>";
+                echo "<p><h1>pdf:</h1></p><center><embed style='display: block; border: 1px; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;' width='850px' height='600px' src='" . $copia . $row['Filename'] . "'></center>";
             }
         } else {
             if ($_COOKIE['pageview'] == "1") {
-                echo "<p><h1>document:</h1></p><div style='margin-left:1%; margin-right:1%;'><a style='color:#007897;' href=./pdf/" . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>LINK</a> (On page view disabled for this file)</div>";
+                echo "<p><h1>document:</h1></p><div style='margin-left:1%; margin-right:1%;'><a style='color:#007897;' href=" . $copia . $row['Filename'] . " onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>LINK</a> (On page view disabled for this file)</div>";
             }
         }
+        echo "<p><h1>Views:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . number_format(($row['counter']), 0, ',', '.') . "</div>";
         echo "</div><hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
     }
     #impostazioni della navigazione per pagine
@@ -834,13 +819,10 @@ function filtropreprint() {
 #funzione lettura dei preprint archiviati
 
 function leggipreprintarchiviati() {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
+    include './header.inc.php';
     $risperpag = 5;
     #recupero pagina
-    if (isset($_GET['p'])) {
+    if (isset($_GET['p']) && $_GET['p'] != "") {
         $p = $_GET['p'];
     } else {
         $p = 1;
@@ -849,7 +831,7 @@ function leggipreprintarchiviati() {
     $querytotale = mysql_query("SELECT * FROM PREPRINTS_ARCHIVIATI WHERE checked='1'");
     $ristot = mysql_num_rows($querytotale);
     echo "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
-    echo "PAPERS ARCHIVED: " . $ristot . "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
+    echo "ELEMENTS ARCHIVED: " . $ristot . "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
     $npag = ceil($ristot / $risperpag);
     #impostazione della navigazione per pagine
     if ($ristot != 0) {
@@ -891,15 +873,15 @@ function leggipreprintarchiviati() {
         while ($row = mysql_fetch_array($result)) {
             $i++;
             echo "<h1>" . $i . ".<br/></h1><div align='left' style='width:98%;'>";
-            echo "<p><h1>Id of pubblication:</h1></p><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
-            echo "<p><h1>Title:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['titolo']) . "</div>";
-            echo "<p><h1>Date of pubblication:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['data_pubblicazione']) . "</div>";
-            echo "<p><h1>Authors:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['autori']) . "</div>";
-            echo "<p><h1>Journal reference:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['referenze']) . "</div>";
-            echo "<p><h1>Comments:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['commenti']) . "</div>";
-            echo "<p><h1>Category:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['categoria']) . "</div>";
-            echo "<p><h1>Abstract:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . stripslashes($row['abstract']) . "</div>";
-
+            echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href='" . $basedir4 . $row['Filename'] . "' onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
+            echo "<p><h1>Title:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['titolo']) . "</div>";
+            echo "<p><h1>Date of pubblication:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['data_pubblicazione']) . "</div>";
+            echo "<p><h1>Authors:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['autori']) . "</div>";
+            echo "<p><h1>Journal reference:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['referenze']) . "</div>";
+            echo "<p><h1>Comments:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['commenti']) . "</div>";
+            echo "<p><h1>Category:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['categoria']) . "</div>";
+            echo "<p><h1>Abstract:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . ($row['abstract']) . "</div>";
+            echo "<p><h1>Views:</h1></p><div style='margin-left:1%; margin-right:1%;'>" . number_format(($row['counter']), 0, ',', '.') . "</div>";
             echo "</div><hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
         }
         #visualizzazione della navigazione per pagine
@@ -946,10 +928,6 @@ function leggipreprintarchiviati() {
 # funzione cancellazione preprint
 
 function cancellaselected($id) {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql = "DELETE FROM PREPRINTS WHERE id_pubblicazione='" . $id . "'";
     $result = mysql_query($sql) or die(mysql_error());
     mysql_close($db_connection);
@@ -958,28 +936,34 @@ function cancellaselected($id) {
 # funzione cancellazione preprint archiviati
 
 function cancellapreprint() {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
+    include './header.inc.php';
     $sql = "SELECT * FROM PREPRINTS_ARCHIVIATI WHERE checked='1'";
     $result = mysql_query($sql) or die(mysql_error());
     while ($row = mysql_fetch_array($result)) {
         unlink($basedir4 . $row['Filename']);
     }
-    $sql = "DELETE FROM PREPRINTS_ARCHIVIATI WHERE checked='1'";
+    $sql = "TRUNCATE TABLE PREPRINTS_ARCHIVIATI";
     $result = mysql_query($sql) or die(mysql_error());
     mysql_close($db_connection);
+}
+
+#funzione che controlla se si sono verificate interruzioni nell'ultimo update
+
+function controllainterruzione() {
+    $var = False;
+    $sql = "SELECT id FROM temp";
+    $result = mysql_query($sql) or die(mysql_error());
+    if ((mysql_num_rows($result)) != 0) {
+        $var = True;
+    }
+    mysql_close($db_connection);
+    return $var;
 }
 
 #funzione che cerca se il preprint è stato già scaricato nell'esecuzione in corso
 
 function preprintscaricati($id) {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
     $var = False;
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql = "SELECT id FROM temp";
     $result = mysql_query($sql) or die(mysql_error());
     while ($row = mysql_fetch_array($result)) {
@@ -994,10 +978,6 @@ function preprintscaricati($id) {
 #funzione per l'inserimento dell'id dentro temp
 
 function aggiornapreprintscaricati($id) {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql = "INSERT INTO temp (id) VALUES ('" . $id . "') ON DUPLICATE KEY UPDATE id = VALUES(id)";
     $result = mysql_query($sql) or die(mysql_error());
     mysql_close($db_connection);
@@ -1006,16 +986,8 @@ function aggiornapreprintscaricati($id) {
 #funzione per la cancellazione del contenuto temp
 
 function azzerapreprint() {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
-    $sql = "SELECT id FROM temp";
+    $sql = "TRUNCATE TABLE temp";
     $result = mysql_query($sql) or die(mysql_error());
-    while ($row = mysql_fetch_array($result)) {
-        $sql = "DELETE FROM temp WHERE id='" . $row['id'] . "'";
-        $query = mysql_query($sql) or die(mysql_error());
-    }
     mysql_close($db_connection);
 }
 
@@ -1023,23 +995,20 @@ function azzerapreprint() {
 
 function cercapreprint($id) {
     $id = trim($id);
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql = "SELECT * FROM PREPRINTS WHERE id_pubblicazione='" . $id . "'";
     $result = mysql_query($sql) or die(mysql_error());
     $row = mysql_fetch_array($result);
     if ($row['nome'] == $nome) {
         $var[0] = $row['id_pubblicazione'];
-        $var[1] = stripslashes($row['titolo']);
-        $var[2] = stripslashes($row['data_pubblicazione']);
-        $var[3] = stripslashes($row['autori']);
-        $var[4] = stripslashes($row['referenze']);
-        $var[5] = stripslashes($row['commenti']);
-        $var[6] = stripslashes($row['categoria']);
-        $var[7] = stripslashes($row['abstract']);
-        $var[8] = stripslashes($row['uid']);
+        $var[1] = ($row['titolo']);
+        $var[2] = ($row['data_pubblicazione']);
+        $var[3] = ($row['autori']);
+        $var[4] = ($row['referenze']);
+        $var[5] = ($row['commenti']);
+        $var[6] = ($row['categoria']);
+        $var[7] = ($row['abstract']);
+        $var[8] = ($row['uid']);
+        $var[9] = ($row['Filename']);
     }
     mysql_close($db_connection);
     return $var;
@@ -1048,13 +1017,9 @@ function cercapreprint($id) {
 #funzione che cerca se il nome è presente
 
 function cercanome($nome) {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
     #cerca se il nome se era stato gia cercato...
     $nome = trim($nome);
     $var = False;
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql = "SELECT * FROM AUTORI WHERE nome='" . $nome . "'";
     $result = mysql_query($sql) or die(mysql_error());
     $row = mysql_fetch_array($result);
@@ -1068,19 +1033,11 @@ function cercanome($nome) {
 #funzione aggiornamento nomi_ultimo_lancio
 
 function aggiornanomi() {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
     #leggo i nuovi nomi e li inserisco in array...
     $array = legginomi();
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
-    $sql = "SELECT nome FROM AUTORI_BACKUP";
+    $sql = "TRUNCATE TABLE AUTORI_BACKUP";
     $result = mysql_query($sql) or die(mysql_error());
     $nl2 = count($array);
-    while ($row = mysql_fetch_array($result)) {
-        $sql = "DELETE FROM AUTORI_BACKUP WHERE nome='" . $row['nome'] . "'";
-        $query = mysql_query($sql) or die(mysql_error());
-    }
     #aggiorno i nomi...
     for ($i = 0; $i < $nl2; $i++) {
         $sql = "INSERT INTO AUTORI_BACKUP (nome) VALUES ('" . $array[$i] . "')";
@@ -1092,11 +1049,6 @@ function aggiornanomi() {
 # funzione lettura nomi
 
 function legginomi() {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    #leggo i nuovi nomi e li inserisco in array...
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql = "SELECT nome FROM AUTORI";
     $result = mysql_query($sql) or die(mysql_error());
     $i = 0;
@@ -1111,17 +1063,9 @@ function legginomi() {
 #funzione scrittura nomi
 
 function scrivinomi($nomi) {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
-    $sql = "SELECT nome FROM AUTORI";
+    $sql = "TRUNCATE TABLE AUTORI";
     $result = mysql_query($sql) or die(mysql_error());
     $nl2 = count($nomi);
-    while ($row = mysql_fetch_array($result)) {
-        $sql = "DELETE FROM AUTORI WHERE nome='" . $row['nome'] . "'";
-        $query = mysql_query($sql) or die(mysql_error());
-    }
     #aggiorno i nomi...
     for ($i = 0; $i < $nl2; $i++) {
         $sql = "INSERT INTO AUTORI (nome) VALUES ('" . $nomi[$i] . "') ON DUPLICATE KEY UPDATE nome = VALUES(nome)";
@@ -1171,10 +1115,6 @@ function aggiungiutente($nome, $a) {
 #data ultima sessione
 
 function datasessione() {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql = "SELECT data FROM sessione_data";
     $result = mysql_query($sql) or die(mysql_error());
     $row = mysql_fetch_array($result);
@@ -1186,10 +1126,6 @@ function datasessione() {
 #ritorno la data come intero
 
 function dataprec() {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql = "SELECT data FROM DATA_ULTIMO_LANCIO";
     $result = mysql_query($sql) or die(mysql_error());
     $row = mysql_fetch_array($result);
@@ -1206,10 +1142,6 @@ function dataprec() {
 #ritorno la data come una stringa
 
 function datastring() {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql = "SELECT data FROM DATA_ULTIMO_LANCIO";
     $result = mysql_query($sql) or die(mysql_error());
     $row = mysql_fetch_array($result);
@@ -1221,11 +1153,7 @@ function datastring() {
 #aggiorno data_ultimo_lancio con la data di ultimo lancio
 
 function aggiornadata() {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
     $a = date("Y-m-d H:i", time());
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql = "SELECT data FROM DATA_ULTIMO_LANCIO";
     $result = mysql_query($sql) or die(mysql_error());
     $row = mysql_fetch_array($result);

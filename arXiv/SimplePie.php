@@ -634,6 +634,7 @@ class SimplePie {
 
         if (func_num_args() > 0) {
             $level = defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_WARNING;
+            trigger_error('Passing parameters to the constructor is no longer supported. Please use set_feed_url(), set_cache_location(), and set_cache_location() directly.', $level);
 
             $args = func_get_args();
             switch (count($args)) {
@@ -1269,7 +1270,7 @@ class SimplePie {
 
                     // Cache the file if caching is enabled
                     if ($cache && !$cache->save($this)) {
-                        
+                        trigger_error("$this->cache_location is not writeable. Make sure you've set the correct relative or absolute path, and that the location is server-writable.", E_USER_WARNING);
                     }
                     return true;
                 }

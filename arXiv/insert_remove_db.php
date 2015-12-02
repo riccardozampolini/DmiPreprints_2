@@ -1,10 +1,11 @@
 <?php
 
+//import connessione database
+require_once './mysql/db_conn.php';
+
 #funzione che inserisce i preprints all'interno del database
 
 function insert_preprints($array) {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
     #adattamento stringhe pericolose per la query...
     $array[1] = addslashes($array[1]);
     $array[2] = addslashes($array[2]);
@@ -13,9 +14,6 @@ function insert_preprints($array) {
     $array[5] = addslashes($array[5]);
     $array[6] = addslashes($array[6]);
     $array[7] = addslashes($array[7]);
-    #connessione al database...
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     mysql_query("set names 'utf8'");
     $sql = "INSERT INTO PREPRINTS ( id_pubblicazione, titolo, data_pubblicazione, autori, referenze, commenti, categoria, abstract) "
             . "VALUES ('" . $array[0] . "','" . $array[1] . "','" . $array[2] . "','" . $array[3] . "','" . $array[4] . "','" . $array[5] . "','" . $array[6] . "','" . $array[7] . "') ON DUPLICATE KEY UPDATE id_pubblicazione = VALUES(id_pubblicazione)";
@@ -27,8 +25,6 @@ function insert_preprints($array) {
 #funzione che aggiorna i preprints all'interno del database
 
 function update_preprints($array) {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
     #adattamento stringhe pericolose per la query...
     $array[1] = addslashes($array[1]);
     $array[2] = addslashes($array[2]);
@@ -37,9 +33,7 @@ function update_preprints($array) {
     $array[5] = addslashes($array[5]);
     $array[6] = addslashes($array[6]);
     $array[7] = addslashes($array[7]);
-    #connessione al database...
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
+    //query
     $sql = "UPDATE
     	PREPRINTS 
     SET
@@ -60,11 +54,8 @@ function update_preprints($array) {
 #funzione che cancella il pdf caricato all'interno della cartella
 
 function delete_pdf($id) {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    #connessione al database...
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
+//configurazione
+    include './header.inc.php';
     $sql = "SELECT * FROM PREPRINTS WHERE id_pubblicazione='" . $id . "'";
     $query = mysql_query($sql) or die(mysql_error());
     $row = mysql_fetch_array($query);
@@ -76,13 +67,10 @@ function delete_pdf($id) {
 #funzione che inserisce il pdf selezionato all'interno dei database
 
 function insert_one_pdf2($id) {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
+//configurazione
+    include './header.inc.php';
     $type = "pdf/document";
-    #connessione al database...
     $id = str_replace("-", "/", $id);
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     $sql2 = "SELECT * FROM PREPRINTS WHERE id_pubblicazione='" . $id . "'";
     $query2 = mysql_query($sql2) or die(mysql_error());
     $row = mysql_fetch_array($query2);
@@ -111,11 +99,8 @@ function insert_one_pdf2($id) {
 #funzione che inserisce il pdf caricato all'interno dei database
 
 function insert_one_pdf($id, $type) {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    #connessione al database...
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
+//configurazione
+    include './header.inc.php';
     $sql2 = "SELECT * FROM PREPRINTS WHERE id_pubblicazione='" . $id . "'";
     $query2 = mysql_query($sql2) or die(mysql_error());
     $row = mysql_fetch_array($query2);
@@ -141,14 +126,9 @@ function insert_one_pdf($id, $type) {
 #funzione che rimuove i preprints dall'database
 
 function remove_preprints($id) {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
     $id = str_replace("-", "/", $id);
     $lunghezza = strlen($id);
     $id = substr($id, 0, $lunghezza - 4);
-    #connessione al database...
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
     mysql_query("set names 'utf8'");
     $sql = "DELETE FROM PREPRINTS WHERE id_pubblicazione='" . $id . "'";
     $query = mysql_query($sql) or die(mysql_error());
@@ -159,11 +139,8 @@ function remove_preprints($id) {
 #funzione che controlla la versione del preprint e lo archivia eventualmente
 
 function version_preprint($id1) {
-#importazione variabili globali
-    include $_SERVER['DOCUMENT_ROOT'] . '/dmipreprints/' . 'impost_car.php';
-    #connessione al database...
-    $db_connection = mysql_connect($hostname_db, $username_db, $password_db) or trigger_error(mysql_error(), E_USER_ERROR);
-    mysql_select_db($db_monte, $db_connection);
+//configurazione
+    include './header.inc.php';
     #elaborazione dell'id...
     $lunghezza = strlen($id1);
     $id = substr($id1, 0, $lunghezza - 1);
