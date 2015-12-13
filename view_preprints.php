@@ -95,7 +95,7 @@
                                 </header>";
         }
         if ($_SESSION['logged_type'] != "mod") {
-            $str1 = "<h1><center>in this section are the papers that have been published on DMI archive and papers published by the <a style='color:#007897;' href='./authors_list.php' onclick='window.open(this.href); return false'>authors</a> of the department on arxiv.org</center></h1><br/>";
+            $str1 = "<h1><center>in this section are the papers that have been published on DMI archive and papers published by these <a style='color:#007897;' href='./authors_list.php' onclick='window.open(this.href); return false'>authors</a> on arxiv.org</center></h1><br/>";
         }
         ?>
         <div id="header-wrapper">

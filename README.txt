@@ -1,8 +1,6 @@
 # dmipreprints
 # authors Francesk Xhaferri, Fabio De Fantis
 
-Guida rapida:
-
-CREARE CARTELLA dmipreprints, INSERIRE IL CONTENUTO PRESENTE SU GITHUB (OPPURE RINOMINARE LA CARTELLA IN dmipreprints) E ASSEGNARE I PERMESSI.
+Guida rapida:(non terminata)
 
 QUERY DI CREAZIONE DELLE TABELLE ALL'INTERNO DEL FILE dmipreprints.sql

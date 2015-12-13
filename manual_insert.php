@@ -43,7 +43,7 @@
         include_once './arXiv/insert_remove_db.php';
         include_once './arXiv/arXiv_parsing.php';
         #importazione variabili globali
-        include './impost_car.php';
+        include './header.inc.php';
         sec_session_start();
         if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] < 86400)) {
             if ($_SESSION['logged_type'] === "mod") {
@@ -81,7 +81,7 @@
                         Go to arXiv panel&nbsp&nbsp&nbsp
                         <a style="color:#3C3C3C;" href="./arXiv_panel.php" id="bottone_keyword" class="button" onclick="return confirmExit()" >Back</a><br/><br/>
                         <a style='color:#007897;' href='http://arxiv.org/' onclick='window.open(this.href);
-                                        return false' title='arXiv'>arXiv.org</a>
+                                return false' title='arXiv'>arXiv.org</a>
                     </center>
                     <hr style="display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;">
                     <?php

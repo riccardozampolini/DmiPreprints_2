@@ -1,57 +1,66 @@
 <?php
 
-//import connessione database
-require_once './mysql/db_conn.php';
-
 #funzione per la verifica se ci sono sessioni attive
 
 function sessioneavviata() {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
 #importazione variabili globali
     $var = True;
     $a = date("Ymd", time());
     $datas = datasessione();
     $sql = "SELECT attivo FROM sessione";
-    $result = mysql_query($sql) or die(mysql_error());
-    $row = mysql_fetch_array($result);
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    $row = mysqli_fetch_array($result);
     if (($row['attivo'] == 0) or ( $datas < $a - 1)) {
         $var = False;
     }
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
     return $var;
 }
 
 #funzione di avvio della sessione
 
 function avviasessione() {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $a = date("Ymd", time());
     $sql = "UPDATE sessione SET attivo='1'";
-    $result = mysql_query($sql) or die(mysql_error());
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
     $sql = "UPDATE sessione_data SET data='" . $a . "'";
-    $result = mysql_query($sql) or die(mysql_error());
-    mysql_close($db_connection);
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    mysqli_close($db_connection);
 }
 
 #funzione per terminare la sessione
 
 function chiudisessione() {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $sql = "UPDATE sessione SET attivo='0'";
-    $result = mysql_query($sql) or die(mysql_error());
-    mysql_close($db_connection);
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    mysqli_close($db_connection);
 }
 
 #funzione verifica nuovo nome
 
 function nomiprec($nome) {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     #cerca se il nome se era stato gia cercato...
     $nome = trim($nome);
     $sql = "SELECT * FROM AUTORI_BACKUP WHERE nome='" . $nome . "'";
-    $query = mysql_query($sql) or die(mysql_error());
-    $array = mysql_fetch_row($query);
+    $query = mysqli_query($db_connection, $sql) or die(mysql_error());
+    $array = mysqli_fetch_row($query);
     if ($array[0] == $nome) {
-        mysql_close($db_connection);
+        mysqli_close($db_connection);
         return True;
     } else {
-        mysql_close($db_connection);
+        mysqli_close($db_connection);
         return False;
     }
 }
@@ -59,8 +68,9 @@ function nomiprec($nome) {
 #funzione ricerca full text
 
 function searchfulltext() {
-#importazione variabili globali
     include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     require_once './authorization/sec_sess.php';
     sec_session_start();
     if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] < 86400)) {
@@ -93,8 +103,8 @@ function searchfulltext() {
     #limite risultati
     $limit = $risperpag * $p - $risperpag;
     #query di ricerca
-    $querytotale = mysql_query($query);
-    $ristot = mysql_num_rows($querytotale);
+    $querytotale = mysqli_query($db_connection, $query) or die(mysql_error());
+    $ristot = mysqli_num_rows($querytotale);
     if ($ristot != 0) {
         echo "FULLTEXT SEARCH '" . $_GET['ft'] . "' FOUND " . $ristot . " RESULTS(" . $cat . ")(results ordered by pertinence)(results for page " . $_GET['rp'] . ")";
     } else {
@@ -104,7 +114,7 @@ function searchfulltext() {
     }
     $npag = ceil($ristot / $risperpag);
     $query = $query . " LIMIT " . $limit . "," . $risperpag . "";
-    $result = mysql_query($query) or die(mysql_error());
+    $result = mysqli_query($db_connection, $query) or die(mysql_error());
     echo "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
     #impostazione della paginazione dei risultati
     if ($ristot != 0) {
@@ -139,7 +149,7 @@ function searchfulltext() {
     }
     $i = $limit;
     #recupero e visualizzazione dei campi della ricerca effettuata
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
         $i++;
         if ($cred == 1) {
             echo "<h1>" . $i . ".<br/></h1><div align='left' style='width:98%;'>";
@@ -220,14 +230,15 @@ function searchfulltext() {
     }
     $x = $limit + 1;
     echo "RESULTS FROM " . $x . " TO " . ($p * $risperpag) . "<br/><br/>";
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
 }
 
 # funzione lettura dei preprint
 
 function searchpreprint() {
-#importazione variabili globali
     include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     require_once './authorization/sec_sess.php';
     sec_session_start();
     if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] < 86400)) {
@@ -438,8 +449,8 @@ function searchpreprint() {
     #limite risultati
     $limit = $risperpag * $p - $risperpag;
     #query di ricerca
-    $querytotale = mysql_query($query);
-    $ristot = mysql_num_rows($querytotale);
+    $querytotale = mysqli_query($db_connection, $query) or die(mysql_error());
+    $ristot = mysqli_num_rows($querytotale);
     if ($cat != "all records") {
         echo "SEARCH '" . $_GET['r'] . "' FOUND " . $ristot . " RESULTS(" . $cat3 . ")(results ordered by " . $orstr . ")(results for page " . $_GET['rp'] . ")";
     } else {
@@ -447,7 +458,7 @@ function searchpreprint() {
     }
     $npag = ceil($ristot / $risperpag);
     $query = $query . " ORDER BY " . $order . " LIMIT " . $limit . "," . $risperpag . "";
-    $result = mysql_query($query) or die(mysql_error());
+    $result = mysqli_query($db_connection, $query) or die(mysql_error());
     echo "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
     #impostazione della paginazione dei risultati
     if ($ristot != 0) {
@@ -482,7 +493,7 @@ function searchpreprint() {
     }
     $i = $limit;
     #recupero e visualizzazione dei campi della ricerca effettuata
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
         $i++;
         if ($cred == 1) {
             echo "<h1>" . $i . ".<br/></h1><div align='left' style='width:98%;'>";
@@ -596,13 +607,15 @@ function searchpreprint() {
     }
     $x = $limit + 1;
     echo "RESULTS FROM " . $x . " TO " . ($p * $risperpag) . "<br/><br/>";
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
 }
 
 # funzione filtro e lettura dei preprint
 
 function filtropreprint() {
     include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     require_once './authorization/sec_sess.php';
     sec_session_start();
     if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] < 86400)) {
@@ -659,8 +672,9 @@ function filtropreprint() {
     $limit = $risperpag * $p - $risperpag;
     #query di ricerca
     if (isset($argom)) {
-        $querytotale = mysql_query("SELECT * FROM PREPRINTS WHERE " . $argom . " LIKE '%" . addslashes($_GET['r']) . "%' AND checked='1'");
-        $ristot = mysql_num_rows($querytotale);
+        $sql = "SELECT * FROM PREPRINTS WHERE " . $argom . " LIKE '%" . addslashes($_GET['r']) . "%' AND checked='1'";
+        $querytotale = mysqli_query($db_connection, $sql) or die(mysql_error());
+        $ristot = mysqli_num_rows($querytotale);
         if ($ristot != 0) {
             echo "SEARCH '" . $_GET['r'] . "' FOUND " . $ristot . " RESULTS(" . $_GET['f'] . " filter)(results ordered by " . $orstr . ")(results for page " . $_GET['rp'] . ")";
         } else {
@@ -670,7 +684,7 @@ function filtropreprint() {
         }
         $npag = ceil($ristot / $risperpag);
         $sql = "SELECT * FROM PREPRINTS WHERE " . $argom . " LIKE '%" . addslashes($_GET['r']) . "%' AND checked='1' ORDER BY " . $order . " LIMIT " . $limit . "," . $risperpag . "";
-        $result = mysql_query($sql) or die(mysql_error());
+        $result = mysqli_query($db_connection, $sql) or die(mysql_error());
     } else {
         #senza filtro
         $query = " 
@@ -682,8 +696,8 @@ function filtropreprint() {
     	SELECT * FROM PREPRINTS WHERE commenti LIKE '%" . addslashes($_GET['r']) . "%' AND checked='1' UNION
     	SELECT * FROM PREPRINTS WHERE categoria LIKE '%" . addslashes($_GET['r']) . "%' AND checked='1' UNION
     	SELECT * FROM PREPRINTS WHERE abstract LIKE '%" . addslashes($_GET['r']) . "%' AND checked='1'";
-        $querytotale = mysql_query($query);
-        $ristot = mysql_num_rows($querytotale);
+        $querytotale = mysqli_query($db_connection, $query) or die(mysql_error());
+        $ristot = mysqli_num_rows($querytotale);
         $npag = ceil($ristot / $risperpag);
         if (isset($_GET['o']) && $_GET['o'] != "") {
             $query = $query . " ORDER BY " . $order . " LIMIT " . $limit . "," . $risperpag . "";
@@ -696,7 +710,7 @@ function filtropreprint() {
             echo "SEARCH '" . $_GET['r'] . "' FOUND " . $ristot . " RESULTS(" . $_GET['f'] . ")(results ordered by " . $orstr . ")(results for page " . $_GET['rp'] . ")";
         }
         $npag = ceil($ristot / $risperpag);
-        $result = mysql_query($query) or die(mysql_error());
+        $result = mysqli_query($db_connection, $query) or die(mysql_error());
     }
     echo "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
     #impostazione della paginazione dei risultati
@@ -732,7 +746,7 @@ function filtropreprint() {
     }
     $i = $limit;
     #recupero e visualizzazione dei campi della ricerca effettuata
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
         $i++;
         if ($cred == 1) {
             echo "<h1>" . $i . ".<br/></h1><div align='left' style='width:98%;'>";
@@ -813,13 +827,15 @@ function filtropreprint() {
     }
     $x = $limit + 1;
     echo "RESULTS FROM " . $x . " TO " . ($p * $risperpag) . "<br/><br/>";
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
 }
 
 #funzione lettura dei preprint archiviati
 
 function leggipreprintarchiviati() {
     include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $risperpag = 5;
     #recupero pagina
     if (isset($_GET['p']) && $_GET['p'] != "") {
@@ -828,8 +844,9 @@ function leggipreprintarchiviati() {
         $p = 1;
     }
     $limit = $risperpag * $p - $risperpag;
-    $querytotale = mysql_query("SELECT * FROM PREPRINTS_ARCHIVIATI WHERE checked='1'");
-    $ristot = mysql_num_rows($querytotale);
+    $sql = "SELECT * FROM PREPRINTS_ARCHIVIATI";
+    $querytotale = mysqli_query($db_connection, $sql) or die(mysql_error());
+    $ristot = mysqli_num_rows($querytotale);
     echo "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
     echo "ELEMENTS ARCHIVED: " . $ristot . "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
     $npag = ceil($ristot / $risperpag);
@@ -867,10 +884,10 @@ function leggipreprintarchiviati() {
     #verifica se i preprint devono essere rimossi definitivamente
     if ($_GET['c'] != "Remove all") {
         $sql = "SELECT * FROM PREPRINTS_ARCHIVIATI WHERE checked='1' ORDER BY data_pubblicazione DESC LIMIT " . $limit . "," . $risperpag . "";
-        $result = mysql_query($sql) or die(mysql_error());
+        $result = mysqli_query($db_connection, $sql) or die(mysql_error());
         $i = $limit;
         #recupero info e visualizzazione
-        while ($row = mysql_fetch_array($result)) {
+        while ($row = mysqli_fetch_array($result)) {
             $i++;
             echo "<h1>" . $i . ".<br/></h1><div align='left' style='width:98%;'>";
             echo "<p><h1>Id of publication:</h1></p><div style='float:right;'><a style='color:#007897;' href='" . $basedir4 . $row['Filename'] . "' onclick='window.open(this.href);return false' title='" . $row['id_pubblicazione'] . "'>view</a></div><div style='margin-left:1%;'>" . $row['id_pubblicazione'] . "</div>";
@@ -922,82 +939,101 @@ function leggipreprintarchiviati() {
     }
     $x = $limit + 1;
     echo "RESULTS FROM " . $x . " TO " . ($p * 5) . "<br/><br/>";
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
 }
 
 # funzione cancellazione preprint
 
 function cancellaselected($id) {
+    include './header.inc.php';
+    include './mysql/db_conn.php';
     $sql = "DELETE FROM PREPRINTS WHERE id_pubblicazione='" . $id . "'";
-    $result = mysql_query($sql) or die(mysql_error());
-    mysql_close($db_connection);
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    mysqli_close($db_connection);
 }
 
 # funzione cancellazione preprint archiviati
 
 function cancellapreprint() {
     include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $sql = "SELECT * FROM PREPRINTS_ARCHIVIATI WHERE checked='1'";
-    $result = mysql_query($sql) or die(mysql_error());
-    while ($row = mysql_fetch_array($result)) {
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    while ($row = mysqli_fetch_array($result)) {
         unlink($basedir4 . $row['Filename']);
     }
     $sql = "TRUNCATE TABLE PREPRINTS_ARCHIVIATI";
-    $result = mysql_query($sql) or die(mysql_error());
-    mysql_close($db_connection);
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    mysqli_close($db_connection);
 }
 
 #funzione che controlla se si sono verificate interruzioni nell'ultimo update
 
 function controllainterruzione() {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $var = False;
     $sql = "SELECT id FROM temp";
-    $result = mysql_query($sql) or die(mysql_error());
-    if ((mysql_num_rows($result)) != 0) {
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    if ((mysqli_num_rows($result)) != 0) {
         $var = True;
     }
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
     return $var;
 }
 
 #funzione che cerca se il preprint è stato già scaricato nell'esecuzione in corso
 
 function preprintscaricati($id) {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $var = False;
     $sql = "SELECT id FROM temp";
-    $result = mysql_query($sql) or die(mysql_error());
-    while ($row = mysql_fetch_array($result)) {
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    while ($row = mysqli_fetch_array($result)) {
         if ($row['id'] == $id) {
             $var = True;
         }
     }
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
     return $var;
 }
 
 #funzione per l'inserimento dell'id dentro temp
 
 function aggiornapreprintscaricati($id) {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $sql = "INSERT INTO temp (id) VALUES ('" . $id . "') ON DUPLICATE KEY UPDATE id = VALUES(id)";
-    $result = mysql_query($sql) or die(mysql_error());
-    mysql_close($db_connection);
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    mysqli_close($db_connection);
 }
 
 #funzione per la cancellazione del contenuto temp
 
 function azzerapreprint() {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $sql = "TRUNCATE TABLE temp";
-    $result = mysql_query($sql) or die(mysql_error());
-    mysql_close($db_connection);
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    mysqli_close($db_connection);
 }
 
 #funzione che cerca se il preprint se è presente
 
 function cercapreprint($id) {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $id = trim($id);
     $sql = "SELECT * FROM PREPRINTS WHERE id_pubblicazione='" . $id . "'";
-    $result = mysql_query($sql) or die(mysql_error());
-    $row = mysql_fetch_array($result);
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    $row = mysqli_fetch_array($result);
     if ($row['nome'] == $nome) {
         $var[0] = $row['id_pubblicazione'];
         $var[1] = ($row['titolo']);
@@ -1010,68 +1046,80 @@ function cercapreprint($id) {
         $var[8] = ($row['uid']);
         $var[9] = ($row['Filename']);
     }
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
     return $var;
 }
 
 #funzione che cerca se il nome è presente
 
 function cercanome($nome) {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     #cerca se il nome se era stato gia cercato...
     $nome = trim($nome);
     $var = False;
     $sql = "SELECT * FROM AUTORI WHERE nome='" . $nome . "'";
-    $result = mysql_query($sql) or die(mysql_error());
-    $row = mysql_fetch_array($result);
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    $row = mysqli_fetch_array($result);
     if ($row['nome'] == $nome) {
         $var = True;
     }
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
     return $var;
 }
 
 #funzione aggiornamento nomi_ultimo_lancio
 
 function aggiornanomi() {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     #leggo i nuovi nomi e li inserisco in array...
     $array = legginomi();
     $sql = "TRUNCATE TABLE AUTORI_BACKUP";
-    $result = mysql_query($sql) or die(mysql_error());
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
     $nl2 = count($array);
     #aggiorno i nomi...
     for ($i = 0; $i < $nl2; $i++) {
         $sql = "INSERT INTO AUTORI_BACKUP (nome) VALUES ('" . $array[$i] . "')";
-        $query = mysql_query($sql) or die(mysql_error());
+        $query = mysqli_query($db_connection, $sql) or die(mysql_error());
     }
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
 }
 
 # funzione lettura nomi
 
 function legginomi() {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $sql = "SELECT nome FROM AUTORI";
-    $result = mysql_query($sql) or die(mysql_error());
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
     $i = 0;
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
         $array[$i] = $row['nome'];
         $i++;
     }
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
     return $array;
 }
 
 #funzione scrittura nomi
 
 function scrivinomi($nomi) {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $sql = "TRUNCATE TABLE AUTORI";
-    $result = mysql_query($sql) or die(mysql_error());
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
     $nl2 = count($nomi);
     #aggiorno i nomi...
     for ($i = 0; $i < $nl2; $i++) {
         $sql = "INSERT INTO AUTORI (nome) VALUES ('" . $nomi[$i] . "') ON DUPLICATE KEY UPDATE nome = VALUES(nome)";
-        $query = mysql_query($sql) or die(mysql_error());
+        $query = mysqli_query($db_connection, $sql) or die(mysql_error());
     }
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
 }
 
 #funzione inserimento nuovo utente
@@ -1115,22 +1163,28 @@ function aggiungiutente($nome, $a) {
 #data ultima sessione
 
 function datasessione() {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $sql = "SELECT data FROM sessione_data";
-    $result = mysql_query($sql) or die(mysql_error());
-    $row = mysql_fetch_array($result);
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    $row = mysqli_fetch_array($result);
     $data = $row['data'];
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
     return $data;
 }
 
 #ritorno la data come intero
 
 function dataprec() {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $sql = "SELECT data FROM DATA_ULTIMO_LANCIO";
-    $result = mysql_query($sql) or die(mysql_error());
-    $row = mysql_fetch_array($result);
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    $row = mysqli_fetch_array($result);
     $data = $row['data'];
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
     $data = trim($data);
     $data = substr($data, 0, 10);
     $data = str_replace("-", "", $data);
@@ -1142,27 +1196,33 @@ function dataprec() {
 #ritorno la data come una stringa
 
 function datastring() {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $sql = "SELECT data FROM DATA_ULTIMO_LANCIO";
-    $result = mysql_query($sql) or die(mysql_error());
-    $row = mysql_fetch_array($result);
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    $row = mysqli_fetch_array($result);
     $data = $row['data'];
-    mysql_close($db_connection);
+    mysqli_close($db_connection);
     return $data;
 }
 
 #aggiorno data_ultimo_lancio con la data di ultimo lancio
 
 function aggiornadata() {
+    include './header.inc.php';
+//import connessione database
+    include './mysql/db_conn.php';
     $a = date("Y-m-d H:i", time());
     $sql = "SELECT data FROM DATA_ULTIMO_LANCIO";
-    $result = mysql_query($sql) or die(mysql_error());
-    $row = mysql_fetch_array($result);
+    $result = mysqli_query($db_connection, $sql) or die(mysql_error());
+    $row = mysqli_fetch_array($result);
     $sql = "DELETE FROM DATA_ULTIMO_LANCIO WHERE data='" . $row['data'] . "'";
-    $query = mysql_query($sql) or die(mysql_error());
+    $query = mysqli_query($db_connection, $sql) or die(mysql_error());
     #aggiorno la data...
     $sql = "INSERT INTO DATA_ULTIMO_LANCIO (data) VALUES ('" . $a . "') ON DUPLICATE KEY UPDATE data = VALUES(data)";
-    $query = mysql_query($sql) or die(mysql_error());
-    mysql_close($db_connection);
+    $query = mysqli_query($db_connection, $sql) or die(mysql_error());
+    mysqli_close($db_connection);
 }
 
 ?>

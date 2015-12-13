@@ -42,11 +42,10 @@
     <body>
         <?php
         #importo file per utilizzare funzioni...
-        require_once './authorization/sec_sess.php';
-        include_once './arXiv/check_nomi_data.php';
-        include_once './mysql/func.php';
-        #importazione variabili globali
         include './header.inc.php';
+        include './authorization/sec_sess.php';
+        include './arXiv/check_nomi_data.php';
+        include './mysql/func.php';
         sec_session_start();
         if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] < 86400)) {
             if ($_SESSION['logged_type'] === "mod" or $_SESSION['logged_type'] === "user") {
@@ -77,9 +76,9 @@
                         <br/>
                         <div>
                             <?php
-                            print_r("<font style='font-weight: bold;'>Name: </font>");
+                            print_r("<font style='font-weight: bold;'>USER: </font>");
                             print_r($_SESSION['nome']);
-                            print_r(" <font style='font-weight: bold;'>Credentials: </font>");
+                            print_r(" <font style='font-weight: bold;'>CREDENTIALS: </font>");
                             print_r($_SESSION['logged_type']);
                             ?>
                         </div>
@@ -249,10 +248,10 @@
                         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
                             $fileType = $_FILES["fileToUpload"]["type"];
                             #richiamo della funzione per inserire le info del preprint all'interno del database
-                            $id = insert_pubb($info, $_SESSION['nome'] . " (" . $_SESSION['uid'] . ")");
+                            $id = insert_pubb($info, $_SESSION['uid']);
                             rename($basedir . $_FILES["fileToUpload"]["name"], $basedir . $id . ".pdf");
                             #inserimento file nel database
-                            sendmailadmin($_SESSION['nome'] . " (" . $_SESSION['uid'] . ")", $id);
+                            sendmailadmin($_SESSION['uid'], $id);
                             #insertpdf($id, $fileType);
                             echo '<script type="text/javascript">alert("Paper submitted correctly!\nAfter approvation go on my upload to edit your pubblications.");</script>';
                         } else {

@@ -1,6 +1,8 @@
 <?php
 
 include './header.inc.php';
+//import connessione database
+include './mysql/db_conn.php';
 
 function LDAPAuth($UID) {
     global $ldaphost, $ldapport;
@@ -28,6 +30,65 @@ function RADIUSAuth($UID, $PASSWORD) {
         return true;
     } else {
         echo 'RADIUS ERRORE';
+        return false;
+    }
+}
+
+function InternalAuth($UID, $PASSWORD) {
+    include '../header.inc.php';
+//import connessione database
+    include '../mysql/db_conn.php';
+    $hash = md5($PASSWORD);
+    #verifica se esistono preprints precedenti e li sposto...
+    $sql = "SELECT COUNT(*) AS TOTALFOUND FROM ACCOUNTS WHERE email='" . $UID . "' AND password='" . $hash . "' AND verificato='0'";
+    $query = mysqli_query($db_connection, $sql) or die(mysql_error());
+    $row = mysqli_fetch_array($query);
+    #chiusura connessione al database
+    mysqli_close($db_connection);
+    if ($row['TOTALFOUND'] > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function GetNameAuth($UID) {
+    include '../header.inc.php';
+//import connessione database
+    include '../mysql/db_conn.php';
+    #verifica se esistono preprints precedenti e li sposto...
+    $sql = "SELECT nome,cognome FROM ACCOUNTS WHERE email='" . $UID . "'";
+    $query = mysqli_query($db_connection, $sql) or die(mysql_error());
+    $row = mysqli_fetch_array($query);
+    #chiusura connessione al database
+    mysqli_close($db_connection);
+    return $row['nome'] . " " . $row['cognome'];
+}
+
+function UpdateLastAuth($UID) {
+    include '../header.inc.php';
+//import connessione database
+    include '../mysql/db_conn.php';
+    #verifica se esistono preprints precedenti e li sposto...
+    $sql = "UPDATE ACCOUNTS SET accesso='" . date("c", time()) . "' WHERE email='" . $UID . "'";
+    $query = mysqli_query($db_connection, $sql) or die(mysql_error());
+    #chiusura connessione al database
+    mysqli_close($db_connection);
+}
+
+function SearchAccount($UID) {
+    include '../header.inc.php';
+//import connessione database
+    include '../mysql/db_conn.php';
+    #verifica se esistono preprints precedenti e li sposto...
+    $sql = "SELECT COUNT(*) AS TOTALFOUND FROM ACCOUNTS WHERE email='" . $UID . "'";
+    $query = mysqli_query($db_connection, $sql) or die(mysql_error());
+    $row = mysqli_fetch_array($query);
+    #chiusura connessione al database
+    mysqli_close($db_connection);
+    if ($row['TOTALFOUND'] > 0) {
+        return true;
+    } else {
         return false;
     }
 }

@@ -79,7 +79,7 @@
                         </div>
                         <?php
                         #lettura preprint caricati
-                        leggiupload($_SESSION['nome'] . " (" . $_SESSION['uid'] . ")");
+                        leggiupload($_SESSION['uid']);
                     } else {
                         echo '<script type="text/javascript">alert("ACCESS DENIED!");</script>';
                         echo '<META HTTP-EQUIV="Refresh" Content="0; URL=./reserved.php">';

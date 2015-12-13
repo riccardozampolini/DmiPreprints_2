@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.10deb1
+-- version 4.4.13.1deb1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: Set 19, 2015 alle 11:28
--- Versione del server: 5.5.44-0ubuntu0.14.04.1
--- Versione PHP: 5.5.9-1ubuntu4.11
+-- Creato il: Dic 13, 2015 alle 16:44
+-- Versione del server: 5.6.27-0ubuntu1
+-- Versione PHP: 5.6.11-1ubuntu3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `dmipreprints`
@@ -23,12 +23,27 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `ACCOUNTS`
+--
+
+CREATE TABLE IF NOT EXISTS `ACCOUNTS` (
+  `nome` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `cognome` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `accesso` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `registrazione` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `verificato` int(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `AUTORI`
 --
 
 CREATE TABLE IF NOT EXISTS `AUTORI` (
-  `nome` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`nome`)
+  `nome` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -38,8 +53,7 @@ CREATE TABLE IF NOT EXISTS `AUTORI` (
 --
 
 CREATE TABLE IF NOT EXISTS `AUTORI_BACKUP` (
-  `nome` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`nome`)
+  `nome` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -49,8 +63,7 @@ CREATE TABLE IF NOT EXISTS `AUTORI_BACKUP` (
 --
 
 CREATE TABLE IF NOT EXISTS `DATA_ULTIMO_LANCIO` (
-  `data` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`data`)
+  `data` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -58,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `DATA_ULTIMO_LANCIO` (
 --
 
 INSERT INTO `DATA_ULTIMO_LANCIO` (`data`) VALUES
-('2015-09-19 10:57');
+('2015-12-13 14:58');
 
 -- --------------------------------------------------------
 
@@ -78,9 +91,7 @@ CREATE TABLE IF NOT EXISTS `PREPRINTS` (
   `abstract` longtext COLLATE utf8_unicode_ci,
   `Filename` longtext COLLATE utf8_unicode_ci,
   `checked` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-  `counter` int(255) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id_pubblicazione`),
-  FULLTEXT KEY `id_pubblicazione` (`id_pubblicazione`,`titolo`,`data_pubblicazione`,`autori`,`referenze`,`commenti`,`categoria`,`abstract`)
+  `counter` int(255) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -101,9 +112,7 @@ CREATE TABLE IF NOT EXISTS `PREPRINTS_ARCHIVIATI` (
   `abstract` longtext COLLATE utf8_unicode_ci,
   `Filename` longtext COLLATE utf8_unicode_ci,
   `checked` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-  `counter` int(255) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id_pubblicazione`),
-  FULLTEXT KEY `id_pubblicazione` (`id_pubblicazione`,`titolo`,`data_pubblicazione`,`autori`,`referenze`,`commenti`,`categoria`,`abstract`)
+  `counter` int(255) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -113,8 +122,7 @@ CREATE TABLE IF NOT EXISTS `PREPRINTS_ARCHIVIATI` (
 --
 
 CREATE TABLE IF NOT EXISTS `sessione` (
-  `attivo` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`attivo`)
+  `attivo` varchar(1) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -131,8 +139,7 @@ INSERT INTO `sessione` (`attivo`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `sessione_data` (
-  `data` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`data`)
+  `data` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -140,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `sessione_data` (
 --
 
 INSERT INTO `sessione_data` (`data`) VALUES
-('20150919');
+('20151213');
 
 -- --------------------------------------------------------
 
@@ -149,9 +156,68 @@ INSERT INTO `sessione_data` (`data`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `temp` (
-  `id` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `id` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Indici per le tabelle scaricate
+--
+
+--
+-- Indici per le tabelle `ACCOUNTS`
+--
+ALTER TABLE `ACCOUNTS`
+  ADD PRIMARY KEY (`email`);
+
+--
+-- Indici per le tabelle `AUTORI`
+--
+ALTER TABLE `AUTORI`
+  ADD PRIMARY KEY (`nome`);
+
+--
+-- Indici per le tabelle `AUTORI_BACKUP`
+--
+ALTER TABLE `AUTORI_BACKUP`
+  ADD PRIMARY KEY (`nome`);
+
+--
+-- Indici per le tabelle `DATA_ULTIMO_LANCIO`
+--
+ALTER TABLE `DATA_ULTIMO_LANCIO`
+  ADD PRIMARY KEY (`data`);
+
+--
+-- Indici per le tabelle `PREPRINTS`
+--
+ALTER TABLE `PREPRINTS`
+  ADD PRIMARY KEY (`id_pubblicazione`),
+  ADD FULLTEXT KEY `id_pubblicazione` (`id_pubblicazione`,`titolo`,`data_pubblicazione`,`autori`,`referenze`,`commenti`,`categoria`,`abstract`);
+
+--
+-- Indici per le tabelle `PREPRINTS_ARCHIVIATI`
+--
+ALTER TABLE `PREPRINTS_ARCHIVIATI`
+  ADD PRIMARY KEY (`id_pubblicazione`),
+  ADD FULLTEXT KEY `id_pubblicazione` (`id_pubblicazione`,`titolo`,`data_pubblicazione`,`autori`,`referenze`,`commenti`,`categoria`,`abstract`);
+
+--
+-- Indici per le tabelle `sessione`
+--
+ALTER TABLE `sessione`
+  ADD PRIMARY KEY (`attivo`);
+
+--
+-- Indici per le tabelle `sessione_data`
+--
+ALTER TABLE `sessione_data`
+  ADD PRIMARY KEY (`data`);
+
+--
+-- Indici per le tabelle `temp`
+--
+ALTER TABLE `temp`
+  ADD PRIMARY KEY (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

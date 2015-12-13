@@ -99,7 +99,7 @@
                                     while (($file = readdir($directory_handle)) !== false) {
                                         #Se l'elemento trovato è diverso da una directory
                                         #o dagli elementi . e .. lo visualizzo a schermo
-                                        if ((!is_dir($file)) & ($file != ".") & ($file != "..") & ($file != "index.html")) {
+                                        if ((!is_dir($file)) & ($file != ".") & ($file != "..") & ($file != "index.php")) {
                                             $array[$i] = $file;
                                             $ids = $file;
                                             $ids = substr($ids, 0, -4);
@@ -141,7 +141,7 @@
                                     while (($file = readdir($directory_handle)) !== false) {
                                         #Se l'elemento trovato è diverso da una directory
                                         #o dagli elementi . e .. lo visualizzo a schermo
-                                        if ((!is_dir($file)) & ($file != ".") & ($file != "..") & ($file != "index.html")) {
+                                        if ((!is_dir($file)) & ($file != ".") & ($file != "..") & ($file != "index.php")) {
                                             $array[$i] = $file;
                                             $ids = $file;
                                             $ids = substr($ids, 0, -4);
@@ -184,7 +184,7 @@
                                         if (is_dir($directory2)) {
                                             if ($directory_handle = opendir($directory2)) {
                                                 while (($file = readdir($directory_handle)) !== false) {
-                                                    if ((!is_dir($file)) & ($file != ".") & ($file != "..") & ($file != "index.html")) {
+                                                    if ((!is_dir($file)) & ($file != ".") & ($file != "..") & ($file != "index.php")) {
                                                         if ($file == $array[$j]) {
                                                             #cancello file...
                                                             unlink($percorso);
@@ -227,7 +227,7 @@
                                         if (is_dir($directory2)) {
                                             if ($directory_handle = opendir($directory2)) {
                                                 while (($file = readdir($directory_handle)) !== false) {
-                                                    if ((!is_dir($file)) & ($file != ".") & ($file != "..") & ($file != "index.html")) {
+                                                    if ((!is_dir($file)) & ($file != ".") & ($file != "..") & ($file != "index.php")) {
                                                         if ($file == $array[$j]) {
                                                             if ($j < $lunghezza) {
                                                                 $idd = substr($file, 0, -4);

@@ -48,7 +48,7 @@
         if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] < 86400)) {
             #if ($_SESSION['nome']." (".$_SESSION['uid'].")" == $row['uid'] && $row['uid'] != ""){
             if (($_SESSION['logged_type'] === "mod" or $_SESSION['logged_type'] === "user") &&
-                    ($_SESSION['nome'] . " (" . $_SESSION['uid'] . ")" == $_GET['r']) && $_GET['r'] != " ()") {
+                    ($_SESSION['uid'] == $_GET['r'])) {
                 //sessione moderatore
                 echo "<div id='gotop' hidden><a id='scrollToTop' title='Go top'><img style='width:25px; height:25px;' src='./images/top.gif'></a></div>";
                 if ($_COOKIE['searchbarall'] == "1") {
@@ -85,16 +85,8 @@
                         <div id="boxdx">
                             <input type="submit" name="b1" value="Back" id='bottone_keyword' class='button' onclick="return confirmExit()">
                         </div>
-                    </form>
+                    </form><br/>
                     <?php
-                    if (!isset($_GET['id'])) {
-                        echo "<center><br/><a style='color:#007897;' href='./view_preprints.php?p=1&w=0' onclick='window.open(this.href); return false' title='Go to preprints list'>View from inserted preprints</a></center>";
-                        echo "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
-                        echo " <center><div><form name='f2' action='manual_edit.php' method='POST' onsubmit='loading(load);'>Insert id of publication: <input type='search' autocomplete = 'on' style='width:175px;' name='id' id='textbox' required class='textbox' placeholder='example of id: 0000.0000v1' autofocus/> <input type='submit' name='b8' value='Get preprint' style='width:70px;' id='bottone_keyword' class='button'/><br/>
-		               </form></div></center>
-		               ";
-                        $var = False;
-                    }
                     echo "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
                     if (isset($_POST['b8']) or isset($_POST['b9']) or isset($_POST['b11']) or isset($_POST['b10']) or isset($_GET['id'])) {
                         if (empty($_POST['id'])) {

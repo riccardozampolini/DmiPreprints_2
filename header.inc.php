@@ -1,4 +1,5 @@
 <?php
+
 //file di configurazione
 //mysql
 $hostname_db = "localhost"; //indirizzo database
