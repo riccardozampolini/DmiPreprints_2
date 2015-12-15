@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Creato il: Dic 13, 2015 alle 16:44
+-- Creato il: Dic 15, 2015 alle 20:02
 -- Versione del server: 5.6.27-0ubuntu1
 -- Versione PHP: 5.6.11-1ubuntu3.1
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `ACCOUNTS` (
   `password` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `accesso` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `registrazione` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `verificato` int(1) NOT NULL DEFAULT '0'
+  `verificato` varchar(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `DATA_ULTIMO_LANCIO` (
 --
 
 INSERT INTO `DATA_ULTIMO_LANCIO` (`data`) VALUES
-('2015-12-13 14:58');
+('2015-12-15 19:46');
 
 -- --------------------------------------------------------
 
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `sessione_data` (
 --
 
 INSERT INTO `sessione_data` (`data`) VALUES
-('20151213');
+('20151215');
 
 -- --------------------------------------------------------
 

@@ -38,6 +38,7 @@
     <body>
         <?php
         #importo file per utilizzare funzioni...
+        require_once './graphics/loader.php';
         require_once './authorization/sec_sess.php';
         include_once './arXiv/check_nomi_data.php';
         include_once './arXiv/insert_remove_db.php';
@@ -49,7 +50,7 @@
                 echo "<div id='gotop' hidden><a id='scrollToTop' title='Go top'><img style='width:25px; height:25px;' src='./images/top.gif'></a></div>";
                 if ($_COOKIE['searchbarall'] == "1") {
                     #search bar
-                    require_once './searchbar_bottom.php';
+                    require_once './graphics/searchbar_bottom.php';
                 }
                 ?>
                 <div onclick="myFunction2()">
@@ -86,7 +87,7 @@
                             echo "<hr style='display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;'>";
                             echo " <center><div><form name='f2' action='manual_edit.php' method='POST' onsubmit='loading(load);'>Insert id of publication: 
                                 <input type='search' autocomplete = 'on' style='width:200px; height: 19px;' name='id' required class='textbox' placeholder='example of id: 0000.0000v1'/>
-                                <input type='submit' name='bottoni8' value='Get paper' id='bottone_keyword' class='button'/><br/>
+                                <input type='submit' name='bottoni8' value='Get' id='bottone_keyword' class='button'/><br/>
 		               </form></div></center>
 		               ";
                             $var = False;
@@ -125,7 +126,7 @@
                     <center>
                         <div>
                         <br/>
-                            <h2>paper informations</h2><h1>field with '*' are required</h1><br/><input type='reset' name='reset' value='Reset'><br/><br/></center>
+                            <h2>paper informations</h2><h1>field with '*' are required.</h1><br/><input type='reset' name='reset' value='Reset'><br/><br/></center>
                             <div id='divinsertcateg'>
                             <div style='float:right; width:49%;'><div style='font-weight: bold;'>document:</div><div style='float:right; width:49%;'><a href=./pdf/" . $ris[9] . " onclick='window.open(this.href);return false' style='color:#007897;' title='" . $ris[9] . "'>VIEW</a></div></div>
                             <div style='font-weight: bold;'>
@@ -317,10 +318,5 @@
             }
             ?>
         </div><br/>
-    <center>
-        <div id="load">
-            <img src="./images/loader.gif" alt="Loading" style="width: 192px; height: 94px;">
-        </div>
-    </center>
 </body>
 </html>

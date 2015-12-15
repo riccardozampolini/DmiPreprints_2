@@ -42,6 +42,7 @@
     <body>
         <?php
         #importo file per utilizzare funzioni...
+        require_once './graphics/loader.php';
         include './header.inc.php';
         include './authorization/sec_sess.php';
         include './arXiv/check_nomi_data.php';
@@ -53,7 +54,7 @@
                 echo "<div id='gotop' hidden><a id='scrollToTop' title='Go top'><img style='width:25px; height:25px;' src='./images/top.gif'></a></div>";
                 if ($_COOKIE['searchbarall'] == "1") {
                     #search bar
-                    require_once './searchbar_bottom.php';
+                    require_once './graphics/searchbar_bottom.php';
                 }
                 ?>  <div onclick="myFunction2()">
                     <div id="header-wrapper">
@@ -90,7 +91,10 @@
                                 </form>
                             </div>
                             <div style="float:left; margin-left:1%;">
-                                <a style="color: #3C3C3C;" href="./uploaded.php?p=1" id="bottoni" class="buttonlink" onclick="loading(load);">My uploads</a>
+                                <a style="color: #3C3C3C;" href="./profile.php" id="bottoni" class="buttonlink" onclick="loading(load);">Profile</a>
+                            </div>
+                            <div style="float:left; margin-left:1%;">
+                                <a style="color: #3C3C3C;" href="./uploaded.php?p=1" id="bottoni" class="buttonlink" onclick="loading(load);">Uploads</a>
                             </div>
                             <div style="clear:both;">
                             </div>
@@ -100,7 +104,7 @@
                     <form name="f3" action="userp.php" method="POST" enctype="multipart/form-data" onsubmit="loading(load);">
                         <center>
                             <h2>Insert new paper</h2>
-                            <h1>field with "*" are required</h1>
+                            <h1>field with "*" are required.</h1>
                             <br/>
                             <input type="reset" name="reset" value="Reset">
                             <br/>
@@ -211,7 +215,7 @@
                             <input type="file" required name="fileToUpload" id="fileToUpload">
                             <br/>
                             <br/>
-                            <input type="submit" name="b3" value="Submit paper" id='bottone_keyword' class='button' onclick="return confirmInsert()"/>
+                            <input type="submit" name="b3" value="Submit" id='bottone_keyword' class='button' onclick="return confirmInsert()"/>
                             <hr style="display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;">
                         </center>
                     </form>
@@ -275,10 +279,5 @@
             UpdateMathaut('Here it will show a preview of what you write on authors');
             UpdateMathabs('Here it will show a preview of what you write on abstract');
         </script>
-    <center>
-        <div id="load">
-            <img src="./images/loader.gif" alt="Loading" style="width: 192px; height: 94px;">
-        </div>
-    </center>
 </body>
 </html>

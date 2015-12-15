@@ -24,6 +24,7 @@
     </head>
     <body>
         <?php
+        require_once './graphics/loader.php';
         require_once './authorization/sec_sess.php';
         sec_session_start();
         if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] < 86400)) {
@@ -32,7 +33,7 @@
                 echo "<div id='gotop' hidden><a id='scrollToTop' title='Go top'><img style='width:25px; height:25px;' src='./images/top.gif'></a></div>";
                 if ($_COOKIE['searchbarall'] == "1") {
                     #search bar
-                    require_once './searchbar_bottom.php';
+                    require_once './graphics/searchbar_bottom.php';
                 }
                 ?>
                 <div onclick="myFunction2()">
@@ -89,6 +90,7 @@
                             $lunghezza = count($nomi);
                             echo "<form name='f1' action='authors_list.php' id='f1' method='POST' onsubmit='loading(load);'>
                             <center><table id='table' style='width:25%; margin-left: 0%;'>";
+                            echo "<tr id='thhead'><td id='tdh' colspan='2' align='center'>ARXIV AUTHORS</td></tr>";
                             echo "<tr id='th'>"
                             . "<td id='tdh'><label><input type='checkbox' class='checkall1' name='all1' onChange='toggle(this)'/>N&deg;:</label></td>"
                             . "<td id='tdh' align='center'>NAME:</td></tr>";
@@ -173,10 +175,5 @@
                 ?>
             </div>
         </div>
-    <center>
-        <div id="load">
-            <img src="./images/loader.gif" alt="Loading" style="width: 192px; height: 94px;">
-        </div>
-    </center>
 </body>
 </html>

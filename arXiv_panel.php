@@ -30,14 +30,16 @@
     </head>
     <body>
         <?php
+        require_once './graphics/loader.php';
         require_once './authorization/sec_sess.php';
+        include './mysql/func.php';
         sec_session_start();
         if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] < 86400)) {
             if ($_SESSION['logged_type'] === "mod") {
                 echo "<div id='gotop' hidden><a id='scrollToTop' title='Go top'><img style='width:25px; height:25px;' src='./images/top.gif'></a></div>";
                 if ($_COOKIE['searchbarall'] == "1") {
                     //searchbar bassa
-                    require_once './searchbar_bottom.php';
+                    require_once './graphics/searchbar_bottom.php';
                 }
                 //sessione moderatore
                 ?>
@@ -71,26 +73,32 @@
                                 The authors list
                             </div>
                             <div id="boxdx">
-                                <a style="color:#3C3C3C;" href="./authors_list.php" id="bottone_keyword" class="buttonlink" onclick="loading(load);">Authors section</a>
+                                <a style="color:#3C3C3C;" href="./authors_list.php" id="bottone_keyword" class="buttonlink" onclick="loading(load);">View</a>
                             </div>
                             <div id="boxsx">
                                 Insert a paper
                             </div>
                             <div id="boxdx">
-                                <a style="color:#3C3C3C;" href="./manual_insert.php" id="bottone_keyword" class="buttonlink" onclick="loading(load);">Enter manually</a>
+                                <a style="color:#3C3C3C;" href="./manual_insert.php" id="bottone_keyword" class="buttonlink" onclick="loading(load);">Enter</a>
                             </div>
                             <div id="boxsx">
                                 approve papers
                             </div>
                             <div id="boxdx">
-                                <a style="color:#3C3C3C;" href="./check_preprints.php" id="bottone_keyword" class="buttonlink" onclick="loading(load);">Check section</a>
+                                <a style="color:#3C3C3C;" href="./check_preprints.php" id="bottone_keyword" class="buttonlink" onclick="loading(load);">Check</a>
+                                <?php
+                                //controllo se ci sono preprint da approvare
+                                if (check_approve() == true) {
+                                    print_r(" <font style='color:red; font-style: italic'>There are preprint to be approved!</font>");
+                                }
+                                ?>
                             </div>
                             <div id="boxsx">
                                 Search for new papers
                             </div>
                             <div id="boxdx">
                                 <form name="f8" action="arXiv_panel.php" method="POST" onsubmit="loading(load);">
-                                    <input style="width:110px;" type="submit" name="b8" value="Start update" id="bottone_keyword" class="button">
+                                    <input style="width:110px;" type="submit" name="b8" value="Update" id="bottone_keyword" class="button">
                                 </form>
                             </div>
                             <div id="boxsx">
@@ -98,7 +106,7 @@
                             </div>
                             <div id="boxdx">
                                 <form name="f9" action="arXiv_panel.php" method="POST">
-                                    <input style="width:110px;" type="submit" name="b9" value="Overwrite All" id="bottone_keyword" class="button" onclick="return confirmDownload()">
+                                    <input style="width:110px;" type="submit" name="b9" value="Overwrite" id="bottone_keyword" class="button" onclick="return confirmDownload()">
                                 </form>
                             </div>
                             <div style="clear:both;"></div>
@@ -143,6 +151,10 @@
                                             chiudisessione();
                                             echo "<br/>PAPERS DOWNLOADED: " . $j . "<br/><br/>";
                                             $dc1 = true;
+                                            //controllo se ci sono preprint da approvare
+                                            if (check_approve() == true) {
+                                                print_r(" <font style='color:red; font-style: italic'>There are preprint to be approved!</font><br/><br/>");
+                                            }
                                         }
                                     } else {
                                         echo '<script type="text/javascript">alert("UPDATE SESSION IS ALREADY STARTED FROM OTHER ADMIN!");</script>';
@@ -185,6 +197,10 @@
                                             chiudisessione();
                                             echo "<br/>PAPERS DOWNLOADED: " . $j . "<br/><br/>";
                                             $dc2 = true;
+                                            //controllo se ci sono preprint da approvare
+                                            if (check_approve() == true) {
+                                                print_r(" <font style='color:red; font-style: italic'>There are preprint to be approved!</font><br/><br/>");
+                                            }
                                         }
                                     } else {
                                         echo '<script type="text/javascript">alert("DOWNLOAD SESSION IS ALREADY STARTED FROM OTHER ADMIN!");</script>';
@@ -240,6 +256,10 @@
                                                 chiudisessione();
                                                 echo "<br/>PAPERS DOWNLOADED: " . $j . "<br/><br/>";
                                                 $dc1 = true;
+                                                //controllo se ci sono preprint da approvare
+                                                if (check_approve() == true) {
+                                                    print_r(" <font style='color:red; font-style: italic'>There are preprint to be approved!</font><br/><br/>");
+                                                }
                                             }
                                         } else {
                                             echo '<script type="text/javascript">alert("UPDATE SESSION IS ALREADY STARTED FROM OTHER ADMIN!");</script>';
@@ -250,7 +270,7 @@
                                 }
                                 #memorizzo in $data ultimo aggiornamento e la visualizzo
                                 $data = datastring();
-                                echo " LAST UPDATE: " . $data;
+                                echo "LAST UPDATE: " . $data;
                                 #update o download completato correttamente
                                 if ($dc1 == true) {
                                     echo '<script type="text/javascript">alert("Update complete!");</script>';
@@ -277,10 +297,5 @@
         </div>
         <br/>
         <br/>
-    <center>
-        <div id="load">
-            <img src="./images/loader.gif" alt="Loading" style="width: 192px; height: 94px;">
-        </div>
-    </center>
 </body>
 </html>

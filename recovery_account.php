@@ -40,6 +40,7 @@
             To reset your password please enter the email address provided during registration.
         </div><br/><br/>
         <?php
+        require_once './graphics/loader.php';
         //TEST DEBUG
         error_reporting(E_ALL);
         ini_set('display_errors', 1);

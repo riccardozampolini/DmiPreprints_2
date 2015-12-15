@@ -78,21 +78,36 @@
                             <br/><br/>
                             Go back to new insertion: <a style="color:#3C3C3C;" href="<?php echo $ind; ?>" id="bottoni" class="button" onclick="loading(load);">Back</a>
                         </div>
-                        <?php
-                        #lettura preprint caricati
-                        leggiupload($_SESSION['uid']);
+                        <hr style="display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;">
+                        <div id="container">
+                            <div style="width: 45%;"><br/>
+                                <h2>Profile information</h2>
+                                <h1>Here you can see and change your account information.</h1>
+                            </div><br/>
+                            <?php
+                            //lettura informazioni account
+                            $info = find_account_info($_SESSION['uid']);
+                            //TEST DEBUG
+                            error_reporting(E_ALL);
+                            ini_set('display_errors', 1);
+                            require_once './reserved/edit_accountForm.php';
+                            //TEST DEBUG
+                            error_reporting(E_ALL);
+                            ini_set('display_errors', 1);
+                            require_once './reserved/delete_accountForm.php';
+                        } else {
+                            echo '<script type="text/javascript">alert("ACCESS DENIED!");</script>';
+                            echo '<META HTTP-EQUIV="Refresh" Content="0; URL=./reserved.php">';
+                        }
                     } else {
-                        echo '<script type="text/javascript">alert("ACCESS DENIED!");</script>';
                         echo '<META HTTP-EQUIV="Refresh" Content="0; URL=./reserved.php">';
                     }
-                } else {
-                    echo '<META HTTP-EQUIV="Refresh" Content="0; URL=./reserved.php">';
-                }
-                ?>
+                    ?>
+                </div>
+                <br/>
+                <br/>
+                <br/>
             </center>
         </div>
-        <br/>
-        <br/>
-        <br/>
-                </body>
-                </html>
+    </body>
+</html>

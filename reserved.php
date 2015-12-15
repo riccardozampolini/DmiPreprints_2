@@ -37,7 +37,7 @@
     <center>
         <div style="width: 45%;">
             <h1>It is the first time you access here?</h1><br/>
-            For access use username and password of the University xxxxxxxx,
+            For access use username and password of the University(University of Perugia),
             for those outside University of Perugia you can register and use the email 
             provided during the registration.
         </div><br/><br/>

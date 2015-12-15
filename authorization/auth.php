@@ -39,8 +39,9 @@ function InternalAuth($UID, $PASSWORD) {
 //import connessione database
     include '../mysql/db_conn.php';
     $hash = md5($PASSWORD);
+    //da inserire: verificato=yes
     #verifica se esistono preprints precedenti e li sposto...
-    $sql = "SELECT COUNT(*) AS TOTALFOUND FROM ACCOUNTS WHERE email='" . $UID . "' AND password='" . $hash . "' AND verificato='0'";
+    $sql = "SELECT COUNT(*) AS TOTALFOUND FROM ACCOUNTS WHERE email='" . $UID . "' AND password='" . $hash . "'";
     $query = mysqli_query($db_connection, $sql) or die(mysql_error());
     $row = mysqli_fetch_array($query);
     #chiusura connessione al database

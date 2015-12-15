@@ -59,6 +59,7 @@
     <body>
         <?php
         #importo file per utilizzare funzioni...
+        require_once './graphics/loader.php';
         require_once './authorization/sec_sess.php';
         include_once './arXiv/check_nomi_data.php';
         include_once './arXiv/insert_remove_db.php';
@@ -95,7 +96,7 @@
                                 </header>";
         }
         if ($_SESSION['logged_type'] != "mod") {
-            $str1 = "<h1><center>in this section are the papers that have been published on DMI archive and papers published by these <a style='color:#007897;' href='./authors_list.php' onclick='window.open(this.href); return false'>authors</a> on arxiv.org</center></h1><br/>";
+            $str1 = "<h1><center>in this section are the papers that have been published on DMI archive and papers published by these <a style='color:#007897;' href='./authors_list.php' onclick='window.open(this.href); return false'>authors</a> on arxiv.org.</center></h1><br/>";
         }
         ?>
         <div id="header-wrapper">
@@ -254,11 +255,6 @@
             }
             ?>
         </div><br/>
-    </center>
-    <center>
-        <div id="load">
-            <img src="./images/loader.gif" alt="Loading" style="width: 192px; height: 94px;">
-        </div>
     </center>
 </body>
 </html>

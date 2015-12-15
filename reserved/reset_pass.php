@@ -14,7 +14,7 @@ if (isset($_POST['mail'])) {
     #chiusura connessione al database
     mysqli_close($db_connection);
     if ($row['TOTALFOUND'] > 0) {
-    	//invio della mail per il reset
+        //invio della mail per il reset
         echo "The link to reset the password is sent to your email address! (if the mail is not arrived, try again)";
     } else {
         echo "The email address you entered does not exist!<br/>Wait 10 seconds to try again.";

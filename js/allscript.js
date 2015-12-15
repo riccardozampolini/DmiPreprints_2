@@ -1,10 +1,80 @@
-//funzione termina login
-function logout() {
-    $("#container_principale").load("reserved/logout.php", function () {
-        $("#container_principale").load("reserved/submit_loginChooser.php", function () {
-            location.reload(true);
-        });
+//funzione controllo registrazione
+function chkAccountUpdate() {
+    var name = $('#name').val();
+    var sname = $('#surname').val();
+    var email = $('#email').val();
+    var emailo = $('#emailold').val();
+    var pwd = $('#pwd').val();
+    var pw0 = $('#pw0').val();
+    var pw1 = $('#pw1').val();
+    var pw2 = $('#pw2').val();
+    var n = name.length;
+    var s = sname.length;
+    var e = email.length;
+    var p0 = pw0.length;
+    var p1 = pw1.length;
+    var p2 = pw2.length;
+    if (n == 0 || s == 0 || e == 0) {
+        alert("All fields are required!");
+        return false;
+    } else {
+        if (p0 != 0) {
+            if (p1 == 0 || p2 == 0) {
+                alert("Insert new password!");
+                return false;
+            } else {
+                if (p1 < 6) {
+                    alert("The password field must contain at least 6 characters!");
+                    return false;
+                } else if (pw1 != pw2) {
+                    alert("Passwords do not match!");
+                    return false;
+                } else if (name == pw1) {
+                    alert("The password can not be the name!");
+                    return false;
+                } else if (sname == pw1) {
+                    alert("The password can not be the surname!");
+                    return false;
+                }
+            }
+        }
+    }
+    //array caratteri speciali
+    var chars = ["{", "}", "[", "]", "(", ")", "*", "$", "€", "%", "/", "^", "#", "!", "`", "~", "+", "=", "?", "&", " ", '"', "'", ";", ":", "\\", "|"];
+    //array caratteri speciali nome e cognome
+    var chars1 = ["{", "}", "[", "]", "(", ")", "*", "$", "€", "%", "/", "^", "#", "!", "`", "~", "+", "=", "?", "&", " ", '"', "'", ";", ":", "\\", "|", "@", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    //controllo campo nome
+    for (var i = 0; i < chars1.length; i++) {
+        if (name.indexOf(chars1[i]) != -1) {
+            alert("The name is not valid!");
+            return false;
+        }
+    }
+    //controllo campo cognome
+    for (var i = 0; i < chars1.length; i++) {
+        if (sname.indexOf(chars1[i]) != -1) {
+            alert("The surname is not valid!");
+            return false;
+        }
+    }
+    //controllo campo mail
+    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    if (!reg.test(email)) {
+        alert("The email is not valid!");
+        return false;
+    }
+    //
+    $("#top_content").load("reserved/edit_account.php", {name: name, surname: sname, mailold: emailo, mail: email, passworddat: pwd, passwordold: pw0, password: pw1}, function () {
     });
+}
+//funzione cancella account
+function chkAccountDelete() {
+    var email = $('#email').val();
+    var e = email.length;
+    if (confirm("WARNING: The operation is not reversible, you want to proceed with the deletion?")) {
+        $("#container").load("reserved/delete_account.php", {mail: email}, function () {
+        });
+    }
 }
 //funzione reset password login
 function chkReset() {
@@ -469,4 +539,8 @@ function confirmDelete4()
 function confirmDelete5()
 {
     return confirm("Remove all archived papers?");
+}
+function confirmDelete6()
+{
+    return confirm("Remove user/s?");
 }
