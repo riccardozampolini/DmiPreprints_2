@@ -45,6 +45,7 @@
         require_once './graphics/loader.php';
         include './header.inc.php';
         include './authorization/sec_sess.php';
+        include './authorization/auth.php';
         include './arXiv/check_nomi_data.php';
         include './mysql/func.php';
         sec_session_start();
@@ -90,9 +91,13 @@
                                     <input style="color: red;" type="submit" name="b1" value="Logout" id="bottoni" class="buttonlink" onclick="return confirmLogout()">
                                 </form>
                             </div>
-                            <div style="float:left; margin-left:1%;">
-                                <a style="color: #3C3C3C;" href="./profile.php" id="bottoni" class="buttonlink" onclick="loading(load);">Profile</a>
-                            </div>
+                            <?php
+		                   if (SearchAccountUser($_SESSION['uid'])) {
+		                   	echo '<div style="float:left; margin-left:1%;">
+                                	<a style="color: #3C3C3C;" href="./profile.php" id="bottoni" class="buttonlink" onclick="loading(load);">Profile</a>
+                            		</div>';
+		                   }
+                            ?>
                             <div style="float:left; margin-left:1%;">
                                 <a style="color: #3C3C3C;" href="./uploaded.php?p=1" id="bottoni" class="buttonlink" onclick="loading(load);">Uploads</a>
                             </div>
