@@ -33,7 +33,7 @@ ul.big-image-list img {
 #header h1 {
     position: absolute;
     left: 40px;
-    top: 0;
+    top: 16px;
     color: #fff;
     font-size: 2em;
     line-height: 50px;
@@ -50,7 +50,6 @@ ul.big-image-list img {
     right: 40px;
     line-height: 50px;
     font-size: 1.1em;
-    font-style: italic;
 }
 
 /* Banner */

@@ -6,7 +6,7 @@
         <?php
         #importazione della libreria simplepie versione 1.3.1
         include_once './arXiv/SimplePie.php';
-        include_once './arXiv/check_nomi_data.php';
+        include_once './arXiv/functions.php';
         include_once './arXiv/cURL.php';
         include_once './arXiv/insert_remove_db.php';
         define('EOL', "<br />\n");
@@ -18,7 +18,7 @@
 
         function arxiv_call($nome, $dataultimolancio) {
             #importazione variabili globali
-            include './header.inc.php';
+            include './conf.php';
             #inizializzo variabile per contare preprints scaricati...
             $k = 0;
             #adattamento stringa nome per chiamata su arXiv...

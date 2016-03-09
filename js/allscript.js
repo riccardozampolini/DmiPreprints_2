@@ -1,3 +1,32 @@
+//funzione ordinamento lista utenti
+function setOrder() {
+    loadingRight(loadRight);
+    document.getElementById("f1").submit();
+}
+//funzione disattivazione checkbox nella ricerca avanzata
+function DisAllFields(id) {
+    if (id == "all") {
+        if (!document.getElementById("h").disabled) {
+            document.getElementById("h").disabled = true;
+            document.getElementById("t").disabled = true;
+            document.getElementById("a").disabled = true;
+            document.getElementById("e").disabled = true;
+            document.getElementById("y").disabled = true;
+            document.getElementById("c").disabled = true;
+            document.getElementById("j").disabled = true;
+            document.getElementById("i").disabled = true;
+        } else {
+            document.getElementById("h").disabled = false;
+            document.getElementById("t").disabled = false;
+            document.getElementById("a").disabled = false;
+            document.getElementById("e").disabled = false;
+            document.getElementById("y").disabled = false;
+            document.getElementById("c").disabled = false;
+            document.getElementById("j").disabled = false;
+            document.getElementById("i").disabled = false;
+        }
+    }
+}
 //funzione controllo registrazione
 function chkAccountUpdate() {
     var name = $('#name').val();
@@ -75,6 +104,23 @@ function chkAccountDelete() {
         $("#container").load("reserved/delete_account.php", {mail: email}, function () {
         });
     }
+}
+//funzione reset password login
+function chkInsertReset() {
+    var pw1 = $('#pw1').val();
+    var pw2 = $('#pw2').val();
+    var token = $('#tk').val();
+    var p1 = pw1.length;
+    if (pw1 != pw2) {
+        alert("Passwords do not match!");
+        return false;
+    } else if (p1 < 6) {
+        alert("The password field must contain at least 6 characters!");
+        return false;
+    }
+    //
+    $("#top_content").load("reserved/insert_new_password.php", {password1: pw1, password2: pw2, tk: token}, function () {
+    });
 }
 //funzione reset password login
 function chkReset() {
@@ -188,150 +234,6 @@ function getCookie(cname) {
     }
     return "";
 }
-//cookie istruzioni fulltext search
-function checkCookie() {
-    var adv = getCookie("adv");
-    if (adv == "") {
-        alert("EXAMPLE OF USING BOOLEAN OPERATORS(full text search):\n'Milan Rome': this must be one of the two terms.\n'+Milan +Rome': must be present both terms.\n'+Milan Rome': there must be 'Milan' and possibly 'Rome'.\n'+Milan -Rome': there must be 'Milan' but not 'Rome'.\n'+Milan +(<Rome >Venice)': must be present or 'Milan' and 'Rome' or 'Milan' and 'Venice', but the records with 'Milan' and 'Venice' are of greater. ('<' Means less important, '>' means greater relevance).\n'''Milan Rome''': This must be the exact sequence 'Milan Rome'.\n");
-        setCookie("adv", "yes", 15);
-    }
-}
-//avviso cookie impostazioni
-function checkCookie1() {
-    var adv = getCookie("opt");
-    if (adv == "") {
-        alert("This settings use cookies, your preferences will remain stored in your browser.");
-        setCookie("opt", "yes", 15);
-    }
-}
-//cookie pageview
-function checkCookie3() {
-    var pageview = getCookie("pageview");
-    if (pageview == "0") {
-        setCookie("pageview", "1", 1825);
-        alert("On page view is now abilited, PDF will be shown in the page!");
-        window.location.reload();
-    } else {
-        adv.style.display = 'none';
-        setCookie("pageview", "0", 1825);
-        alert("On page view is now disabled!");
-        window.location.reload();
-    }
-}
-//settaggio cookie pageview
-function checkCookie4() {
-    setCookie("pageview", "0", 1825);
-    window.location.reload();
-}
-//cookie searchbar in tutte le pagine
-function checkCookie6() {
-    var pageview = getCookie("searchbarall");
-    if (pageview == "0" || pageview == "") {
-        setCookie("searchbarall", "1", 1825);
-        setCookie("searchbar", "1", 1825);
-        alert("Search Bar is now abilited on all pages, now the bar will appear on every page!");
-        window.location.reload();
-    } else {
-        setCookie("searchbarall", "0", 1825);
-        alert("Search Bar is now disabled on all pages, now the bar will appear only in this page!");
-        window.location.reload();
-    }
-}
-//cookie searchbar in tutte le pagine
-function checkCookie7() {
-    setCookie("searchbarall", "0", 1825);
-    alert("Search Bar is now disabled on all pages, use settings menu to riactivate!");
-}
-//visualizza ricerca avanzata
-function showHide(id) {
-    if (id.style.display != 'block') {
-        id.style.display = 'block';
-    } else {
-        id.style.display = 'none';
-    }
-}
-//opzioni di visualizzazione ricerca tutte le pagine
-function showHide2(id, id2) {
-    checkCookie();
-    showHide(id);
-    showHide(id2);
-}
-//visualizza opzioni
-function showHide3(id, id2, id3) {
-    checkCookie();
-    id.style.display = 'none';
-    id2.style.display = 'none';
-    if (id3.style.display != 'block') {
-        id3.style.display = 'block';
-    } else {
-        id3.style.display = 'none';
-    }
-}
-//visualizza ricerca avanzata
-function showHide4(id, id2, id3) {
-    checkCookie();
-    id3.style.display = 'none';
-    if (id.style.display != 'block') {
-        id.style.display = 'block';
-        id2.style.display = 'block';
-    } else {
-        id.style.display = 'none';
-        id2.style.display = 'none';
-    }
-}
-//chiudi menu click fuori dalla finestra
-function myFunction() {
-    adv.style.display = 'none';
-    adv2.style.display = 'none';
-    opt.style.display = 'none';
-}
-//chiudi menu click fuori dalla finestra
-function myFunction2() {
-    adva.style.display = 'none';
-    adv2a.style.display = 'none';
-}
-//funzione searchbar fixed
-$(document).ready(function () {
-    var s = $("#sticker");
-    var pos = s.position();
-    $(window).scroll(function () {
-        var windowpos = $(window).scrollTop();
-        if (windowpos >= pos.top) {
-            s.addClass("stick");
-        } else {
-            s.removeClass("stick");
-        }
-    });
-});
-//funzione visualizza freccia torna su 
-$(document).ready(function () {
-    var s = $("#gotop");
-    var pos = s.position();
-    $(window).scroll(function () {
-        var windowpos = $(window).scrollTop();
-        if (windowpos >= 120) {
-            s.addClass("gotopview");
-        } else {
-            s.removeClass("gotopview");
-        }
-    });
-});
-//funzione animazioni scrolling
-$(document).ready(function () {
-    //Check to see if the window is top if not then display button
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 100) {
-            $('#scrollToTop').fadeIn();
-        } else {
-            $('#scrollToTop').fadeOut();
-        }
-    });
-    //funzione click per lo scrolling
-    $('#scrollToTop').click(function () {
-        $('html, body').animate({scrollTop: 0}, 800);
-        return false;
-    });
-});
 //text area category
 (function () {
     window.UpdateMathcat = function (TeX) {
@@ -386,24 +288,31 @@ $(document).ready(function () {
         MathJax.Hub.Queue(["Typeset", MathJax.Hub, "abstractdiv"]);
     }
 })();
-//avviso di conferma
-function confirmLogout()
-{
-    return confirm("Exit?");
-}
-//controllo categoria
-function Checkcath(val) {
-    var element = document.getElementById('cat');
-    if (val == 'category' || val == 'Other')
-        element.style.display = 'block';
-    else
-        element.style.display = 'none';
-}
-//funzione seleziona tutte checkbox
+//funzione seleziona tutte checkbox autori
 function toggle(source) {
     var aInputs = document.getElementsByTagName('input');
     for (var i = 0; i < aInputs.length; i++) {
-        if (aInputs[i] != source && aInputs[i].className == source.className) {
+        if (aInputs[i] != source && aInputs[i].className == "check") {
+            aInputs[i].checked = source.checked;
+            evidenziaTr(aInputs[i]);
+        }
+    }
+}
+//funzione seleziona tutte checkbox dmitable
+function toggleDMI(source) {
+    var aInputs = document.getElementsByTagName('input');
+    for (var i = 0; i < aInputs.length; i++) {
+        if (aInputs[i] != source && aInputs[i].className == "check2") {
+            aInputs[i].checked = source.checked;
+            evidenziaTr(aInputs[i]);
+        }
+    }
+}
+//funzione seleziona tutte checkbox arxivtable
+function toggleARXIV(source) {
+    var aInputs = document.getElementsByTagName('input');
+    for (var i = 0; i < aInputs.length; i++) {
+        if (aInputs[i] != source && aInputs[i].className == "check1") {
             aInputs[i].checked = source.checked;
             evidenziaTr(aInputs[i]);
         }
@@ -481,11 +390,43 @@ window.onload = function () {
 }
 //visualizza schermata di caricamento
 function loading(id) {
+    id.style.display = 'block';
+    var t = document.getElementById('firstContainer');
+    t.style.display = 'none';
+    try {
+        var t1 = document.getElementById('form');
+        t1.style.display = 'none';
+    } catch (err) {
+    }
+}
+//visualizza schermata di caricamento a destra
+function loadingRight(id) {
     if (id.style.display != 'block') {
         id.style.display = 'block';
     } else {
         id.style.display = 'none';
     }
+    var t = document.getElementById('secondContainer');
+    t.style.display = 'none';
+    try {
+        var t1 = document.getElementById('form');
+        t1.style.display = 'none';
+    } catch (err) {
+
+    }
+
+}
+//avviso di conferma
+function confirmLogout() {
+    return confirm("Exit?");
+}
+//controllo categoria visualizza nuova textarea se selezionato altro
+function Checkcath(val) {
+    var element = document.getElementById('cat');
+    if (val == 'category' || val == 'Other')
+        element.style.display = 'block';
+    else
+        element.style.display = 'none';
 }
 //messaggi di avviso
 function confirmDownload() {
@@ -501,7 +442,7 @@ function confirmInsert() {
     return confirm("Are you sure?");
 }
 function confirmDelete() {
-    return confirm("Delete this paper?");
+    return confirm("Delete this preprint?");
 }
 function confirmExit() {
     var x = confirm("All unsaved changes will be lost, continue?");
@@ -512,35 +453,27 @@ function confirmExit() {
         return x;
     }
 }
-function confirmDelete2()
-{
+function confirmDelete2() {
     return confirm("Delete this publication?\n(It can not be undone)");
 }
-function confirmInsert2()
-{
+function confirmInsert2() {
     return confirm("Update publication information?\n(If you want to upload a new pdf use upgrade function)");
 }
-function confirmUpgrade()
-{
+function confirmUpgrade() {
     return confirm("Upgrade publication to following version?\n(This is used for the uploading a new pdf, it can not be undone)");
 }
-function confirmDelete3()
-{
-    return confirm("Remove selected papers?");
+function confirmDelete3() {
+    return confirm("Remove selected preprints?");
 }
-function confirmInsert3()
-{
-    return confirm("Insert selected papers?");
+function confirmInsert3() {
+    return confirm("Insert selected preprints?");
 }
-function confirmDelete4()
-{
+function confirmDelete4() {
     return confirm("Remove author/s?");
 }
-function confirmDelete5()
-{
-    return confirm("Remove all archived papers?");
+function confirmDelete5() {
+    return confirm("Remove all archived preprints?");
 }
-function confirmDelete6()
-{
+function confirmDelete6() {
     return confirm("Remove user/s?");
 }

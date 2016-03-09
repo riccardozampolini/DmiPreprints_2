@@ -13,24 +13,24 @@ if (isset($_SESSION['logged_type'])) {
     if ($_SESSION['logged_type'] === "user") {
         //sessione utente
         header('Location:./userp.php');
-        exit;
+        exit();
     } else {
         if ($_SESSION['logged_type'] === "mod") {
             //sessione moderatore
             header('Location:./modp.php');
-            exit;
+            exit();
         } else {
-            echo 'errore login chooser';
+            echo 'Credentials not alowed!';
         }
     }
 } else {
     //deve fare login
     echo '<div id="left_content">
-          	<input id="input_uid" class="textbox" style="height: 14pt;" placeholder="Enter uid or email" required>
-          	<input type="password" id="input_pw" class="textbox" style="height: 14pt;" placeholder="Enter password" required>
+          	<input type="text" id="input_uid" class="textfield" placeholder="Enter UID or email" autocomplete = "on" required>
+          	<input type="password" id="input_pw" class="textfield" placeholder="Enter password" required>
           	<br/><br/>
-          	<button id="button_login" style="width: 110px;" onclick="chkLogin()" class="button">Login</button>
+          	<button id="button_login" onclick="chkLogin()" class="buttonlink">Login</button>
 	  </div>
-	  <div id="right_content"></div>';
+	  <div id="right_content"></div><br/>';
 }
 ?>

@@ -52,24 +52,27 @@ ul.big-image-list img {
 /* Header */
 
 #header-wrapper {
-    background-color: #007294;
+    background-color: #1976D2;
     width: 100%;
 }
 
 #header {
-    position: relative;
-    box-shadow: inset 0px 0px 0px 1px #12a0bf, 0px 1px 4px 0px rgba(0,0,0,0.10);
-    background-color: #007b9d;
-    height: 30px;
+    font-family: Roboto, Lucida Grande, Helvetica, Arial, sans-serif;
+    font-weight: 100;
+    position: fixed;
+    background-color: #1976D2;
+    height: 48px;
     width: 100%;
+    box-shadow: 0px 0px 10px #000000;
+    z-index: 999999;
 }
 
 #header h1 {
     position: absolute;
     left: 40px;
-    top: 0;
+    top: 10px;
     color: #fff;
-    font-size: 1.5em;
+    font-size: 1.6em;
     line-height: 30px;
     font-weight: bold;
 }
@@ -82,32 +85,35 @@ ul.big-image-list img {
 #header nav {
     position: absolute;
     right: 40px;
-    line-height: 30px;
-    font-size: 1em;
+    line-height: 48px;
+    font-weight: bold;
+    overflow: hidden;
+    font-size: 1.0em;
 }
 
 #header nav a {
+    font-family: Roboto, Lucida Grande, Helvetica, Arial, sans-serif;
     display: inline-block;
     text-decoration: none;
     color: #fff;
-    padding: 0 25px 0 25px;
+    padding: 0 20px 0 20px;
     outline: 0;
 }
 
 #header nav a.current-page-item {
-    background-color: #00718D;
-    box-shadow: 0px 0px 1px #9A9A9A inset;
+    background-color: #0288D1;
+    box-shadow: 0px 0px 1px #0288D1 inset;
 }
 
 #header nav a:hover {
-    background-color: #1592B1;
-    box-shadow: 0px 0px 1px #9A9A9A inset;
+    background-color: #03A9F4;
+    box-shadow: 0px 0px 1px #03A9F4 inset;
 }
 
 /* Banner */
 
 #banner-wrapper {
-    background: #c8d2bc url(images/bg1.png);
+    background: #1976D2 url(images/bg1.png);
 }
 
 #banner {

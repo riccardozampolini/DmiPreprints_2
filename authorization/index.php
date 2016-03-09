@@ -1,5 +1,5 @@
 <?php
 
-header('Location:../view_preprints.php');
+header('Location:../index.php');
 exit;
 ?>
