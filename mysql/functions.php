@@ -1117,7 +1117,7 @@ function sendConfirmMail($email, $name) {
     //libreria Pear Mail
     require_once "../Mail-1.3.0/Mail.php";
     require_once "../Mail-1.3.0/mime.php";
-    $from = $send_mail;
+    $from = $send_mail_user;
     $to = $email;
     $subject = 'DMI Preprints - Confirm Registration';
     $text = "To confirm your account use this link: http://localhost/confirmation.php?token=" . $token;
@@ -1170,7 +1170,7 @@ function sendResetMail($email) {
     //libreria Pear Mail
     require_once "../Mail-1.3.0/Mail.php";
     require_once "../Mail-1.3.0/mime.php";
-    $from = $send_mail;
+    $from = $send_mail_user;
     $to = $email;
     $subject = 'DMI Preprints - Reset Password';
     $text = "To reset the password of your account use this link: http://localhost/recovery_account.php?token=" . $token;
@@ -1219,7 +1219,7 @@ function sendPassConfirmMail($email) {
     //libreria Pear Mail
     require_once "../Mail-1.3.0/Mail.php";
     require_once "../Mail-1.3.0/mime.php";
-    $from = $send_mail;
+    $from = $send_mail_user;
     $to = $email;
     $subject = 'DMI Preprints - Password Changed';
     $text = "The password of your account has been changed on " . date("c", time()) . ".";
@@ -1268,7 +1268,7 @@ function sendEmailChanged($emailOld, $email) {
     //libreria Pear Mail
     require_once "../Mail-1.3.0/Mail.php";
     require_once "../Mail-1.3.0/mime.php";
-    $from = $send_mail;
+    $from = $send_mail_user;
     $to = $emailOld;
     $subject = 'DMI Preprints - Email Changed';
     $text = "The email address associated on your account has been changed from " . $emailOld . " with " . $email . " on " . date("c", time()) . ".";
