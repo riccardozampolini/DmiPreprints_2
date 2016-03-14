@@ -13,9 +13,7 @@
         $seconds = 86400;
         #tempo massimo di esecuzione di 86400 secondi equivalente a un giorno
         set_time_limit($seconds);
-
         #funzione per il recupero delle informazioni da arxiv.org
-
         function arxiv_call($nome, $dataultimolancio) {
             #importazione variabili globali
             include './conf.php';
@@ -42,7 +40,7 @@
             $search_query = 'all:' . $nomed . '&sortBy=lastUpdatedDate&sortOrder=descending'; # search for ... in all fields
             $start = 0;
             $max_results = 10000;
-            #costruzione della query 
+            #costruzione della query
             $query = "search_query=" . $search_query . "&start=" . $start . "&max_results=" . $max_results;
             $feed = new SimplePie($base_url . $query);
             $feed->enable_order_by_date(false);

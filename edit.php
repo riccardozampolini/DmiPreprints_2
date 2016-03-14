@@ -77,7 +77,7 @@
                                 </div>
                                 <textarea readonly style='width:49%;' name='data' id='textbox' class='textbox1' placeholder='example of data: 2011-12-30T10:37:35Z'>" . $ris[2] . "</textarea>
                         </div>
-                        
+
                         <div>
                             <div id='divinsert'>
                                 <div id='divcontinsert'>
@@ -175,7 +175,6 @@
                             </div>
                         </div>
                         <div style='clear:both;'></div>
-
                             <center><div style='font-weight: bold;'>file to upload:</div>
                             <input type='hidden' name='MAX_FILE_SIZE' value='10000000'>
                             <input type='file' name='fileToUpload' id='fileToUpload'><br/>

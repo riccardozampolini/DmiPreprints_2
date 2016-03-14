@@ -12,7 +12,7 @@ if (isset($_POST['uid']) && isset($_POST['pw'])) {
     $inputUID = $_POST['uid'];
     $inputPass = $_POST['pw']; //la password di ateneo può contenere car speciali
     //controllo i dati per il login
-//disattiva ldap se true
+    //disattiva ldap se true
     if (!$ldapoff) {
         if (InternalAuth($inputUID, $inputPass)) {
             sec_session_start();

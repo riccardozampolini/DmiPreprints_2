@@ -141,7 +141,5 @@ function version_preprint($id1) {
         }
     }
 }
+
 ?>
-
-
-

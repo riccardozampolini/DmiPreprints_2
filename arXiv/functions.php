@@ -4,7 +4,7 @@
 
 function sessioneavviata() {
     global $db_connection;
-#importazione variabili globali
+    #importazione variabili globali
     $var = True;
     $a = date("Ymd", time());
     $datas = datasessione();

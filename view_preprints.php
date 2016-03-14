@@ -37,7 +37,7 @@
     require_once './authorization/auth.php';
     require_once './arXiv/arXiv_parsing.php';
     require_once './arXiv/functions.php';
-//
+    //
     ?>
     <body>
         <script type="text/x-mathjax-config">
@@ -128,7 +128,7 @@
                             <br/>
                             </div>
                         </div></form>
-                        <h1><a href='./view_preprints.php?r=" . $_GET['ft'] . "&rp=".$_GET['rp']."&s=Send&all=1&o=dated' style='color:#1976D2;' onclick='loading(load);'>Need Advanced Search?</a></h1>";
+                        <h1><a href='./view_preprints.php?r=" . urlencode($_GET['ft']) . "&rp=".$_GET['rp']."&s=Send&all=1&o=dated' style='color:#1976D2;' onclick='loading(load);'>Need Advanced Search?</a></h1>";
                 } else {//advanced search
                     $html = "<div class='adv'>
                 <h1>Advanced Search:</h1><br/>
@@ -137,7 +137,7 @@
                     <input type='submit' name='s' value='Send' class='button'><br/><br/>
                     <div class='SearchParam'>
                         <div class='restrictionbox'>
-                                Results for page:
+                        Results for page:
                                 <select name='rp'>
                                     " . $pageopt . "
                                 </select><br/><br/>
@@ -159,18 +159,18 @@
                         </div>
                     </div>
                 </form><br/>
-                <h1><a href='./view_preprints.php?fulltext=yes&ft=" . $_GET['r'] . "&rp=".$_GET['rp']."&go=Send&st=1' style='color:#1976D2;' onclick='loading(load);'>Need Fulltext Search?</a></h1>
+                <h1><a href='./view_preprints.php?fulltext=yes&ft=" . urlencode($_GET['r']) . "&rp=".$_GET['rp']."&go=Send&st=1' style='color:#1976D2;' onclick='loading(load);'>Need Fulltext Search?</a></h1>
             </div>";
                 }
                 echo $html;
                 ?></div>
             <div class="resultsContainer" id="secondContainer">
                 <?php
-#ricerca full text
+                #ricerca full text
                 if (isset($_GET['go']) && $_GET['go'] != "") {
                     searchfulltext();
                 }
-#ricerca normale
+                #ricerca normale
                 if (isset($_GET['s']) && $_GET['s'] != "") {
                     if ($_GET['f'] == "all" or $_GET['f'] == "author" or $_GET['f'] == "category"
                             or $_GET['f'] == "year" or $_GET['f'] == "id") {

@@ -86,24 +86,26 @@ ul.big-image-list img {
 #header nav {
     position: absolute;
     right: 40px;
-    line-height: 48px;
-    font-weight: bold;
     overflow: hidden;
-    font-size: 1.0em;
 }
 
 #header nav a {
+    font-size: 11pt;
+    margin: 0px;
+    line-height: 48px;
+    font-weight: bold;
     font-family: Roboto, Lucida Grande, Helvetica, Arial, sans-serif;
     display: inline-block;
     text-decoration: none;
     color: #fff;
-    padding: 0 20px 0 20px;
-    outline: 0;
+    border-radius: 1px;
+    padding: 0 10px 0 10px;
+    text-transform: uppercase;
 }
 
 #header nav a.current-page-item {
-    background-color: #0288D1;
-    box-shadow: 0px 0px 1px #0288D1 inset;
+    background-color: #328ce7;
+    box-shadow: 0px 0px 3px #328ce7 inset;
 }
 
 #header nav a:hover {
@@ -111,6 +113,10 @@ ul.big-image-list img {
     box-shadow: 0px 0px 1px #03A9F4 inset;
 }
 
+#header nav a:active {
+    background-color: #0288D1;
+    box-shadow: 0px 0px 1px #0288D1 inset;
+}
 /* Banner */
 
 #banner-wrapper {

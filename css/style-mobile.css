@@ -243,6 +243,7 @@ article.blog-post h2 {
     font-weight: bold;
     padding: 10px;
     margin-right: 10px;
+    margin-bottom: 20px;
 }
 
 .buttonNav2 {
@@ -253,10 +254,10 @@ article.blog-post h2 {
     background-color: #1976D2;
     text-decoration: none;
     border-color: #1976D2;
-    font-size: 12pt;
+    font-size: 15.5pt;
     font-weight: bold;
     box-shadow: 0px 0px 2px #303F9F inset;
-    width: 33.3%;
+    width: 33.333333%;
 }
 
 .buttonNav2:hover {
@@ -272,9 +273,9 @@ article.blog-post h2 {
     display: inline-block;
     text-decoration: none;
     border-color: #1976D2;
-    font-size: 12pt;
+    font-size: 15.5pt;
     font-weight: bold;
-    width: 33.4%;
+    width: 33.333333%;
 }
 
 .button {
