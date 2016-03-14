@@ -15,7 +15,6 @@
 </noscript>
 <script src=\"js/targetweb-modal-overlay.js\"></script>
 <link href='css/targetweb-modal-overlay.css' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 <!--[if lte IE 9]><link rel=\"stylesheet\" href=\"css/ie9.css\" /><![endif]-->
 <!--[if lte IE 8]><script src=\"js/html5shiv.js\"></script><![endif]-->
 <script src=\"http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js\"></script>
@@ -56,7 +55,7 @@
                 <h2>It is the first time you access here?</h2>
                 <div style="width:60%;">
                     For access use username and password of the University of Perugia,
-                    for those outside University of Perugia you can register and use the email 
+                    for those outside University of Perugia you can register and use the email
                     provided during the registration.
                 </div><br/><br/>
                 <br/><h2>Login:</h2>

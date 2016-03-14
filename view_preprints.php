@@ -17,7 +17,6 @@
 </noscript>
 <script src=\"js/targetweb-modal-overlay.js\"></script>
 <link href='css/targetweb-modal-overlay.css' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 <!--[if lte IE 9]><link rel=\"stylesheet\" href=\"css/ie9.css\" /><![endif]-->
 <!--[if lte IE 8]><script src=\"js/html5shiv.js\"></script><![endif]-->
 <script src=\"http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js\"></script>
@@ -115,26 +114,26 @@
                     $html = "<form name='f2' action='view_preprints.php' method='GET' onsubmit='loadingRight(loadRight);'>
         		<div class='adv'>
                             <h1>Fulltext Search:</h1><br/>
-                            <input type='search' value='" . $_GET['ft'] . "' autocomplete = 'on' class='searchbarLateral' name='ft' placeholder='Insert phrase, etc.'>
-                            <input type='submit' name='go' value='Send' class='button'/>
+                            <input type='search' value='" . $_GET['ft'] . "' autocomplete = 'on' class='searchbarLateral' name='ft' placeholder='Insert phrase, etc.'><br/>
+                            <input type='submit' name='go' value='Send' class='button'/><br/>
                             <div class='restrictionbox'><br/>
-		                    Results for page: 
+		                    Results for page:
 		                    <select name='rp'>
 		                        " . $pageopt . "
 		                    </select>
                             </div>
-                            <div class='searchonbox' style='width:100%;'><br/>
+                            <div class='restrictionbox' style='width:100%;'><br/>
 		                    Search on: <br/>
 		                    " . $searchopt . "
                             <br/>
                             </div>
                         </div></form>
-                        <h1><a href='./view_preprints.php?r=" . $_GET['ft'] . "&s=Send&all=1&o=dated' style='color:#1976D2;' onclick='loading(load);'>Need Advanced Search?</a></h1>";
+                        <h1><a href='./view_preprints.php?r=" . $_GET['ft'] . "&rp=".$_GET['rp']."&s=Send&all=1&o=dated' style='color:#1976D2;' onclick='loading(load);'>Need Advanced Search?</a></h1>";
                 } else {//advanced search
                     $html = "<div class='adv'>
                 <h1>Advanced Search:</h1><br/>
                 <form name='f1' action='view_preprints.php' method='GET' onsubmit='loadingRight(loadRight);'>
-                    <input type='search' value='" . $_GET['r'] . "' autocomplete = 'on' name='r' class='searchbarLateral' placeholder='Author name, etc.' required>
+                    <input type='search' value='" . $_GET['r'] . "' autocomplete = 'on' name='r' class='searchbarLateral' placeholder='Author name, etc.' required><br/>
                     <input type='submit' name='s' value='Send' class='button'><br/><br/>
                     <div class='SearchParam'>
                         <div class='restrictionbox'>
@@ -145,7 +144,8 @@
                                 Years restriction:<br/>
                                 From: <input type='text' value='" . $_GET['year2'] . "' name='year2' style='width:35px' placeholder='First' class='textbox'>
                                 To: <input type='text' value='" . $_GET['year3'] . "' name='year3' style='width:35px' placeholder='Last' class='textbox'>
-                            </div>
+                                </div>
+                            <div class='containerS'>
                         <div align='left' class='searchonbox'><br/>
                             Search on:<br/>
                             " . $searchcheckbox . "
@@ -156,9 +156,10 @@
                         </div>
                         <div style='clear:both;'>
                         </div>
+                        </div>
                     </div>
                 </form><br/>
-                <h1><a href='./view_preprints.php?fulltext=yes&ft=" . $_GET['r'] . "&go=Send&st=1' style='color:#1976D2;' onclick='loading(load);'>Need Fulltext Search?</a></h1>
+                <h1><a href='./view_preprints.php?fulltext=yes&ft=" . $_GET['r'] . "&rp=".$_GET['rp']."&go=Send&st=1' style='color:#1976D2;' onclick='loading(load);'>Need Fulltext Search?</a></h1>
             </div>";
                 }
                 echo $html;

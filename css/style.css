@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
 msm/*
         Minimaxing 3.1 by HTML5 UP
         html5up.net | @n33co
@@ -165,7 +166,7 @@ a:visited{
 
 /*barra info preprint*/
 #divinfo{
-    float: right; 
+    float: right;
     width: 30%;
     height: 610px;
     border-bottom: 1px solid #ccc;
@@ -175,7 +176,7 @@ a:visited{
 }
 /*barra pdf*/
 #emb{
-    width: 100%; 
+    width: 100%;
     height: 100%;
     border-bottom: 1px solid #ccc;
     border-right: 1px solid #ccc;
@@ -323,26 +324,26 @@ una risoluzione inferiore a 760px
     width: 60%;
 }
 #textboxcat{
-    width: 49%; 
-    height: 50px; 
+    width: 49%;
+    height: 50px;
     overflow: auto;
     resize: none;
 }
 #textbox{
-    width: 100%; 
-    height: 70px; 
+    width: 100%;
+    height: 70px;
     overflow: auto;
     resize: none;
 }
 #textboxabs{
-    width: 100%; 
+    width: 100%;
     height: 340px;
     overflow: auto;
     resize: none;
 }
 #divinsert{
-    padding: 1%; 
-    float: left; 
+    padding: 1%;
+    float: left;
     width: 48%;
     -moz-animation-name: dropHeader;
     -moz-animation-iteration-count: 1;
@@ -411,19 +412,19 @@ una risoluzione inferiore a 760px
     overflow: auto;
     padding: 2px;
     background-color:#ffffff;
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
-    -webkit-border-radius: 2px; 
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
     box-shadow: 0px 0px 3px #9A9A9A;
 }
 #divcontpreviewabs{
-    height: 340px; 
+    height: 340px;
     overflow: auto;
     padding: 2px;
     background-color:#ffffff;
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
-    -webkit-border-radius: 2px; 
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
     box-shadow: 0px 0px 3px #9A9A9A;
 }
 
@@ -490,11 +491,11 @@ ul.link-list li:first-child {
     font-size: 10.5pt;
     font-weight: bold;
     padding: 5px;
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
-    -webkit-border-radius: 2px; 
-    box-shadow: 0px 0px 3px #9A9A9A; 
-    -moz-box-shadow: 0px 0px 3px #9A9A9A; 
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    box-shadow: 0px 0px 3px #9A9A9A;
+    -moz-box-shadow: 0px 0px 3px #9A9A9A;
     -webkit-box-shadow: 0px 0px 3px #9A9A9A;
 }
 
@@ -510,13 +511,14 @@ ul.link-list li:first-child {
     border-color: #1976D2;
     font-size: 12pt;
     font-weight: bold;
-    box-shadow: 0px 0px 2px #303F9F inset; 
-    width: 33.3%;
+
+    box-shadow: 0px 0px 2px #303F9F inset;
+    width: 33.33%;
 }
 
 .buttonNav2:hover {
     background-color: #03A9F4;
-    cursor: pointer; 
+    cursor: pointer;
 }
 
 .buttonNav {
@@ -530,7 +532,7 @@ ul.link-list li:first-child {
     border-color: #1976D2;
     font-size: 12pt;
     font-weight: bold;
-    width: 33.4%;
+    width: 33.33%;
 }
 
 .button {
@@ -545,13 +547,13 @@ ul.link-list li:first-child {
     font-size: 10.5pt;
     color: #ffffff;
     font-weight: bold;
-    box-shadow: 0px 0px 3px #9A9A9A; 
+    box-shadow: 0px 0px 3px #9A9A9A;
     width: 90px;
 }
 
 .button:hover {
     background-color: #03A9F4;
-    cursor: pointer; 
+    cursor: pointer;
 }
 
 .button:active {
@@ -573,50 +575,50 @@ ul.link-list li:first-child {
     text-align: center;
     width: 80px;
     font-weight: bold;
-    box-shadow: 0px 0px 3px #9A9A9A; 
+    box-shadow: 0px 0px 3px #9A9A9A;
 }
 
 .buttonlink:hover {
     background-color: #03A9F4;
-    cursor: pointer; 
+    cursor: pointer;
 }
 
 .buttonlink:active {
     background-color: #0288D1;
 }
 
-.textbox { 
+.textbox {
     border: 1px solid #9A9A9A;
     font-size: 11pt;
-    padding: 2px 2px 2px 2px; 
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
+    padding: 2px 2px 2px 2px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     width: 150px;
-} 
+}
 
-.textbox:focus { 
-    outline: none; 
-    border: 1px solid #1976D2; 
-    box-shadow: 0px 0px 2px #1976D2; 
-    -moz-box-shadow: 0px 0px 2px #1976D2; 
+.textbox:focus {
+    outline: none;
+    border: 1px solid #1976D2;
+    box-shadow: 0px 0px 2px #1976D2;
+    -moz-box-shadow: 0px 0px 2px #1976D2;
     -webkit-box-shadow: 0px 0px 2px #1976D2;
 }
 
 .textbox1 {
     border: 1px solid #ffffff;
     font-size: 11pt;
-    padding: 2px 2px 2px 2px; 
-    border-radius: 2px; 
+    padding: 2px 2px 2px 2px;
+    border-radius: 2px;
     box-shadow: 0px 0px 3px #9A9A9A;
     width: 150px;
 }
 
-.textbox1:focus { 
+.textbox1:focus {
     outline: none;
-    border: 1px solid #1976D2; 
-    box-shadow: 0px 0px 2px #1976D2; 
-    -moz-box-shadow: 0px 0px 2px #1976D2; 
+    border: 1px solid #1976D2;
+    box-shadow: 0px 0px 2px #1976D2;
+    -moz-box-shadow: 0px 0px 2px #1976D2;
     -webkit-box-shadow: 0px 0px 2px #1976D2;
 }
 
@@ -624,115 +626,119 @@ ul.link-list li:first-child {
     font-size: 11pt;
     padding: 5px;
     margin: 10px;
-    border-radius: 2px; 
+    border-radius: 2px;
     outline: none;
-    -moz-border-radius: 2px; 
+    -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     width: 200px;
     border: 1px solid #ffffff;
     box-shadow: 0px 0px 3px #9A9A9A;
-} 
+}
 
-.textfield:focus { 
+.textfield:focus {
     outline: none;
-    border: 1px solid #1976D2; 
-    box-shadow: 0px 0px 2px #1976D2; 
-    -moz-box-shadow: 0px 0px 2px #1976D2; 
+    border: 1px solid #1976D2;
+    box-shadow: 0px 0px 2px #1976D2;
+    -moz-box-shadow: 0px 0px 2px #1976D2;
     -webkit-box-shadow: 0px 0px 2px #1976D2;
 }
 
-.simple{
-    width: 80%;
+.simple {
+  margin-top: 20px;
 }
 
-.adv{
-    width: 80%;
+.adv {
+  margin-top: 20px;
+  display: inline-block;
 }
 
-.fulltext{
-    width: 80%;
+.fulltext {
+  margin-top: 20px;
+  display: inline-block;
 }
 
-.SimpleSearchBar { 
+.SimpleSearchBar {
     border: 1px solid #c4c4c4;
-    font-size: 10.5pt;
-    padding: 5px;
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
+    font-size: 13pt;
+    padding: 3px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    width: 65%;
+    min-width: 450px;
+    width: 60%;
 }
 
-.SimpleSearchBar:focus { 
-    outline: none; 
-    border: 1px solid #1976D2; 
-    box-shadow: 0px 0px 2px #1976D2; 
-    -moz-box-shadow: 0px 0px 2px #1976D2; 
+.SimpleSearchBar:focus {
+    outline: none;
+    border: 1px solid #1976D2;
+    box-shadow: 0px 0px 2px #1976D2;
+    -moz-box-shadow: 0px 0px 2px #1976D2;
     -webkit-box-shadow: 0px 0px 2px #1976D2;
 }
 
-.searchbar { 
+.searchbar {
     border: 1px solid #c4c4c4;
-    font-size: 10.5pt;
-    padding: 5px;
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
+    font-size: 13pt;
+    padding: 3px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    width:80%;
+    min-width: 500px;
+    width: 70%;
 }
 
-.searchbar:focus { 
-    outline: none; 
-    border: 1px solid #1976D2; 
-    box-shadow: 0px 0px 2px #1976D2; 
-    -moz-box-shadow: 0px 0px 2px #1976D2; 
+.searchbar:focus {
+    outline: none;
+    border: 1px solid #1976D2;
+    box-shadow: 0px 0px 2px #1976D2;
+    -moz-box-shadow: 0px 0px 2px #1976D2;
     -webkit-box-shadow: 0px 0px 2px #1976D2;
 }
 
-.searchbarLateral { 
+.searchbarLateral {
     border: 1px solid #c4c4c4;
     font-size: 10.5pt;
     padding: 5px;
     margin-bottom: 10px;
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
+    border-radius: 2px;
+    -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    width:100%;
+    width:80%;
 }
 
-.searchbarLateral:focus { 
-    outline: none; 
-    border: 1px solid #1976D2; 
-    box-shadow: 0px 0px 2px #1976D2; 
-    -moz-box-shadow: 0px 0px 2px #1976D2; 
+.searchbarLateral:focus {
+    outline: none;
+    border: 1px solid #1976D2;
+    box-shadow: 0px 0px 2px #1976D2;
+    -moz-box-shadow: 0px 0px 2px #1976D2;
     -webkit-box-shadow: 0px 0px 2px #1976D2;
 }
 
 .searchbox {
-    font-size: 11pt;
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
-    -webkit-border-radius: 2px; 
-    box-shadow: 0px 0px 3px #9A9A9A; 
-    padding-top: 40px;
-    padding-bottom: 30px;
-    padding-left: 5px;
-    padding-right: 5px;
-} 
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
 
 .searchboxContainer {
     background-color:#ffffff;
-    width:65%;
-} 
+    display:inline-block;
+    max-width: 2160px;
+    border-radius: 2px;
+    width: 65%;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    box-shadow: 0px 0px 3px #9A9A9A
+}
 
 .boxContainer {
     background-color:#ffffff;
     font-size: 11pt;
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
-    -webkit-border-radius: 2px; 
-    box-shadow: 0px 0px 3px #9A9A9A; 
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    box-shadow: 0px 0px 3px #9A9A9A;
     padding: 20px;
+    max-width: 2160px;
     margin:2%;
     width: 90%;
 
@@ -755,11 +761,12 @@ ul.link-list li:first-child {
 .boxContainerIndex {
     background-color:#ffffff;
     font-size: 11pt;
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
-    -webkit-border-radius: 2px; 
-    box-shadow: 0px 0px 3px #9A9A9A; 
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    box-shadow: 0px 0px 3px #9A9A9A;
     padding: 20px;
+    max-width: 2160px;
     margin:2%;
     width: 80%;
 
@@ -782,11 +789,11 @@ ul.link-list li:first-child {
 .boxContainerSearch {
     background-color:#ffffff;
     font-size: 11pt;
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
-    -webkit-border-radius: 2px; 
-    box-shadow: 0px 0px 3px #9A9A9A; 
-    padding-top: 20px;
+    border-radius: 2px;
+    max-width: 300px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    box-shadow: 0px 0px 3px #9A9A9A;
     padding-bottom: 20px;
     margin-bottom:20px;
     margin-left:2%;
@@ -802,10 +809,10 @@ ul.link-list li:first-child {
 .boxContainerOrder {
     background-color:#ffffff;
     font-size: 11pt;
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
+    border-radius: 2px;
+    -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    box-shadow: 0px 0px 3px #9A9A9A; 
+    box-shadow: 0px 0px 3px #9A9A9A;
     padding: 20px;
     margin-bottom:20px;
     position:absolute;
@@ -829,10 +836,10 @@ ul.link-list li:first-child {
 .boxContainerAuthors {
     background-color:#ffffff;
     font-size: 11pt;
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
+    border-radius: 2px;
+    -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    box-shadow: 0px 0px 3px #9A9A9A; 
+    box-shadow: 0px 0px 3px #9A9A9A;
     padding: 20px;
     float:left;
 }
@@ -840,10 +847,10 @@ ul.link-list li:first-child {
 .boxContainerInsertAuthors {
     background-color:#ffffff;
     font-size: 11pt;
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
+    border-radius: 2px;
+    -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    box-shadow: 0px 0px 3px #9A9A9A; 
+    box-shadow: 0px 0px 3px #9A9A9A;
     padding: 20px;
     position: fixed;
     margin-left: 5%;
@@ -868,10 +875,10 @@ ul.link-list li:first-child {
 .boxContainerOrderUsers {
     background-color:#ffffff;
     font-size: 11pt;
-    border-radius: 2px; 
-    -moz-border-radius: 2px; 
+    border-radius: 2px;
+    -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    box-shadow: 0px 0px 3px #9A9A9A; 
+    box-shadow: 0px 0px 3px #9A9A9A;
     padding: 20px;
     margin-bottom:20px;
     position: fixed;
@@ -894,54 +901,66 @@ ul.link-list li:first-child {
 
 .resultsContainer{
     margin-left:22%;
-} 
+}
 
 .searchCountainerBox{
-    width: 630px;
-    padding-top: 20px;
     margin: 0 auto;
+    margin-top: 10px;
+    display: inline-block;
 }
 
 .searchonboxHome {
     margin: 0 auto;
     float: left;
-    padding: 5px;
-    width: 200px;
-} 
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    min-width: 150px;
+}
 
 .orderboxHome {
     margin: 0 auto;
     float: left;
-    padding: 5px;
-    width: 200px;
-} 
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    min-width: 150px;
+}
 
 .restrictionboxHome {
     margin: 0 auto;
     float:left;
-    padding: 5px;
-    width: 200px;
-} 
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    min-width: 150px;
+}
 
 .searchonbox {
-    width: 140px;
-} 
+}
 
 .orderbox {
-    width: 140px;
-} 
+}
 
 .restrictionbox {
-    width: 160px;
-} 
+    display:inline-block;
+}
 
 .UserListBox{
     width:80%;
     margin-left:190px;
 }
 
+.containerS{
+  display: inline-block;
+}
+
 #firstContainer{
-    margin-top: 70px;
+    margin-top: 60px;
+    margin-bottom: 20px;
 }
 
 #secondContainer{
@@ -1052,4 +1071,3 @@ ul.link-list li:first-child {
     0% { transform: scale(1,0); }
     100%   { transform: scale(1,1); }
 }
-

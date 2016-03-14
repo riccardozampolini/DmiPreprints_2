@@ -17,7 +17,6 @@
 </noscript>
 <script src=\"js/targetweb-modal-overlay.js\"></script>
 <link href='css/targetweb-modal-overlay.css' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 <!--[if lte IE 9]><link rel=\"stylesheet\" href=\"css/ie9.css\" /><![endif]-->
 <!--[if lte IE 8]><script src=\"js/html5shiv.js\"></script><![endif]-->
 <script src=\"http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js\"></script>
@@ -79,7 +78,7 @@
                         <div><a href="./index.php?fulltext=yes" style="color:#ffffff; float:left;" class="buttonNav2" >Fulltext Search</a></div>';
                     $html = "<div class='adv' align='center'>
                     <input type='search' value='" . $_GET['r'] . "' autocomplete = 'on' class='searchbar' name='r' placeholder='Author name, id of publication, year of publication, etc.' required>
-                    <input type='submit' name='s' value='Send' class='button'>
+                    <input type='submit' name='s' value='Send' class='button'><br/>
                     <div class='searchCountainerBox'>
                         <div align='left' class='restrictionboxHome'>
                             Reset selections:<br/>
@@ -157,7 +156,7 @@
                     . '<div><a href="./index.php?fulltext=yes" style="color:#ffffff; float:left;" class="buttonNav2" >Fulltext Search</a></div>';
                     $html = "<div class='simple'>
                     <select name='f' class='selector'>
-                        <option value='all' selected='selected'>All preprints:</option>
+                        <option value='all' selected='selected'>All:</option>
                         <option value='author'>Authors:</option>
                         <option value='category'>Category:</option>
                         <option value='year'>Year:</option>
@@ -165,7 +164,7 @@
                     </select>
                     <input type='radio' name='o' value='dated' checked hidden>
                     <input type='search' autocomplete = 'on' class='SimpleSearchBar' name='r' placeholder='Author name, year of publication, etc.' required>
-                    <input type='submit' name='s' value='Send' class='button'>
+                    <input type='submit' name='s' value='Send' class='button'><br/>
                 </div>";
                 }
                 ?>

@@ -44,7 +44,6 @@ if (isset($_POST['uid']) && isset($_POST['pw'])) {
         }
     } else {
         if (InternalAuth($inputUID, $inputPass)) {
-            //if (true){
             sec_session_start();
             $_SESSION['logged_type'] = "mod";
             $_SESSION['nome'] = GetNameAuth($inputUID);

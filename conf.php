@@ -3,6 +3,7 @@
 //file di configurazione
 $base_url = "http://localhost/GITHUB/"; //indirizzo 
 //configurazione smtp
+$send_mail_name = "NoReply"; //nome sender
 $send_mail_host = "ssl://smtp.gmail.com"; //host 
 $send_mail_port = "465"; //porta
 $send_mail_auth = true; //autenticazione
