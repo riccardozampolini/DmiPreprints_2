@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: Mar 09, 2016 alle 21:23
+-- Generato il: Apr 03, 2016 alle 12:29
 -- Versione del server: 5.5.47-0ubuntu0.14.04.1
 -- Versione PHP: 5.5.9-1ubuntu4.14
 
@@ -36,6 +36,17 @@ CREATE TABLE IF NOT EXISTS `ACCOUNTS` (
   `verificato` varchar(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`email`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `ADMINISTRATORS`
+--
+
+CREATE TABLE IF NOT EXISTS `ADMINISTRATORS` (
+  `uid` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -75,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `DATA_ULTIMO_LANCIO` (
 --
 
 INSERT INTO `DATA_ULTIMO_LANCIO` (`data`) VALUES
-('2016-03-09 21:19');
+('2016-04-03 12:08');
 
 -- --------------------------------------------------------
 
@@ -157,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `sessione_data` (
 --
 
 INSERT INTO `sessione_data` (`data`) VALUES
-('20160309');
+('20160403');
 
 -- --------------------------------------------------------
 

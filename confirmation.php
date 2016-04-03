@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-    <?php
-    echo "
+<?php
+echo "
 <head>
 <title>DMI Preprints</title>
 <!--<script src=\"js/jquery.min.js\"></script>-->
@@ -22,44 +22,44 @@
 <script src=\"http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js\"></script>
 <script src=\"http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js\"></script>
 <script>
-    webshims.setOptions('waitReady', false);
-    webshims.setOptions('forms-ext', {types: 'date'});
-    webshims.polyfill('forms forms-ext');
+webshims.setOptions('waitReady', false);
+webshims.setOptions('forms-ext', {types: 'date'});
+webshims.polyfill('forms forms-ext');
 </script>
 </head> ";
 //
-    require_once './conf.php';
-    require_once './mysql/db_conn.php';
-    require_once './authorization/auth.php';
-    ?>
-    <body>
-        <div id="header-wrapper">
-            <div class="container">
-                <div class="row">
-                    <div class="12u">
-                        <header id="header">
-                            <h1><a href="#" id="logo">DMI Preprints</a></h1>
-                            <nav id="nav">
-                                <a href="./index.php">Publications</a>
-                                <a href="./reserved.php" class="current-page-item">Reserved Area</a>
-                            </nav>
-                        </header>
-                    </div>
-                </div>
-            </div>
+require_once './conf.php';
+require_once './mysql/db_conn.php';
+require_once './authorization/auth.php';
+?>
+<body>
+  <div id="header-wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="12u">
+          <header id="header">
+            <h1><a href="#" id="logo">DMI Preprints</a></h1>
+            <nav id="nav">
+              <a href="./index.php">Publications</a>
+              <a href="./reserved.php" class="current-page-item">Reserved Area</a>
+            </nav>
+          </header>
         </div>
-        <br/><br/>
-    <center>
-        <div id="firstContainer"><br/><br/><br/><br/>
-            <?php
-            //
-            if ($_GET['token'] != "" && confirm_account($_GET['token'])) {
-                echo "The account has been confirmed, you can now sign in using your email address.";
-            }
-            require_once './graphics/loader.php';
-            require_once './graphics/footer.php';
-            ?>
+      </div>
+    </div>
+  </div>
+  <br/><br/>
+  <center>
+    <div id="firstContainer"><br/><br/><br/><br/>
+      <?php
+      //
+      if ($_GET['token'] != "" && confirm_account($_GET['token'])) {
+        echo "The account has been confirmed, you can now sign in using your email address.";
+      }
+      require_once './graphics/loader.php';
+      require_once './graphics/footer.php';
+      ?>
     </center>
-</center>
+  </center>
 </body>
 </html>
