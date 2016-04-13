@@ -1,5 +1,6 @@
 <?php
 #importazione della libreria simplepie versione 1.3.1
+include_once './conf.php';
 include_once './arXiv/SimplePie.php';
 include_once './arXiv/functions.php';
 include_once './arXiv/cURL.php';
@@ -10,8 +11,7 @@ $seconds = 86400;
 set_time_limit($seconds);
 #funzione per il recupero delle informazioni da arxiv.org
 function arxiv_call($nome, $dataultimolancio, $proc) {
-  #importazione variabili globali
-  include './conf.php';
+  global $basedir3;
   #inizializzo variabile per contare preprints scaricati...
   $k = 0;
   #adattamento stringa nome per chiamata su arXiv...
@@ -85,9 +85,9 @@ function arxiv_call($nome, $dataultimolancio, $proc) {
         $datapubb = intval($datapubb);
         $ris = nomiprec($nome);
         #controllo della data di pubblicazione con quella di ultimo lancio e controllo del nome se cercato nell'ultima esecuzione
-        if ($datapubb > $dataultimolancio or ( $ris == False)) {
+        if ($datapubb > $dataultimolancio or !$ris) {
           #controllo se il preprint è stato già scaricato
-          if (preprintscaricati($arcid1) == False && (!check_downloaded($arcid1) or $proc)) {
+          if (!preprintscaricati($arcid) && (!check_downloaded($arcid) or $proc)) {
             #richiamo della funzione per il versionamento dei preprints
             version_preprint($arcid);
             #richiamo cURL per il download del pdf
@@ -125,7 +125,7 @@ function arxiv_call($nome, $dataultimolancio, $proc) {
     #controllo della data di pubblicazione con quella di ultimo lancio e controllo del nome se cercato nell'ultima esecuzione
     if ($datapubb > $dataultimolancio or ( $ris == False)) {
       #controllo se il preprint è stato già scaricato
-      if (preprintscaricati($arcid1) == False && (!check_downloaded($arcid1) or $proc)) {
+      if (!preprintscaricati($arcid) && (!check_downloaded($arcid) or $proc)) {
         $array[0] = $arcid; #ARXIV ID
         $array[1] = $titolo; #TITOLO
         $array[2] = $datapubbstring; #DATA PUBBLICAZIONE
@@ -139,7 +139,7 @@ function arxiv_call($nome, $dataultimolancio, $proc) {
         #richiamo della funzione per inserire le info del preprint all'interno del database
         insert_preprints($array);
         #aggiorna il file temp.txt
-        aggiornapreprintscaricati($arcid1);
+        aggiornapreprintscaricati($arcid);
       }
     }
   }
