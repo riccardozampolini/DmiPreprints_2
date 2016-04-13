@@ -51,7 +51,7 @@ require_once './graphics/header.php';
           echo "<div hidden>";
           $id = trim($_POST['id']);
           $nontrovato = false;
-          arxiv_call($id, 0);
+          arxiv_call($id, 0, true);
           for ($i = 1; $i < 11; $i++) {
             $id1 = $id . "v" . $i;
             $ris = cercapreprint($id1);

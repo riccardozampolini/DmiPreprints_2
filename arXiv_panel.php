@@ -96,7 +96,7 @@ require_once './graphics/header.php';
                     #rimozione spazi all'inizio e alla fine della stringa nomi
                     $nomi = trim($nomi);
                     #uso la funzione arxiv call per contare i download
-                    $j = $j + arxiv_call($nomi, $data);
+                    $j = $j + arxiv_call($nomi, $data, false);
                   }
                   #aggiornamento dei nomi nel file nomi_ultimo_lancio...
                   aggiornanomi();
@@ -106,7 +106,7 @@ require_once './graphics/header.php';
                   azzerapreprint();
                   #chiudo la sessione di download
                   chiudisessione();
-                  echo "<br/>PAPERS DOWNLOADED: " . $j . "<br/><br/>";
+                  echo "<br/>PREPRINTS DOWNLOADED: " . $j . "<br/><br/>";
                   $dc1 = true;
                   //controllo se ci sono preprint da approvare
                   if (check_approve() == true) {
@@ -142,7 +142,7 @@ require_once './graphics/header.php';
                     $nomi = $array[$i];
                     #rimozione dei spazi all'inizio e alla fine della stringha
                     $nomi = trim($nomi);
-                    $j = $j + arxiv_call($nomi, 0);
+                    $j = $j + arxiv_call($nomi, 0, true);
                   }
                   #aggiornamento dei nomi nel file nomi_ultimo_lancio...
                   aggiornanomi();
@@ -152,7 +152,7 @@ require_once './graphics/header.php';
                   azzerapreprint();
                   #chiudo la sessione di download
                   chiudisessione();
-                  echo "<br/>PAPERS DOWNLOADED: " . $j . "<br/><br/>";
+                  echo "<br/>PREPRINTS DOWNLOADED: " . $j . "<br/><br/>";
                   $dc2 = true;
                   //controllo se ci sono preprint da approvare
                   if (check_approve() == true) {
@@ -197,7 +197,7 @@ require_once './graphics/header.php';
                       #rimozione spazi all'inizio e alla fine della stringa nomi
                       $nomi = trim($nomi);
                       #uso la funzione arxiv call per contare i download
-                      $j = $j + arxiv_call($nomi, $data);
+                      $j = $j + arxiv_call($nomi, $data, false);
                     }
                     #aggiornamento dei nomi nel file nomi_ultimo_lancio...
                     aggiornanomi();
@@ -207,7 +207,7 @@ require_once './graphics/header.php';
                     azzerapreprint();
                     #chiudo la sessione di download
                     chiudisessione();
-                    echo "<br/>PAPERS DOWNLOADED: " . $j . "<br/><br/>";
+                    echo "<br/>PREPRINTS DOWNLOADED: " . $j . "<br/><br/>";
                     $dc1 = true;
                     //controllo se ci sono preprint da approvare
                     if (check_approve() == true) {

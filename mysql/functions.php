@@ -4,6 +4,22 @@
 require_once "Mail.php";
 require_once "Mail/mime.php";
 
+#funzione controllo se preprint esistente
+
+function check_downloaded($id) {
+  global $db_connection;
+  $id = trim($id);
+  #verifica se esistono preprints precedenti e li sposto...
+  $sql = "SELECT COUNT(*) AS TOTALFOUND FROM PREPRINTS WHERE id_pubblicazione='".$id."'";
+  $query = mysqli_query($db_connection, $sql) or die(mysqli_error());
+  $row = mysqli_fetch_array($query);
+  if ($row['TOTALFOUND'] > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 #funzione inserimento nuovo utente
 
 function aggiungiutenteAdmin($nome, $a) {

@@ -9,7 +9,7 @@ $seconds = 86400;
 #tempo massimo di esecuzione di 86400 secondi equivalente a un giorno
 set_time_limit($seconds);
 #funzione per il recupero delle informazioni da arxiv.org
-function arxiv_call($nome, $dataultimolancio) {
+function arxiv_call($nome, $dataultimolancio, $proc) {
   #importazione variabili globali
   include './conf.php';
   #inizializzo variabile per contare preprints scaricati...
@@ -87,7 +87,7 @@ function arxiv_call($nome, $dataultimolancio) {
         #controllo della data di pubblicazione con quella di ultimo lancio e controllo del nome se cercato nell'ultima esecuzione
         if ($datapubb > $dataultimolancio or ( $ris == False)) {
           #controllo se il preprint è stato già scaricato
-          if (preprintscaricati($arcid1) == False) {
+          if (preprintscaricati($arcid1) == False && (!check_downloaded($arcid1) or $proc)) {
             #richiamo della funzione per il versionamento dei preprints
             version_preprint($arcid);
             #richiamo cURL per il download del pdf
@@ -125,7 +125,7 @@ function arxiv_call($nome, $dataultimolancio) {
     #controllo della data di pubblicazione con quella di ultimo lancio e controllo del nome se cercato nell'ultima esecuzione
     if ($datapubb > $dataultimolancio or ( $ris == False)) {
       #controllo se il preprint è stato già scaricato
-      if (preprintscaricati($arcid1) == False) {
+      if (preprintscaricati($arcid1) == False && (!check_downloaded($arcid1) or $proc)) {
         $array[0] = $arcid; #ARXIV ID
         $array[1] = $titolo; #TITOLO
         $array[2] = $datapubbstring; #DATA PUBBLICAZIONE
