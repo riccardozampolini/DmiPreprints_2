@@ -123,7 +123,7 @@ function arxiv_call($nome, $dataultimolancio, $proc) {
     #verifica e inserimento nel array...
     $ris = nomiprec($nome);
     #controllo della data di pubblicazione con quella di ultimo lancio e controllo del nome se cercato nell'ultima esecuzione
-    if ($datapubb > $dataultimolancio or ( $ris == False)) {
+    if ($datapubb > $dataultimolancio or !$ris) {
       #controllo se il preprint è stato già scaricato
       if (!preprintscaricati($arcid) && (!check_downloaded($arcid) or $proc)) {
         $array[0] = $arcid; #ARXIV ID
