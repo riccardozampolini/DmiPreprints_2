@@ -329,64 +329,64 @@ function evidenziaTr(ck) {
 }
 //script che evidenzia righe selezionate
 window.onload = function () {
-  var t = document.getElementById('table');
-  var t2 = document.getElementById('table1');
-  t.onclick = function (e) {
-    e = e || event;
-    var src = e.target || e.srcElement;
-    if (src.tagName == 'INPUT' && src.type == 'checkbox' && src.id != 'tdh') {
-      evidenziaTr(src);
-    } else {
-      if (src.tagName != 'A' && src.id != 'tdh') {
-        var found = true;
-        while (src.tagName != 'TR') {
-          if (src == t) {
-            found = false;
-            break;
+  try {
+    var t = document.getElementById('table');
+    var t2 = document.getElementById('table1');
+    t.onclick = function (e) {
+      e = e || event;
+      var src = e.target || e.srcElement;
+      if (src.tagName == 'INPUT' && src.type == 'checkbox' && src.id != 'tdh') {
+        evidenziaTr(src);
+      } else {
+        if (src.tagName != 'A' && src.id != 'tdh') {
+          var found = true;
+          while (src.tagName != 'TR') {
+            if (src == t) {
+              found = false;
+              break;
+            }
+            src = src.parentNode;
           }
-          src = src.parentNode;
-        }
-        if (found) {
-          var els = src.getElementsByTagName('input');
-          for (var k = 0, l = els.length; k < l; k++) {
-            if (els[k].type == "checkbox") {
-              els[k].checked = !els[k].checked;
-              evidenziaTr(els[k]);
+          if (found) {
+            var els = src.getElementsByTagName('input');
+            for (var k = 0, l = els.length; k < l; k++) {
+              if (els[k].type == "checkbox") {
+                els[k].checked = !els[k].checked;
+                evidenziaTr(els[k]);
+              }
             }
           }
         }
       }
     }
-
-  }
-  t2.onclick = function (e) {
-    e = e || event;
-    var src = e.target || e.srcElement;
-    if (src.tagName == 'INPUT' && src.type == 'checkbox' && src.id != 'tdh') {
-      evidenziaTr(src);
-    } else {
-      if (src.tagName != 'A' && src.id != 'tdh') {
-        var found = true;
-        while (src.tagName != 'TR') {
-          if (src == t) {
-            found = false;
-            break;
+    t2.onclick = function (e) {
+      e = e || event;
+      var src = e.target || e.srcElement;
+      if (src.tagName == 'INPUT' && src.type == 'checkbox' && src.id != 'tdh') {
+        evidenziaTr(src);
+      } else {
+        if (src.tagName != 'A' && src.id != 'tdh') {
+          var found = true;
+          while (src.tagName != 'TR') {
+            if (src == t) {
+              found = false;
+              break;
+            }
+            src = src.parentNode;
           }
-          src = src.parentNode;
-        }
-        if (found) {
-          var els = src.getElementsByTagName('input');
-          for (var k = 0, l = els.length; k < l; k++) {
-            if (els[k].type == "checkbox") {
-              els[k].checked = !els[k].checked;
-              evidenziaTr(els[k]);
+          if (found) {
+            var els = src.getElementsByTagName('input');
+            for (var k = 0, l = els.length; k < l; k++) {
+              if (els[k].type == "checkbox") {
+                els[k].checked = !els[k].checked;
+                evidenziaTr(els[k]);
+              }
             }
           }
         }
       }
     }
-
-  }
+  } catch(err) {}
 }
 //visualizza schermata di caricamento
 function loading(id) {

@@ -3,7 +3,7 @@
 <?php
 require_once './graphics/header.php';
 $nav2 = "<header id='header'>
-<h1><a href='#' id='logo'>DMI Preprints</a></h1>
+<h1><a href='./index.php' id='logo'>DMI Preprints</a></h1>
 <nav id='nav'>
 <a href='./index.php' onclick='loading(load);'>Publications</a>
 <a href='./reserved.php' class='current-page-item' onclick='loading(load);'>Reserved Area</a>
@@ -16,7 +16,7 @@ $rit = "modp.php";
   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
   </script>
   <script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
   <div>
     <div id="header-wrapper">

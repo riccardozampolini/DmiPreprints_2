@@ -3,8 +3,6 @@
 echo "
 <head>
 <title>DMI Preprints</title>
-<!--<script src=\"js/jquery.min.js\"></script>-->
-<script type=\"text/javascript\" src=\"js/jquery-1.11.1.min.js\"></script>
 <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js\"></script>
 <script src=\"js/config.js\"></script>
 <script src=\"js/skel.min.js\"></script>
@@ -18,12 +16,7 @@ echo "
 <link href='css/targetweb-modal-overlay.css' rel='stylesheet' type='text/css'>
 <!--[if lte IE 9]><link rel=\"stylesheet\" href=\"css/ie9.css\" /><![endif]-->
 <!--[if lte IE 8]><script src=\"js/html5shiv.js\"></script><![endif]-->
-<script src=\"http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js\"></script>
-<script src=\"http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js\"></script>
 <script>
-webshims.setOptions('waitReady', false);
-webshims.setOptions('forms-ext', {types: 'date'});
-webshims.polyfill('forms forms-ext');
 </script>
 <script type=\"text/javascript\" src=\"./js/allscript.js\">
 </script>

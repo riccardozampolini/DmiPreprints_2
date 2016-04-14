@@ -15,7 +15,7 @@ if ($_SESSION['logged_type'] === "mod") {
         <div class="row">
           <div class="12u">
             <header id="header">
-              <h1><a href="#" id="logo">DMI Preprints</a></h1>
+              <h1><a href="./index.php" id="logo">DMI Preprints</a></h1>
               <nav id="nav">
                 <a href='./index.php' onclick="loading(load);">Publications</a>
                 <a href="./reserved.php" class="current-page-item" onclick="loading(load);">Reserved Area</a>
