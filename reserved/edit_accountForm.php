@@ -28,6 +28,6 @@ Registration date: ' . $info['registrazione'] . '
 <div>
 <input type="password" id="pw2" class="textfield" placeholder="retype new password" maxlength="100">
 </div>
-<br/><button id="button_login" style="width: 110px;" class="button" onclick="chkAccountUpdate()">Submit</button>
+<br/><button class="button" onclick="chkAccountUpdate()">Submit</button>
 </div>';
 ?>

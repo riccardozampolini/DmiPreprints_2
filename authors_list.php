@@ -56,7 +56,7 @@ require_once './graphics/header.php';
           #conto lunghezza array
           $lunghezza = count($nomi);
           echo "<form name='f1' action='authors_list.php' id='f1' method='POST' onsubmit='loadingRight(loadRight);'>
-          <center><table id='table' style='width:35%;'>";
+          <center><table id='table3'>";
           echo "<tr id='th'>"
           . "<td id='tdh'><input type='checkbox' onChange='toggle(this);'/>N&deg;:</td>"
           . "<td id='tdh' align='center'>NAME:</td></tr>";

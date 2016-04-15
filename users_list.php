@@ -56,7 +56,7 @@ require_once './graphics/header.php';
         print $html;
         #lista utenti registrati
         $nomi = find_accounts($order);
-        echo "</div><div class='UserListBox' id='secondContainer'><table id='table' style='margin-top: 0px;'>
+        echo "</div><div class='UserListBox' id='secondContainer'><table id='table2' style='margin-top: 0px;'>
         <tr id='thhead'><td id='tdh' colspan='7' align='center'>EXTERNAL MEMBERS</td></tr>";
         echo "<tr id='th'><td id='tdh'><input type='checkbox' name='all1' onChange='toggle(this)'/>N&deg;:</td><td id='tdh' align='center'>NAME:</td><td id='tdh' align='center'>SURNAME:</td><td id='tdh' align='center'>EMAIL:</td><td id='tdh' align='center'>LAST ACCESS:</td><td id='tdh' align='center'>REGISTERED:</td><td id='tdh' align='center'>VERIFIED:</td></tr>";
         #creazione della tabella html dei file all'interno di pdf_downloads

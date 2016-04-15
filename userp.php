@@ -212,7 +212,7 @@ require_once './graphics/header.php';
           $id = insert_pubb($info, $_SESSION['uid']);
           rename($basedir . $_FILES["fileToUpload"]["name"], $basedir . $id . ".pdf");
           #inserimento file nel database
-          sendmailadmin($_SESSION['uid'], $id);
+          //sendmailadmin($_SESSION['uid'], $id);
           #insertpdf($id, $fileType);
           echo '<script type="text/javascript">alert("Paper submitted correctly!\nAfter approvation go on my upload to edit your pubblications.");</script>';
         } else {

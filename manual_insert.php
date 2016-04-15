@@ -42,7 +42,7 @@ require_once './graphics/header.php';
             <form name='f3' action='manual_insert.php' method='POST' onsubmit="loading(load);">
               Get preprint from arXiv:
               <input type='search' autocomplete = 'on' name='id' required class='textfield' placeholder='Insert arXiv id: 0000.0000'/>
-              <input type='submit' name='b7' value='Get info' id='bottone_keyword' class='button' ><br/>
+              <input type='submit' name='b7' value='Get info' class='button'><br/>
             </form>
           </div>
         </center><br/>
@@ -73,7 +73,7 @@ require_once './graphics/header.php';
           $arcid1 = str_replace("/", "-", $id1);
           #inserimento mediante arxiv
           echo "
-          <form name='f1' action='manual_insert.php' method='POST' enctype='multipart/form-data' onclick='myFunction()' onsubmit='loading(load);'>
+          <form name='f1' action='manual_insert.php' method='POST' enctype='multipart/form-data' onsubmit='loading(load);'>
           <center><div><h2>manual insertion</h2><h1>field with '*' are required.</h1><br/><input type='reset' name='reset' value='Reset'><br/><br/></center>
           <div id='divinsertcateg'>
           <div style='float:right; width:49%;'><div style='font-weight: bold;'>document:</div><div style='float:right; width:49%;'><a href='" . $basedir3 . $arcid1 . ".pdf' target='_blank' style='color:#1976D2;' title='" . $arcid1 . ".pdf'>VIEW</a></div></div>

@@ -281,6 +281,29 @@ una risoluzione inferiore a 760px
   animation-duration: 0.3s;
 }
 
+#table2 {
+  width: 100%;
+  border:1px solid #ccc;
+  box-shadow: 0px 0px 3px #9A9A9A;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  -moz-animation-name: bumpin;
+  -moz-animation-iteration-count: 1;
+  -moz-animation-timing-function: ease-in;
+  -moz-animation-duration: 0.3s;
+
+  -webkit-animation-name: bumpin;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-timing-function: ease-in;
+  -webkit-animation-duration: 0.3s;
+
+  animation-name: bumpin;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+  animation-duration: 0.3s;
+}
+
 #table3{
   width: 100%;
   border:1px solid #ccc;
@@ -1294,7 +1317,7 @@ ul.link-list li:first-child {
   }
 
   #table3{
-    width: 100%;
+    width: 35%;
     border:1px solid #ccc;
     box-shadow: 0px 0px 3px #9A9A9A;
     margin-top: 20px;
@@ -1330,11 +1353,11 @@ ul.link-list li:first-child {
   }
   /*div di inserimento*/
   #arxivpreprints{
-    width: 60%;
+    width: 80%;
   }
 
   #dmipreprints{
-    width: 60%;
+    width: 80%;
   }
   #textboxcat{
     width: 49%;

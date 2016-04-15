@@ -38,7 +38,7 @@ require_once './graphics/header.php';
         print_r($_SESSION['logged_type']);
         ?>
         <form name="f1" action="modp.php" method="POST" onsubmit="loading(load);"><br/>
-          <input style="color:red;" type="submit" name="b1" value="Logout" id="botton_logout" class="button" onclick="return confirmLogout()">
+          <input style="color:red;" type="submit" name="b1" value="Logout" class="button" onclick="return confirmLogout()">
           <?php
           if (SearchAccountUser($_SESSION['uid'])) {
             echo '<a style="color: #ffffff;" href="./profile.php" id="bottone_keyword" class="buttonlink" onclick="loading(load);">Profile</a>';
@@ -171,7 +171,7 @@ require_once './graphics/header.php';
         <input type="file" required name="fileToUpload" id="fileToUpload">
         <br/>
         <br/>
-        <input type="submit" name="b3" value="Insert" style="width:70px;" class='button' onclick="return confirmInsert()"></center>
+        <input type="submit" name="b3" value="Insert" class='button' onclick="return confirmInsert()"></center>
       </form>
     </div>
     <?php

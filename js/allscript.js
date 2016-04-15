@@ -386,7 +386,69 @@ window.onload = function () {
         }
       }
     }
-  } catch(err) {}
+  } catch(err) {
+    try {
+      var t = document.getElementById('table2');
+      t.onclick = function (e) {
+        e = e || event;
+        var src = e.target || e.srcElement;
+        if (src.tagName == 'INPUT' && src.type == 'checkbox' && src.id != 'tdh') {
+          evidenziaTr(src);
+        } else {
+          if (src.tagName != 'A' && src.id != 'tdh') {
+            var found = true;
+            while (src.tagName != 'TR') {
+              if (src == t) {
+                found = false;
+                break;
+              }
+              src = src.parentNode;
+            }
+            if (found) {
+              var els = src.getElementsByTagName('input');
+              for (var k = 0, l = els.length; k < l; k++) {
+                if (els[k].type == "checkbox") {
+                  els[k].checked = !els[k].checked;
+                  evidenziaTr(els[k]);
+                }
+              }
+            }
+          }
+        }
+      }
+    } catch(err) {
+      try {
+        var t = document.getElementById('table3');
+        t.onclick = function (e) {
+          e = e || event;
+          var src = e.target || e.srcElement;
+          if (src.tagName == 'INPUT' && src.type == 'checkbox' && src.id != 'tdh') {
+            evidenziaTr(src);
+          } else {
+            if (src.tagName != 'A' && src.id != 'tdh') {
+              var found = true;
+              while (src.tagName != 'TR') {
+                if (src == t) {
+                  found = false;
+                  break;
+                }
+                src = src.parentNode;
+              }
+              if (found) {
+                var els = src.getElementsByTagName('input');
+                for (var k = 0, l = els.length; k < l; k++) {
+                  if (els[k].type == "checkbox") {
+                    els[k].checked = !els[k].checked;
+                    evidenziaTr(els[k]);
+                  }
+                }
+              }
+            }
+          }
+        }
+      } catch(err) {}
+    }
+  }
 }
 //visualizza schermata di caricamento
 function loading(id) {
