@@ -393,10 +393,10 @@ function searchfulltext() {
     $risperpag = 5;
   }
   if ($_GET['st'] == "1") {
-    $query = "SELECT *, MATCH (id_pubblicazione, titolo, data_pubblicazione, autori, referenze, commenti, categoria, abstract) AGAINST('*" . addslashes($_GET['ft']) . "*' IN BOOLEAN MODE) AS attinenza FROM PREPRINTS WHERE MATCH (id_pubblicazione, titolo, data_pubblicazione, autori, referenze, commenti, categoria, abstract) AGAINST ('*" . addslashes($_GET['ft']) . "*' IN BOOLEAN MODE) ORDER BY attinenza DESC";
+    $query = "SELECT *, MATCH (id_pubblicazione, titolo, data_pubblicazione, autori, referenze, commenti, categoria, abstract) AGAINST('*" . addslashes($_GET['ft']) . "*' IN BOOLEAN MODE) AND checked='1' AS attinenza FROM PREPRINTS WHERE MATCH (id_pubblicazione, titolo, data_pubblicazione, autori, referenze, commenti, categoria, abstract) AGAINST ('*" . addslashes($_GET['ft']) . "*' IN BOOLEAN MODE) AND checked='1' ORDER BY attinenza DESC";
     $cat = "on currents";
   } else {
-    $query = "SELECT *, MATCH (id_pubblicazione, titolo, data_pubblicazione, autori, referenze, commenti, categoria, abstract) AGAINST('*" . addslashes($_GET['ft']) . "*' IN BOOLEAN MODE) AS attinenza FROM PREPRINTS_ARCHIVIATI WHERE MATCH (id_pubblicazione, titolo, data_pubblicazione, autori, referenze, commenti, categoria, abstract) AGAINST ('*" . addslashes($_GET['ft']) . "*' IN BOOLEAN MODE) ORDER BY attinenza DESC";
+    $query = "SELECT *, MATCH (id_pubblicazione, titolo, data_pubblicazione, autori, referenze, commenti, categoria, abstract) AGAINST('*" . addslashes($_GET['ft']) . "*' IN BOOLEAN MODE) AND checked='1' AS attinenza FROM PREPRINTS_ARCHIVIATI WHERE MATCH (id_pubblicazione, titolo, data_pubblicazione, autori, referenze, commenti, categoria, abstract) AGAINST ('*" . addslashes($_GET['ft']) . "*' IN BOOLEAN MODE) AND checked='1' ORDER BY attinenza DESC";
     $cat = "on archived";
   }
   #recupero pagina
